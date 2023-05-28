@@ -19,11 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Passenger.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="Pilot.h" />
+    <ClInclude Include="Technician.h" />
     <ClInclude Include="Worker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Passenger.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Pilot.cpp" />
+    <ClCompile Include="Technician.cpp" />
     <ClCompile Include="Worker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
