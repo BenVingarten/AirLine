@@ -19,23 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Date.h" />
+    <ClInclude Include="FirstClassTicket.h" />
     <ClInclude Include="Flight.h" />
+    <ClInclude Include="FlightAttendet.h" />
     <ClInclude Include="Passenger.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Pilot.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Technician.h" />
+    <ClInclude Include="Ticket.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="Travel.h" />
+    <ClInclude Include="TripInfo.h" />
     <ClInclude Include="Worker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Date.cpp" />
+    <ClCompile Include="FirstClassTicket.cpp" />
     <ClCompile Include="Flight.cpp" />
+    <ClCompile Include="FlightAttendet.cpp" />
     <ClCompile Include="Passenger.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Pilot.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Technician.cpp" />
+    <ClCompile Include="Ticket.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="Travel.cpp" />
+    <ClCompile Include="TripInfo.cpp" />
     <ClCompile Include="Worker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
