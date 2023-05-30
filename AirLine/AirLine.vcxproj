@@ -19,17 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Flight.h" />
     <ClInclude Include="Passenger.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Pilot.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="Technician.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Worker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Flight.cpp" />
     <ClCompile Include="Passenger.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Pilot.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Technician.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Worker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
