@@ -29,13 +29,13 @@ private:
 public:
 
 	Flight(char destination[3], char source[3], Pilot* pi, int hour, int minute, int day, int month, int year);
-	Flight(const Travel & t, Pilot* pi, const Time& t, const Date& d);
+	Flight(const Travel & trav, Pilot* pi, const Time& time, const Date& d);
 	Flight(const TripInfo& t, Pilot* pi);
 	Flight(const Travel& t, const Time& duartion, const Date& d);
-	~Flight()
+	~Flight();
 
 	bool setPlane(const Plane& pl);
-	bool setDuration(const Time& t)
+	bool setDuration(const Time& t);
 	Time getDuration()const;
 
 	bool operator = (const Flight& f);
