@@ -27,7 +27,7 @@ private:
 public:
 
 	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type);
-	Technician(const Worker& w);
+	Technician(const Worker& w, eTechnicianType type);
 	Technician(const Technician& other) = delete;
 	Technician(Technician&& t) noexcept;
 

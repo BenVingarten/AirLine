@@ -3,6 +3,7 @@
 using namespace std;
 #include "Person.h"
 
+class Flight;
 class Worker : public Person
 {
 

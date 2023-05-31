@@ -2,7 +2,7 @@
 class Plane
 {
 	int numOfSeats;
-	const static int  MAX_WEIGHT = 1000; //KG
+	const float  MAX_WEIGHT = 1000; //KG
 	int currentWeight;
 	float maxSpeed;
 	bool IsAvailable;

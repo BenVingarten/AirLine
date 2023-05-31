@@ -25,7 +25,7 @@ public:
 	
 	
 	Time getflightHours()const;
-	Person& operator +=(Time hours); //add to flight hours
+	Pilot& operator +=(const Time& hours); //add to flight hours
 
 	bool operator ==(const Worker& worker)const;
 	virtual void setRaise()override;

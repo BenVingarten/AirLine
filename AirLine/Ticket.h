@@ -16,7 +16,7 @@ private:
 	int seat; // accroding to the index in the tickets array (in flight class)
 	Passenger* pPassenger;
 	char* meal;
-	float maxLuggageWeightAllowed;
+	const float MAX_WEIGHT = 24.0;
 
 protected:
 	virtual void print(ostream& out)const;
