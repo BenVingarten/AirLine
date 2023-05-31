@@ -22,16 +22,20 @@ private:
 	void testSystems(Plane& p);
 	void fillFuel(Plane& plane);
 
+	void print(ostream& out)const;
+
 public:
 
 	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type);
 	Technician(const Worker& w);
 	Technician(const Technician& other) = delete;
-	Technician(Technician&& t);
+	Technician(Technician&& t) noexcept;
 
 	eTechnicianType getType() const;
 	int getNumOfPlanesPrepared()const;
 
+
+	bool operator ==(const Worker& worker)const;
 	virtual void setRaise() override;
 	virtual void PrepareForFlight() override;
 	virtual void AnnualRefresh()override;

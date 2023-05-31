@@ -7,10 +7,15 @@ private:
 	char source[3];
 	char destination[3];
 
+protected:
+
+	virtual void print(ostream& out)const;
+
 public:
 	Travel(char s[3], char d[3]);
 	bool setSource(char s[3]);
 	bool setDest(char d[3]);
+	virtual ~Travel();
 
 	friend ostream& operator << (ostream& out, const Travel& t);
 	char* getSource()const;

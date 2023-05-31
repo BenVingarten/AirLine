@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AirLine.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="FirstClassTicket.h" />
     <ClInclude Include="Flight.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Worker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AirLine.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="FirstClassTicket.cpp" />
     <ClCompile Include="Flight.cpp" />

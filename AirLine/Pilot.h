@@ -13,18 +13,21 @@ private:
 
 	void checkFlightDetails(const Flight& f);
 
+	void print(ostream& out)const;
+
 public:
 
 	Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours);
 	Pilot(const Worker& w, Time flightHours);
 	Pilot(const Pilot& p) = delete;
-	Pilot(Pilot&& p);
+	Pilot(Pilot&& p) noexcept;
 
-	friend ostream& operator <<(ostream& out, const Pilot& p);
+	
 	
 	Time getflightHours()const;
 	Person& operator +=(Time hours); //add to flight hours
 
+	bool operator ==(const Worker& worker)const;
 	virtual void setRaise()override;
 	virtual void PrepareForFlight()override;
 	virtual void AnnualRefresh()override;

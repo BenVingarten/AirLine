@@ -23,7 +23,7 @@ private:
 	const int MAX_CREW_MEMBERS = 10; // 2 pilot 4-5 flightAttendets and 3-4 technicians
 	
 
-	bool addCrewMember(const Worker* w);
+	bool addCrewMember(Worker* w);
 
 
 public:
@@ -36,14 +36,17 @@ public:
 
 	bool setPlane(const Plane& pl);
 	bool setDuration(const Time& t);
+
+	int getFlightID()const;
 	Time getDuration()const;
+	TripInfo getInfo()const;
 
 	bool operator = (const Flight& f);
 	friend ostream& operator <<(ostream& out, const Flight& f);
 	
 	bool assignCrew(ostream& out, istream& in);
 	bool checkIfFlightReady();
-	TripInfo getInfo()const;
+	
 	
 };
 

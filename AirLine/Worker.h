@@ -11,29 +11,40 @@ private:
 	 int id;
 	 float salary;
 	 int seniority;
+	 Flight* currentFlight;
 	 bool isWorkerAvailable;
-	 bool isWorkerGotARaise;
+	
 	 Worker(const Worker& w) = default;
+
+protected:
+	 void print(ostream& out)const;
 
 public:
 
 	Worker(const char* pName, int theAge, char gen, float  salary, int seniority);
 	Worker(const Person& p, float salary, int seniority);
-	Worker(Worker&& w);
+	Worker(Worker&& w) noexcept;
+	virtual ~Worker();
 
-	bool updateSalary(float sal);
+	
 	int getWorkerId()const;
 	float getSalary()const;
 	int getSeniority()const;
-	Worker& operator ++(); // add 1 year seniority
-	friend ostream& operator <<(ostream& out, const Worker& w);
+	bool isAvailable()const;
 
+
+	bool updateSalary(float sal);
+	bool setFlight(Flight* flight);
+
+	Worker& operator ++(); // add 1 year seniority
+	
+	virtual bool operator ==(const Worker& worker)const;
 	virtual void setRaise() = 0;
 	virtual void PrepareForFlight() = 0; 
 	virtual void AnnualRefresh() = 0;
 
 	
-	 // set Raise:we check if a particular worker deserves a raise, every 3 years a worked should get one.
+	 // set Raise:we check if a particular worker deserves a raise, every 3 years a worker should get one.
 	                //for the pilot its 70% of his flightHours
 					//for the flight attendet its 100 NIS per language she speaks
 					// for the Technician its the number of tickets he sold times 5

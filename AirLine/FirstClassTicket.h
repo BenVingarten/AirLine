@@ -15,6 +15,8 @@ private:
 
 	bool addDishToMenu();
 
+	void print(ostream& out)const;
+
 public:
 	FirstClassTicket(int cost, int gate, const Time& t, const Date& d, int seat, Passenger* p);
 	FirstClassTicket(const Ticket& t); // c'tor with ticket reference
@@ -22,11 +24,14 @@ public:
 	FirstClassTicket(Ticket&& t) noexcept;
 	~FirstClassTicket();
 
-	FirstClassTicket& operator =(const FirstClassTicket& p);                                 // operator =
+
+	//FirstClassTicket& operator =(const FirstClassTicket& p);  // operator =
+	virtual Ticket& clone()const;
+
 	const FirstClassTicket& operator =(FirstClassTicket&& p) noexcept;
 	bool setMenu();
 	void showMenu()const;
 
-	friend ostream& operator << (ostream & out, const FirstClassTicket & fct);
+	
 };
 

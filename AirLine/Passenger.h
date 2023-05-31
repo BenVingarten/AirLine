@@ -13,18 +13,21 @@ private:
 	int luggageWeight;
 	char airPortCode[3];
 
+	void print(ostream& out)const;
 
 public:
 	Passenger(const char* n, int age, char gender, int luggageWeight, char code[3]);
 	Passenger(const Person& p, int luggageWeight, char code[3]);
 	Passenger(const Passenger& p) = delete;
-	Passenger(Passenger&& p);
-	~Passenger();
+	Passenger(Passenger&& p) noexcept;
+	
 
-	friend ostream& operator <<(ostream& out, const Passenger& p);
-	bool setTicket(Ticket* ticket);
-	int getLuggageWeight();
-	int getPassportNum();
+	
+	char* getAirPortCode()const;
+	int getLuggageWeight()const;
+	int getPassportNum()const;
+
 	void setLuggageWeight(int weight);
+	bool setTicket(Ticket* ticket);
 };
 

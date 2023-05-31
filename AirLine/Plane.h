@@ -22,10 +22,11 @@ public:
 	Plane& operator += (int weight);
 	friend ostream& operator << (ostream& out, const Plane& p);
 
-	void PlaneFuelRefill(Technician& tech);
 	bool isPlaneAvailable() const;
 	bool isAllSystemsWork() const;
 	bool isPlaneFuled()const;
+
+	void PlaneFuelRefill(Technician& tech);
 	void preparePlane(Worker** workers);
 	void planeAnnualCare(Worker** workers);
 };
