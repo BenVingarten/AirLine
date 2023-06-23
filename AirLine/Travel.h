@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 using namespace std;
+
 class Travel
 {
 private:
@@ -18,7 +19,7 @@ public:
 	virtual ~Travel();
 
 	friend ostream& operator << (ostream& out, const Travel& t);
-	char* getSource()const;
-	char* getDestenation()const;
+	const char* getSource()const;
+	const char* getDestenation()const;
 };
 
