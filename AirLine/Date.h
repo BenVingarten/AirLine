@@ -32,6 +32,11 @@ public:
 	const Date& operator++ ();		//prefix
 	Date operator++ (int);		//postfix
 
+	virtual ~Date() {};
+
+protected:
+	void print(ostream& out) const;
+
 private:
 
 	int day;

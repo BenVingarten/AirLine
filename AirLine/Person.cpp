@@ -1,5 +1,7 @@
 #include "Person.h"
 
+
+
 Person::Person(const char* pName, int theAge, char gen)
 {
 	setName(pName);
@@ -21,6 +23,29 @@ Person::Person(Person&& other)noexcept
 
 	age = other.age;
 	gender = other.gender;
+}
+
+Person::Person(ostream& out, istream& in)
+{
+	cout << "Enter Person details:" << endl;
+
+	cout << "Name: ";
+	char name[100];
+	in.getline(name, 100);
+	setName(name);
+
+	cout << "Age: ";
+	int ageUser;
+	in >> ageUser;
+	in.ignore();
+	age = ageUser;
+
+	cout << "Gender (M/F): ";
+	char genderUser;
+	in >> genderUser;
+	in.ignore();
+	gender = genderUser;
+
 }
 
 Person:: ~Person()
@@ -58,7 +83,7 @@ Person& Person::operator++()
 	return *this;
 }
 
-char* Person::getName() const
+const char* Person::getName() const
 {
 	return name;
 }
@@ -66,6 +91,11 @@ char* Person::getName() const
 int Person::getAge() const
 {
 	return age;
+}
+
+char Person::getGender() const
+{
+	return gender;
 }
 
 void Person::setName(const char* pName)
@@ -78,8 +108,13 @@ void Person::setName(const char* pName)
 
 ostream& operator<<(ostream& out, const Person& p)
 {
-	out << "Name: " << p.name << endl;
-	out << "Age: " << p.age << endl;
-	out << "Gender: " << p.gender << endl;
+	p.print(out);
 	return out;
+}
+
+void Person::print(ostream& out) const
+{
+	out << "Name: " << p.name;
+	out << ", Age: " << p.age;
+	out << ", Gender: " << p.gender << endl;
 }

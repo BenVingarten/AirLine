@@ -13,9 +13,14 @@ Date::Date(int d, int m, int y)
 
 ostream& operator << (ostream& out, const Date& date)
 {
-
-	out << date.day << R"(\)" << date.month << R"(\)" << date.year;
+	date.print(out);
 	return out;
+}
+
+void Date::print(ostream& out) const
+{
+	out << "Date: " << day << R"(\)" << month << R"(\)" << year;
+
 }
 
 Date Date::operator+ (int days) const
@@ -38,6 +43,7 @@ Date Date::operator++ (int)		//postfix
 	addOneDay();
 	return temp;
 }
+
 
 Date operator+(int days, const Date& date)
 {

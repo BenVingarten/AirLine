@@ -2,28 +2,34 @@
 #include <iostream>
 using namespace std;
 #include "Person.h"
+#include "Travel.h"
 
 class Ticket;
-class Passenger
+class Passenger : public Person
 {
 private:
+	static int passportGen; // initiallize to 1111 outside the class (only once)
+
 	Ticket* ticket;
-	static int passPortGen; // will be initiallize to 1111 in main
-	int passPort;
+	int passport;
 	int luggageWeight;
-	char airPortCode[3];
+	char airportCode[MAX_CHAR_CODE];
 
 	void print(ostream& out)const;
+	bool airportCodeValid(char* code) const; //the code has only 3 charss and adds '\0'
+
 
 public:
-	Passenger(const char* n, int age, char gender, int luggageWeight, char code[3]);
-	Passenger(const Person& p, int luggageWeight, char code[3]);
+	//Passenger can't have Ticket as he initialized because he needs to buy a ticket
+	Passenger(const char* n, int age, char gender, int luggageWeight, char code[MAX_CHAR_CODE]);
+	Passenger(const Person& p, int luggageWeight, char code[MAX_CHAR_CODE]);
 	Passenger(const Passenger& p) = delete;
+	Passenger(ostream& out, istream& in); //c'tor create with user (talks with the user)
 	Passenger(Passenger&& p) noexcept;
 	
 
 	
-	char* getAirPortCode()const;
+	const char* getAirPortCode()const;
 	int getLuggageWeight()const;
 	int getPassportNum()const;
 
@@ -31,3 +37,5 @@ public:
 	bool setTicket(Ticket* ticket);
 };
 
+
+int Passenger::passportGen = 1111;

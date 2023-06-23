@@ -41,6 +41,7 @@
     <ClCompile Include="FirstClassTicket.cpp" />
     <ClCompile Include="Flight.cpp" />
     <ClCompile Include="FlightAttendet.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Passenger.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Pilot.cpp" />

@@ -10,13 +10,20 @@ class TripInfo: public Date, public Travel
 private:
 	Time flightDuration;
 
-	void print(ostream& out)const;
+protected:
+	virtual void print(ostream& out)const;
+
+
 
 public:
-	TripInfo(char src[3], char des[3], int d, int m, int y, int hour, int minute);
+	TripInfo(const char src[3], const char des[3], int d, int m, int y, int hour, int minute);
 	TripInfo(const Date& d, const Travel& trav, const Time& time);
 
 	void setTime(int hour, int minute);
 	Time getFlightDuration()const;
+	
+	//we must implement operator << because two of our parents has the same operator
+	friend ostream& operator << (ostream& out, const TripInfo& t);
+
 };
 
