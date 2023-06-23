@@ -1,18 +1,32 @@
 #pragma once
+#include <iostream>
+
+using namespace std;
+
 class Time
 {
 private:
-	int hours;
-	int minutes;
+    int hours;
+    int minutes;
+    int seconds;
 
 public:
-	Time(int hour, int minutes);
-	bool setHour(int hour);
-	bool setMinutes(int m); 
+    static const int HOURS_LIMIT = 24;
+    static const int MINUTES_LIMIT = 60;
+    static const int SECONDS_LIMIT = 60;
 
-	int getHours()const;
-	int getMinutes()const;
+    Time(int hours = 0, int minutes = 0, int seconds = 0);
+    virtual ~Time();
 
-	friend ostream& operator <<(ostream& out, const Time& t);
+    bool setHours(int hours);
+    bool setMinutes(int minutes);
+    bool setSeconds(int seconds);
+
+    int getHours() const;
+    int getMinutes() const;
+    int getSeconds() const;
+
+    virtual void print(ostream& out) const;
+
+    friend ostream& operator<<(ostream& out, const Time& t);
 };
-
