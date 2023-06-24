@@ -2,14 +2,14 @@
 
 Plane::Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed)
     : numOfSeats(numOfSeats), maxLuggageWeight(maxLuggageWeight), 
-        maxSpeed(maxSpeed), currentWeight(0), IsAvailable(true), 
-        flightsCounter(0), needToRefuel(false),AreSystemsWork(true), readyToFly(true)
+        maxSpeed(maxSpeed), currentWeight(0), isAvailable(true), 
+        flightsCounter(0), needToRefuel(false)
 {
 }
 
 Plane::Plane(ostream& out, istream& in)
-    :currentWeight(0), IsAvailable(true), flightsCounter(0), 
-        needToRefuel(false), readyToFly(true)
+    :currentWeight(0), isAvailable(true), flightsCounter(0), 
+        needToRefuel(false)
 {
     readAndsetNumOfSeats(out, in);
     readAndsetLuggageWeight(out, in);
@@ -42,6 +42,14 @@ bool Plane::operator+=(int weight) {
     return false;
 }
 
+void Plane::operator++()
+{
+
+    flightsCounter++;
+    if (flightsCounter % 2 == 0)
+        needToRefuel = true;
+}
+
 ostream& operator<<(ostream& out, const Plane& p) {
     out << "Plane Details: " << endl;
     out << "Number of Seats: " << p.numOfSeats << endl;
@@ -50,7 +58,7 @@ ostream& operator<<(ostream& out, const Plane& p) {
     out << "Maximum Speed: " << p.maxSpeed << endl;
     out << "Number of flight: " << p.flightsCounter << endl;
     
-    if(p.IsAvailable)
+    if(p.isAvailable)
         out << "Plane is available " << endl;
     else 
         out << "Plane is not available " << endl;
@@ -110,35 +118,27 @@ bool Plane::isMaxSpeedValid(float speed)const
 }
 
 bool Plane::isPlaneAvailable() const {
-    return IsAvailable;
-}
-
-bool Plane::areAllSystemsWork() const 
-{
-    return AreSystemsWork;
+    return isAvailable;
 }
 
 bool Plane::isPlaneFuled() const {
-    if(flightsCounter % 2 == 0) // meaning we done at least 2 flights
+   
     return !needToRefuel;
 }
 
-void Plane::PlaneFuelRefill(Technician& tech) {
-    tech.refillPlaneFuel(*this);
+bool Plane::isReadyToFly() 
+{
+    if (!needToRefuel && isAvailable)
+        return true;
+    else
+        return false;
+
+}
+
+void Plane::setNeedToRefuelFalse()
+{
     needToRefuel = false;
 }
 
-void Plane::preparePlane(Worker** workers) {
-    if (workers != nullptr) {
-        // Perform necessary preparation tasks
-        // Assuming implementation details here
-        readyToFly = true;
-    }
-}
 
-void Plane::planeAnnualCare(Worker** workers) {
-    if (workers != nullptr) {
-        // Perform annual care tasks
-        // Assuming implementation details here
-    }
-}
+

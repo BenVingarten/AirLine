@@ -19,11 +19,9 @@ class Plane
 	int		maxLuggageWeight;
 	int		currentWeight;
 	int		numOfSeats;
-	bool	IsAvailable;
+	bool	isAvailable;
 	int		flightsCounter;
 	bool	needToRefuel;
-	bool    AreSystemsWork;
-	bool	readyToFly;
 
 public:
 	Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed);
@@ -39,8 +37,10 @@ public:
 	void readAndsetLuggageWeight(ostream& out, istream& in);
 	void readAndsetMaxSpeed(ostream& out, istream& in);
 
-	bool operator += (int weight);
+	bool operator += (int weight); //add weight
+	void operator ++ (); //add flight 
 	friend ostream& operator << (ostream& out, const Plane& p);
+
 
 
 	bool isNumOfSeatsValid(int numOfSeats)const;
@@ -48,12 +48,10 @@ public:
 	bool isMaxSpeedValid(float speed)const;
 
 	bool isPlaneAvailable() const;
-	bool areAllSystemsWork() const;
-	void checkSystems(Technician& t);
 	bool isPlaneFuled()const;
+	bool isReadyToFly() ;
 
-	void PlaneFuelRefill(Technician& tech);
-	void preparePlane(Worker** workers);
-	void planeAnnualCare(Worker** workers);
+	void setNeedToRefuelFalse();
+	
 };
 

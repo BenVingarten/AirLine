@@ -7,42 +7,42 @@ using namespace std;
 
 class Technician : public Worker
 {
-private:
-
-	enum class eTechnicianType {Avionics,
-		                        Navigation,
-		                        Communication,
-		                        Engines,
-		                        General 
-								};
-
-	eTechnicianType type;
-	int numOfPlanesPrepared;
-
-	void testSystems(Plane& p);
-	void fillFuel(Plane& plane);
-
-	void print(ostream& out)const;
 
 public:
 
-	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type);
+	enum class eTechnicianType {STRUCTURE,
+		                        NAVIGATIONS,
+		                        COMMUNICATION,
+		                        ENGINES,
+		                        GENERAL
+								};
+
+	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type = eTechnicianType::GENERAL);
 	Technician(const Worker& w, eTechnicianType type);
 	Technician(const Technician& other) = delete;
 	Technician(Technician&& t) noexcept;
+	Technician(ostream& out, istream& in);
+	~Technician() {};
 
 	eTechnicianType getType() const;
 	int getNumOfPlanesPrepared()const;
 
+	
+	virtual void setRaise() override; //the number of planes prepared times 5 
+	virtual void PrepareForFlight(Plane& plane, ostream& out) override;
+	virtual void AnnualRefresh(ostream& out)override;
 
-	bool operator ==(const Worker& worker)const;
 
-	void refillPlaneFuel(Plane& plane);
-	void checkPlaneSystem(Plane& plane);
-	virtual void setRaise() override;
-	virtual void PrepareForFlight() override;
-	virtual void AnnualRefresh()override;
+private:
 
-	Worker& operator ++ ();
+
+	eTechnicianType type;
+	int numOfPlanesPrepared;
+
+	void testSystems(ostream& out);
+	void fillFuel(Plane& plane, ostream& out);
+	void fixProblem(ostream& out);
+	void print(ostream& out)const;
+
 };
 

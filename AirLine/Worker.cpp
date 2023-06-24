@@ -15,6 +15,12 @@ Worker::Worker(const Person& p, float salary, int seniority)
     cardNumber = workerCardNumberGenerator++;
 }
 
+Worker::Worker(const Worker& w) : 
+    Person(w), seniority(w.seniority), salary(w.salary), 
+    cardNumber(w.cardNumber), currentFlight(w.currentFlight), isWorkerAvailable(w.isWorkerAvailable)
+{
+}
+
 Worker::Worker(Worker&& w) noexcept
     : Person(std::move(w)), cardNumber(w.cardNumber), salary(w.salary), seniority(w.seniority),
     currentFlight(w.currentFlight), isWorkerAvailable(w.isWorkerAvailable)
@@ -39,6 +45,7 @@ bool Worker::isSalaryValid(float salary)const
 {
     return salary < MINIMUM_WAGE;
 }
+
 void Worker::readAndsetSalary(ostream& out, istream& in)
 {
     do
@@ -48,6 +55,7 @@ void Worker::readAndsetSalary(ostream& out, istream& in)
         in.ignore(); // Ignore the newline character
     } while(isSalaryValid(salary));
 }
+
 void Worker::readAndsetSeniority(ostream& out, istream& in)
 {
     int s;
@@ -86,7 +94,6 @@ bool Worker::isAvailable() const {
 }
 
 
-
 bool Worker::setFlight(Flight* flight) {
     if (flight != nullptr) {
         currentFlight = flight;
@@ -97,6 +104,8 @@ bool Worker::setFlight(Flight* flight) {
 
 Worker& Worker::operator++() {
     ++seniority;
+    setRaise();
+    
     return *this;
 }
 
