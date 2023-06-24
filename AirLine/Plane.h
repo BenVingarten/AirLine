@@ -14,7 +14,9 @@ using namespace std;
 class Plane
 {
 	const static int refuelAfter = 2; //every 2 flights
-	
+	static int planeNumberGen; //initialized outside the class to 3333
+
+	int planeNumber;
 	float	maxSpeed;
 	int		maxLuggageWeight;
 	int		currentWeight;
@@ -49,9 +51,10 @@ public:
 
 	bool isPlaneAvailable() const;
 	bool isPlaneFuled()const;
-	bool isReadyToFly() ;
+	bool isReadyToFly()const ;
 
 	void setNeedToRefuelFalse();
 	
 };
 
+int Plane::planeNumberGen = 3333;

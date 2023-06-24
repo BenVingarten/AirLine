@@ -3,6 +3,7 @@
 using namespace std;
 #include "Person.h"
 
+
 #define MINIMUM_WAGE 1000
 
 class Flight;

@@ -5,6 +5,7 @@ Plane::Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed)
         maxSpeed(maxSpeed), currentWeight(0), isAvailable(true), 
         flightsCounter(0), needToRefuel(false)
 {
+    planeNumber = planeNumberGen++;
 }
 
 Plane::Plane(ostream& out, istream& in)
@@ -14,7 +15,7 @@ Plane::Plane(ostream& out, istream& in)
     readAndsetNumOfSeats(out, in);
     readAndsetLuggageWeight(out, in);
     readAndsetMaxSpeed(out, in);
-
+    planeNumber = planeNumberGen++;
 }
 
 int Plane::getNumOfSeats() const {
@@ -51,7 +52,7 @@ void Plane::operator++()
 }
 
 ostream& operator<<(ostream& out, const Plane& p) {
-    out << "Plane Details: " << endl;
+    out << "Plane Number "<< p.planeNumber << " Details: " << endl;
     out << "Number of Seats: " << p.numOfSeats << endl;
     out << "Current Weight: " << p.currentWeight << endl;
     out << "Maximum Weight: " << p.maxLuggageWeight << endl;
@@ -63,7 +64,7 @@ ostream& operator<<(ostream& out, const Plane& p) {
     else 
         out << "Plane is not available " << endl;
 
-    if (p.readyToFly)
+    if (p.isReadyToFly())
         out << "Plane is ready to fly" << endl;
     else
         out << "Plane is not ready to fly" << endl;
@@ -126,7 +127,7 @@ bool Plane::isPlaneFuled() const {
     return !needToRefuel;
 }
 
-bool Plane::isReadyToFly() 
+bool Plane::isReadyToFly() const
 {
     if (!needToRefuel && isAvailable)
         return true;

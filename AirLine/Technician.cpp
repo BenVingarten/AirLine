@@ -3,23 +3,23 @@
 using namespace std;
 
 Technician::Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type)
-    : Worker(n, age, gender, salary, seniority), type(type), numOfPlanesPrepared(0)
+    : Worker(n, age, gender, salary, seniority), type(type), planesPreparedThisYear(0)
 {
 }
 
 Technician::Technician(const Worker& w, eTechnicianType type)
-    : Worker(w), type(type), numOfPlanesPrepared(0)
+    : Worker(w), type(type), planesPreparedThisYear(0)
 {
 }
 
 Technician::Technician(Technician&& t) noexcept
-    : Worker(move(t)), type(t.type), numOfPlanesPrepared(t.numOfPlanesPrepared)
+    : Worker(move(t)), type(t.type), planesPreparedThisYear(t.planesPreparedThisYear)
 {
-    t.numOfPlanesPrepared = 0;
+    t.planesPreparedThisYear = 0;
 }
 
 Technician::Technician(ostream& out, istream& in)
-    : Worker(out, in), type(eTechnicianType::GENERAL), numOfPlanesPrepared(0)
+    : Worker(out, in), type(eTechnicianType::GENERAL), planesPreparedThisYear(0)
 {
     
     int typeVal;
@@ -37,11 +37,11 @@ Technician::eTechnicianType Technician::getType() const {
 }
 
 int Technician::getNumOfPlanesPrepared() const {
-    return numOfPlanesPrepared;
+    return planesPreparedThisYear;
 }
 
 void Technician::setRaise() {
-     salary += numOfPlanesPrepared * 5;
+     salary += planesPreparedThisYear * 5;
 }
 
 void Technician::PrepareForFlight(Plane& plane, ostream& out) 
@@ -50,14 +50,31 @@ void Technician::PrepareForFlight(Plane& plane, ostream& out)
     if (!plane.isPlaneFuled())
         fillFuel(plane, out);
 
-    ++numOfPlanesPrepared;
+    ++planesPreparedThisYear;
 }
 
 void Technician::AnnualRefresh(ostream& out) {
 
-    //TODO--------------------------------------
+    switch (type) {
+    case eTechnicianType::STRUCTURE:
+        out << "I am structure technician, I went to physics & matirials course refreshment.  ";
+        break;
+    case eTechnicianType::NAVIGATIONS:
+        out << "I am navigation technician, I went to navigation systems course refreshment.  ";
+        break;
+    case eTechnicianType::COMMUNICATION:
+        out << "I am communication technician, I went to communication systems course refreshment.  ";
+        break;
+    case eTechnicianType::ENGINES:
+        out << "I am engines technician, I went to engines course refreshment.  ";
+        break;
+    case eTechnicianType::GENERAL:
+        out << "I am general technician, I went to safety course refreshment.  ";
+        break;
+    }
+    out << endl;
 
-    numOfPlanesPrepared = 0;
+    planesPreparedThisYear = 0;
 }
 
 void Technician::testSystems(ostream& out) {
@@ -139,7 +156,7 @@ void Technician::print(ostream& out) const {
         out << "General";
         break;
     }
-    out << " and I prepared " << numOfPlanesPrepared << " flights" << endl;
+    out << " and I prepared " << planesPreparedThisYear << " flights" << endl;
 }
 
 
