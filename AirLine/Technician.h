@@ -36,6 +36,9 @@ public:
 
 
 	bool operator ==(const Worker& worker)const;
+
+	void refillPlaneFuel(Plane& plane);
+	void checkPlaneSystem(Plane& plane);
 	virtual void setRaise() override;
 	virtual void PrepareForFlight() override;
 	virtual void AnnualRefresh()override;

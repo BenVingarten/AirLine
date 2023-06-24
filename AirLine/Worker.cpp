@@ -30,17 +30,27 @@ Worker::Worker(ostream& out, istream& in)
     : Person(out, in), salary(0.0f), seniority(0), 
         isWorkerAvailable(true), currentFlight(nullptr)
 {
-    float sal;
-    do 
+    readAndsetSalary(out, in);
+    readAndsetSeniority(out, in);
+    cardNumber = workerCardNumberGenerator++;
+}
+
+bool Worker::isSalaryValid(float salary)const 
+{
+    return salary < MINIMUM_WAGE;
+}
+void Worker::readAndsetSalary(ostream& out, istream& in)
+{
+    do
     {
-        cout << "Enter worker's salary (at least " << MINIMUM_WAGE << ") : ";
-        in >> sal;
+        out << "Enter worker's salary (at least " << MINIMUM_WAGE << ") : ";
+        in >> salary;
         in.ignore(); // Ignore the newline character
-    } while (sal < MINIMUM_WAGE);
-    salary = sal;
-
+    } while(isSalaryValid(salary));
+}
+void Worker::readAndsetSeniority(ostream& out, istream& in)
+{
     int s;
-
     cout << "Enter worker's seniority: ";
     in >> s;
     in.ignore(); // Ignore the newline character
@@ -48,8 +58,6 @@ Worker::Worker(ostream& out, istream& in)
         seniority = 0;
     else
         seniority = s;
-
-    cardNumber = workerCardNumberGenerator++;
 }
 
 void Worker::print(ostream& out) const {
@@ -77,13 +85,7 @@ bool Worker::isAvailable() const {
     return isWorkerAvailable;
 }
 
-bool Worker::updateSalary(float sal) {
-    if (sal >= 0) {
-        salary = sal;
-        return true;
-    }
-    return false;
-}
+
 
 bool Worker::setFlight(Flight* flight) {
     if (flight != nullptr) {

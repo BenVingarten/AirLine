@@ -39,8 +39,9 @@ protected:
 	int getSeniority()const;
 	bool isAvailable()const;
 
-
-	bool updateSalary(float sal);
+	bool isSalaryValid(float salary)const;
+	void readAndsetSalary(ostream& out, istream& in);
+	void readAndsetSeniority(ostream& out, istream& in);
 	bool setFlight(Flight* flight);
 
 	Worker& operator ++(); // add 1 year seniority

@@ -3,7 +3,7 @@
 Plane::Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed)
     : numOfSeats(numOfSeats), maxLuggageWeight(maxLuggageWeight), 
         maxSpeed(maxSpeed), currentWeight(0), IsAvailable(true), 
-        flightsCounter(0), needToRefuel(false), readyToFly(true)
+        flightsCounter(0), needToRefuel(false),AreSystemsWork(true), readyToFly(true)
 {
 }
 
@@ -11,27 +11,10 @@ Plane::Plane(ostream& out, istream& in)
     :currentWeight(0), IsAvailable(true), flightsCounter(0), 
         needToRefuel(false), readyToFly(true)
 {
-    
-    do {
-        cout << "Enter number of seats between " << MIN_SEATS << " and " << MAX_SEATS << ": ";
-        in >> numOfSeats;
-        in.ignore(); // Ignore the newline character
-    } while (numOfSeats < MIN_SEATS || numOfSeats > MAX_SEATS);
+    readAndsetNumOfSeats(out, in);
+    readAndsetLuggageWeight(out, in);
+    readAndsetMaxSpeed(out, in);
 
-    do {
-        cout << "Enter maximum luggage weight between " << MIN_WEIGHT << " and " << MAX_WEIGHT << ": ";
-        in >> maxLuggageWeight;
-        in.ignore(); // Ignore the newline character
-    
-    } while (maxLuggageWeight < MIN_WEIGHT || maxLuggageWeight > MAX_WEIGHT);
-
-    do {
-        cout << "Enter maximum speed between " << MIN_SPEED << " and " << MAX_SPEED << ": ";
-        in >> maxSpeed;
-        in.ignore(); // Ignore the newline character
-
-    } while (maxSpeed < MIN_SPEED || maxSpeed > MAX_SPEED);
-    
 }
 
 int Plane::getNumOfSeats() const {
@@ -51,7 +34,7 @@ float Plane::getMaxSpeed() const {
 }
 
 bool Plane::operator+=(int weight) {
-    if (currentWeight + weight < maxLuggageWeight)
+    if (currentWeight + weight <= maxLuggageWeight)
     {
         currentWeight += weight;
         return true;
@@ -81,21 +64,68 @@ ostream& operator<<(ostream& out, const Plane& p) {
     return out;
 }
 
+
+void Plane::readAndsetNumOfSeats(ostream& out, istream& in)
+{
+    do {
+        out << "Enter number of seats between " << MIN_SEATS << " and " << MAX_SEATS << ": ";
+        in >> numOfSeats;
+        in.ignore(); // Ignore the newline character
+    } while (!isNumOfSeatsValid(numOfSeats));
+}
+
+void Plane::readAndsetLuggageWeight(ostream& out, istream& in)
+{
+    do {
+        cout << "Enter maximum luggage weight between " << MIN_WEIGHT << " and " << MAX_WEIGHT << ": ";
+        in >> maxLuggageWeight;
+        in.ignore(); // Ignore the newline character
+
+    } while (!isMaxLuggageWeightValid(maxLuggageWeight));
+}
+
+void Plane::readAndsetMaxSpeed(ostream& out, istream& in)
+{
+    do {
+        cout << "Enter maximum speed between " << MIN_SPEED << " and " << MAX_SPEED << ": ";
+        in >> maxSpeed;
+        in.ignore(); // Ignore the newline character
+
+    } while (!isMaxSpeedValid(maxSpeed));
+}
+
+bool Plane::isNumOfSeatsValid(int numOfSeats)const
+{
+    return(numOfSeats < MIN_SEATS || numOfSeats > MAX_SEATS);
+}
+
+bool Plane::isMaxLuggageWeightValid(int weight)const
+{
+    return (weight < MIN_WEIGHT || weight > MAX_WEIGHT);
+}
+
+bool Plane::isMaxSpeedValid(float speed)const
+{
+    return(speed < MIN_SPEED || speed > MAX_SPEED);
+}
+
 bool Plane::isPlaneAvailable() const {
     return IsAvailable;
 }
 
-bool Plane::isAllSystemsWork() const {
-    return (flightsCounter % refuelAfter == 0);
+bool Plane::areAllSystemsWork() const 
+{
+    return AreSystemsWork;
 }
 
 bool Plane::isPlaneFuled() const {
+    if(flightsCounter % 2 == 0) // meaning we done at least 2 flights
     return !needToRefuel;
 }
 
 void Plane::PlaneFuelRefill(Technician& tech) {
+    tech.refillPlaneFuel(*this);
     needToRefuel = false;
-    tech.refillPlaneFuel();
 }
 
 void Plane::preparePlane(Worker** workers) {
