@@ -43,10 +43,12 @@ Passenger::Passenger(Passenger&& p) noexcept
     : Person(std::move(p)), luggageWeight(p.luggageWeight), passport(p.passport)
 {
     strcpy(airportCode,p.airportCode);
-    strcpy(p.airportCode, "");
+    ticket = p.ticket;
 
+    strcpy(p.airportCode, "");
     p.luggageWeight = 0;
     p.passport = 0;
+    p.ticket = nullptr;
 
 }
 
@@ -86,9 +88,9 @@ void Passenger::setLuggageWeight(int weight) {
     luggageWeight = weight;
 }
 
-bool Passenger::setTicket(Ticket* ticket) {
-    if (ticket != nullptr) {
-        this->ticket = ticket;
+bool Passenger::setTicket(Ticket* otherTicket) {
+    if (otherTicket != nullptr) {
+        ticket = otherTicket;
         return true;
     }
     return false;

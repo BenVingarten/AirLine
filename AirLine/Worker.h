@@ -3,13 +3,15 @@
 using namespace std;
 #include "Person.h"
 
+#define MINIMUM_WAGE 1000
+
 class Flight;
 class Worker : public Person
 {
 
 private:
-	 static int WorkerIdGenerator; // will be initiallized to 1000 in main
-	 int id;
+	 static int workerCardNumberGenerator; //initiallized outside of the class to 2222 (only once!)
+	 int cardNumber;
 	 float salary;
 	 int seniority;
 	 Flight* currentFlight;
@@ -20,12 +22,16 @@ private:
 protected:
 	 void print(ostream& out)const;
 
-public:
+/*
+* only the one's inheritance from worker will use these functions
+* we can't create worker in the main
+*/
 
 	Worker(const char* pName, int theAge, char gen, float  salary, int seniority);
 	Worker(const Person& p, float salary, int seniority);
 	Worker(Worker&& w) noexcept;
-	virtual ~Worker();
+	Worker(ostream& out, istream& in);
+	virtual ~Worker() {};
 
 	
 	int getWorkerId()const;
@@ -45,22 +51,13 @@ public:
 	virtual void AnnualRefresh() = 0;
 
 	
-	 // set Raise:we check if a particular worker deserves a raise, every 3 years a worker should get one.
-	                //for the pilot its 70% of his flightHours
-					//for the flight attendet its 100 NIS per language she speaks
-					// for the Technician its the number of tickets he sold times 5
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	/*	set Raise: We check if a particular worker deserves a raise, every 3 years a worker should get one.
+			for the pilot its 70% of his flightHours
+			for the flight attendet its 100 NIS per language she speaks
+			for the Technician its the number of tickets he sold times 5 */
 
 };
+
+int Worker::workerCardNumberGenerator = 2222;
 
