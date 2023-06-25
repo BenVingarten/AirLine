@@ -1,11 +1,11 @@
 #include "Time.h"
 
-Time::Time(int hours, int minutes, int seconds) : hours(hours), minutes(minutes), seconds(seconds) {}
+Time::Time(int hours, int minutes) : hours(hours), minutes(minutes) {}
 
 Time::~Time() {}
 
 bool Time::setHours(int hours) {
-    if (hours >= 0 && hours < HOURS_LIMIT) {
+    if (hours >= 0) {
         this->hours = hours;
         return true;
     }
@@ -20,14 +20,6 @@ bool Time::setMinutes(int minutes) {
     return false;
 }
 
-bool Time::setSeconds(int seconds) {
-    if (seconds >= 0 && seconds < SECONDS_LIMIT) {
-        this->seconds = seconds;
-        return true;
-    }
-    return false;
-}
-
 int Time::getHours() const {
     return hours;
 }
@@ -36,12 +28,24 @@ int Time::getMinutes() const {
     return minutes;
 }
 
-int Time::getSeconds() const {
-    return seconds;
-}
-
 void Time::print(ostream& out) const {
     out << hours << ":" << minutes << ":" << seconds;
+}
+
+Time& Time::operator+=(const Time& other)
+{
+    hours += other.hours;
+    
+    int m = other.minutes + minutes;
+    if (m >= 60)
+    {
+        hours++;
+        m -= 60;
+    }
+    minutes = m;
+
+   
+
 }
 
 ostream& operator<<(ostream& out, const Time& t) {

@@ -2,33 +2,36 @@
 #include <iostream>
 using namespace std;
 #include "Worker.h"
+#include "Passenger.h"
+
+#define MAX_LANGUAGES  10
 
 class FlightAttendet: public Worker
 {
 private:
-	const static int MAX_LANGUAGES = 10;
-	char* allLanguages[MAX_LANGUAGES];
+	
+	char* allLanguages[MAX_LANGUAGES]; //char ** all_languages 
 	int currentNumOfLanguages;
 
 	void print(ostream& out)const;
 
 public:
 
-	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang);
-	FlightAttendet(const Worker& w, const char* baseLang);
+	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, char* baseLang = nullptr);
+	FlightAttendet(const Worker& w, char* baseLang = nullptr);
 	FlightAttendet(const FlightAttendet& other) = delete;
 	FlightAttendet(FlightAttendet&& w) noexcept;
+	FlightAttendet(ostream& out, istream& in);
 	~FlightAttendet();
 	
 
-	char** getLanguages()const;
+	const char** getLanguages()const;
 	int getCurrentNumOfLanguages()const;
 	bool addLanugage(char* language);
 
-	bool operator ==(const Worker& worker)const;
-	virtual void  setRaise() override;
-	virtual void PrepareForFlight() override;
-	virtual void AnnualRefresh() override;
+	virtual void setRaise() override;	//+100 NIS per language she speaks
+	virtual void prepareForFlight(ostream& out) override ;
+	virtual void annualRefresh(ostream& out) override;
 
 	
 };

@@ -5,13 +5,13 @@ using namespace std;
 #include "Time.h"
 #include "Flight.h"
 
+#define RAISE_PRECENTAGE 0.7
+
 class Pilot: public Worker
 {
 private:
 
 	Time flightHours;
-
-	void checkFlightDetails(const Flight& f);
 
 	void print(ostream& out)const;
 
@@ -21,16 +21,17 @@ public:
 	Pilot(const Worker& w, Time flightHours);
 	Pilot(const Pilot& p) = delete;
 	Pilot(Pilot&& p) noexcept;
+	Pilot(ostream& out, istream& in);
+	~Pilot() {};
 
 	
 	
 	Time getflightHours()const;
 	Pilot& operator +=(const Time& hours); //add to flight hours
 
-	bool operator ==(const Worker& worker)const;
-	virtual void setRaise()override;
-	virtual void PrepareForFlight()override;
-	virtual void AnnualRefresh()override;
+	virtual void setRaise()override; //70% of his flightHours from current year
+	virtual void prepareForFlight(ostream& out)override;
+	virtual void annualRefresh(ostream& out)override;
 
 };
 

@@ -72,9 +72,9 @@ void Worker::print(ostream& out) const {
     
     Person::print(out);
 
-    out << "Worker ID: " << cardNumber << endl;
-    out << "Salary: $" << salary << endl;
-    out << "Seniority: " << seniority << " years" << endl;
+    out << "Worker ID: " << cardNumber;
+    out << ", Salary: $" << salary;
+    out << ", Seniority: " << seniority << " years" << endl;
 }
 
 int Worker::getWorkerId() const {

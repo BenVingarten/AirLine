@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 #include "Person.h"
-
+#include "Flight.h"
 
 #define MINIMUM_WAGE 1000
 
@@ -46,11 +46,11 @@ protected:
 	bool setFlight(Flight* flight);
 
 	Worker& operator ++(); // add 1 year seniority
-	
-	virtual bool operator ==(const Worker& worker)const;
+	bool operator ==(const Worker& worker)const;
+
 	virtual void setRaise() = 0;
-	virtual void PrepareForFlight(Plane& plane, ostream& out) = 0;
-	virtual void AnnualRefresh(ostream& out) = 0;
+	virtual void prepareForFlight(ostream& out) = 0;
+	virtual void annualRefresh(ostream& out) = 0;
 
 	
 	

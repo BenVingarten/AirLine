@@ -29,8 +29,8 @@ public:
 
 	
 	virtual void setRaise() override; //the number of planes prepared times 5 
-	virtual void PrepareForFlight(Plane& plane, ostream& out);
-	virtual void AnnualRefresh(ostream& out)override;
+	virtual void prepareForFlight(ostream& out)override;
+	virtual void annualRefresh(ostream& out)override;
 
 
 private:
@@ -40,7 +40,7 @@ private:
 	int planesPreparedThisYear; 
 
 	void testSystems(ostream& out);
-	void fillFuel(Plane& plane, ostream& out);
+	void fillFuel(Plane* plane, ostream& out);
 	void fixProblem(ostream& out);
 	void print(ostream& out)const;
 

@@ -114,7 +114,7 @@ ostream& operator<<(ostream& out, const Person& p)
 
 void Person::print(ostream& out) const
 {
-	out << "Name: " << p.name;
-	out << ", Age: " << p.age;
-	out << ", Gender: " << p.gender << endl;
+	out << "Name: " << name;
+	out << ", Age: " << age;
+	out << ", Gender: " << gender << endl;
 }

@@ -4,13 +4,13 @@ using namespace std;
 
 class Person
 {
-private:
+
+protected:
 	char* name;
 	int age;
 	char gender; //  F - female,  M - male
 	
 
-protected:
 
 	virtual void print(ostream& out)const;
 

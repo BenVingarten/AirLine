@@ -44,16 +44,16 @@ void Technician::setRaise() {
      salary += planesPreparedThisYear * 5;
 }
 
-void Technician::PrepareForFlight(Plane& plane, ostream& out) 
+void Technician::prepareForFlight(ostream& out)
 {
     testSystems(out);
-    if (!plane.isPlaneFuled())
-        fillFuel(plane, out);
+    if (!currentFlight->getPlane()->isPlaneFuled())
+        fillFuel(currentFlight->getPlane(), out);
 
     ++planesPreparedThisYear;
 }
 
-void Technician::AnnualRefresh(ostream& out) {
+void Technician::annualRefresh(ostream& out) {
 
     switch (type) {
     case eTechnicianType::STRUCTURE:
@@ -105,11 +105,11 @@ void Technician::testSystems(ostream& out) {
     out << endl;
 }
 
-void Technician::fillFuel(Plane& plane, ostream& out) {
+void Technician::fillFuel(Plane* plane, ostream& out) {
     // Implementation for filling plane fuel
 
     out << "Refueling the plane " << endl;
-    plane.setNeedToRefuelFalse();
+    plane->setNeedToRefuelFalse();
 
 }
 
@@ -137,8 +137,9 @@ void Technician::fixProblem(ostream& out)
 }
 
 void Technician::print(ostream& out) const {
+    out << "Technician: ";
     Worker::print(out);
-    out << "Technician Type: ";
+    out << "Type: ";
     switch (type) {
     case eTechnicianType::STRUCTURE:
         out << "Structure";
