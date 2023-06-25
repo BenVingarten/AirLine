@@ -15,6 +15,7 @@ protected:
 	virtual void print(ostream& out) const;
 
 public:
+	Travel() = default; //so we can create TripInfo(ostrem, istream)
 	Travel(const char s[MAX_CHAR_CODE], const char d[MAX_CHAR_CODE]);
 	bool setSource(const char s[MAX_CHAR_CODE]);
 	bool setDest(const char d[MAX_CHAR_CODE]);

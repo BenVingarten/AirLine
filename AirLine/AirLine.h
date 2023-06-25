@@ -64,5 +64,9 @@ public:
     bool buyTicket(); // Buy ticket
     void yearPassed(); // Add a year
 
+    Plane* choosePlane();
+    Worker* chooseWorker();
+
+
 };
 

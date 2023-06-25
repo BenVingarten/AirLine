@@ -57,7 +57,7 @@ void Pilot::setRaise()
 
 void Pilot::prepareForFlight(ostream& out)
 {
-    out << "I am " << name <<", your Pilot! Perform pre-flight inspection for flight " << currentFlight->getFlightID() << endl;
+    out << "I am " << name <<", your Pilot! Perform pre-flight inspection for flight " << currentFlight->getFlightNumber() << endl;
 }
 
 void Pilot::annualRefresh(ostream& out)

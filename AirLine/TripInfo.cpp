@@ -10,6 +10,36 @@ TripInfo::TripInfo(const Date& d, const Travel& trav, const Time& time)
 {
 }
 
+TripInfo::TripInfo(ostream& out, istream& in)
+{
+	out << "Enter flight information:" << endl;
+	in.ignore(); // Ignore the newline character
+
+	// Read destination and source
+	char destination[MAX_CHAR_CODE];
+	char source[MAX_CHAR_CODE];
+	out << "Destination: ";
+	in.getline(destination, MAX_CHAR_CODE);
+	out << "Source: ";
+	in.getline(source, MAX_CHAR_CODE);
+
+	// Read date and time
+	int dHour, dMinute, day, month, year;
+	out << "Duration Time:" << endl;
+	out << "Hour: ";
+	in >> dHour;
+	out << "Minute: ";
+	in >> dMinute;
+	out << "Date:" << endl;
+	out << "Day: ";
+	in >> day;
+	out << "Month: ";
+	in >> month;
+	out << "Year: ";
+	in >> year;
+}
+
+
 void TripInfo::print(ostream& out) const {
     
     out << " Trip Info: \n";
@@ -25,7 +55,7 @@ void TripInfo::setTime(int hour, int minute) {
     flightDuration.setMinutes(minute);
 }
 
-Time TripInfo::getFlightDuration() const {
+const Time& TripInfo::getFlightDuration() const {
     return flightDuration;
 }
 

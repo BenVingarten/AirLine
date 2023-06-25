@@ -8,52 +8,71 @@ using namespace std;
 #include "Travel.h"
 #include "Plane.h"
 #include "Pilot.h"
+#include "FirstClassTicket.h"
+#include "Ticket.h"
+#include "AirLine.h"
 
-class Ticket;
-class Plane;
+
+#define MAX_CREW_MEMBERS 10 // 2 pilot 4-5 flightAttendets and 3-4 technicians
+#define PRECENTAGE_OF_FIRST_CLASS_TICKETS 0.3
+#define FIRST_CLASS_COST_PRECENT 1.5
+#define MAX_DISHES 10
+
+
 class Flight
 {
 private:
-	int flightId;
-	static int flightIdGenerator;
+	static int flightNumberGen; //initialized outside of the class to 4444
+
+	AirLine* airLine;
+	int flightNumber;
 	TripInfo info;
+	int currentPurchasedTickets;
+	int currentNumOfCrewMembers;
+	Time boardingTime;
 	Plane* pPlane;
 	Ticket** ticketArr;
-	int currentPurchasedTickets;
-	Worker** crewMembers;
-	int currentNumOfCrewMembers;
-	const int MAX_CREW_MEMBERS = 10; // 2 pilot 4-5 flightAttendets and 3-4 technicians
+	Worker* crewMembers[MAX_CREW_MEMBERS];
+	char* meal;
+	char** firstClassMenu;
 	
 
 
 	bool addCrewMember(Worker* w);
-
+	void createTickets(int ticketCost, int gate);
 
 public:
 
-	Flight(char destination[3], char source[3], Pilot* pi, int hour, int minute, int day, int month, int year);
-	Flight(const Travel & trav, Pilot* pi, const Time& time, const Date& d);
-	Flight(const TripInfo& t, Pilot* pi);
-	Flight(const Travel& t, const Time& duartion, const Date& d);
+	Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[MAX_CHAR_CODE], 
+		int durHour, int durMinute, int borHour, int borMinute, int day, int month, int year, Plane* plane = nullptr,
+		int ticketCost = 20, int gate = 1, char* meal = nullptr);
+	Flight(AirLine* myAirLine, const Travel & trav, const Date& d, const Time& time, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
+	Flight(AirLine* myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
+	Flight(AirLine* myAirLine, ostream& out, istream& in);
 	~Flight();
 
-	bool setPlane(const Plane& pl);
-	bool setDuration(const Time& t);
 
-	int getFlightID()const;
-	Time getDuration()const;
-	TripInfo getInfo()const;
+	int getFlightNumber()const;
+	const Time& getDuration()const;
+	const TripInfo& getInfo()const;
 	Plane* getPlane()const;
 	int getNumOfcurrentPurchasedTickets()const;
 	int getNumOfTickets()const; //number of seats in plane
 	Ticket** getTicketArray()const;
+	void showMenu()const;
+	void showDish()const;
 
 	bool operator = (const Flight& f);
 	friend ostream& operator <<(ostream& out, const Flight& f);
 	
+	bool setPlane(Plane* pl);
+	bool setDuration(const Time& t);
 	bool assignCrew(ostream& out, istream& in);
+	bool assignCrew(Worker** workers, int workersSize);
 	bool checkIfFlightReady();
-	
+	bool addDishToMenu(const char* dish);
 	
 };
 
+
+int Flight::flightNumberGen = 4444;

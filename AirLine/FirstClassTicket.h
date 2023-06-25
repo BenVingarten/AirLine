@@ -6,31 +6,23 @@ using namespace std;
 
 class Passenger;
 
+
 class FirstClassTicket: public Ticket
 {
-private:
-	const static int MAX_DISHES = 10;
-	char* menu[MAX_DISHES];
-	int numOfDishes;
-
-	bool addDishToMenu();
-
-	void print(ostream& out)const;
 
 public:
-	FirstClassTicket(int cost, int gate, const Time& t, const Date& d, int seat, Passenger* p);
-	FirstClassTicket(const Ticket& t); // c'tor with ticket reference
+	FirstClassTicket(int cost, int gate, const Time& board, TripInfo* info, int seat, Flight* myFlight = nullptr);
 	FirstClassTicket(const FirstClassTicket& fct);
-	FirstClassTicket(Ticket&& t) noexcept;
-	~FirstClassTicket();
+	FirstClassTicket(FirstClassTicket&& t) noexcept;
+	~FirstClassTicket() {};
 
 
 	//FirstClassTicket& operator =(const FirstClassTicket& p);  // operator =
-	virtual Ticket& clone()const;
+	Ticket* clone()const override;
 
 	const FirstClassTicket& operator =(FirstClassTicket&& p) noexcept;
-	bool setMenu();
-	void showMenu()const;
+	void showMenu(ostream& out)const;
+	void print(ostream& out)const override;
 
 	
 };

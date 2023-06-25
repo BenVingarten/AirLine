@@ -15,8 +15,8 @@ public:
 	//We Assume that Feb always has 29 days (simple)
 	static const int DAY_MONTH_LIMIT[MAX_MONTH];
 
-	Date(int d, int m, int y);
-
+	Date(int d=MIN_DAY, int m=MIN_MONTH, int y=DEF_YEAR);
+	
 	friend ostream& operator << (ostream& out, const Date& date);
 
 
