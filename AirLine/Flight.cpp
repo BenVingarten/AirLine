@@ -1,13 +1,16 @@
+#include <typeinfo>
 #include "Flight.h"
 #include "Ticket.h"
 #include "Passenger.h"
+#include "FlightAttendet.h"
+
 
 
 Flight::Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[MAX_CHAR_CODE], int durHour, int durMinute, int borHour, int borMinute,
 				int day, int month, int year, Plane* plane, int ticketCost, int gate, char* meal)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(destination, source, durHour, durMinute, day, month, year),
 		boardingTime(borHour, borMinute), currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
-		crewMembers(nullptr)
+		crewMembers(), numberOfDishes(0)
 {
 	if (plane != nullptr)
 	{
@@ -37,7 +40,7 @@ void Flight::createTickets(int ticketCost, int gate)
 Flight::Flight(AirLine* myAirLine, const Travel& trav, const Date& d, const Time& time, Plane* plane = nullptr,
 				int ticketCost = 20, int gate = 1, char* meal = nullptr)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, time), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(nullptr)
+	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
 {
 	if (plane != nullptr)
 	{
@@ -47,7 +50,7 @@ Flight::Flight(AirLine* myAirLine, const Travel& trav, const Date& d, const Time
 
 Flight::Flight(AirLine* myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(t), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(nullptr)
+	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
 {
 	if (plane != nullptr)
 	{
@@ -58,22 +61,10 @@ Flight::Flight(AirLine* myAirLine, const TripInfo& t, Plane* plane = nullptr, in
 
 Flight::Flight(AirLine* myAirLine, ostream& out, istream& in)
 	: airLine(myAirLine), info(out, in), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(nullptr), ticketArr(nullptr), crewMembers()
+	currentNumOfCrewMembers(0), pPlane(nullptr), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
 {
 	// Create Plane object
-	out << "Please choose: New plane - 0 | Existing plane - 1" << endl;
-	in.ignore(); // Ignore the newline character
-	int choose;
-	in >> choose;
-	if (choose == 0)
-	{
-		pPlane = new Plane(out, in);
-		airLine->addPlane(*pPlane);
-	}
-	else
-	{
-		setPlane(airLine->choosePlane();
-	}
+	setPlane(airLine->interactiveAddPlane(out, in));
 
 	//create tickets 
 	int ticketCost, gate;
@@ -141,6 +132,7 @@ int Flight::getNumOfcurrentPurchasedTickets() const
 
 int Flight::getNumOfTickets() const
 {
+	//number of tickets as number of seats 
 	return pPlane->getNumOfSeats();
 }
 
@@ -151,43 +143,27 @@ Ticket** Flight::getTicketArray() const
 
 bool Flight::operator=(const Flight& f)
 {
+	/*
+	* We copy the dry details of flight
+	* Copied: airLine, info, boarding time, meal, first class menu, number of dishes
+	* Not Copied: flight number, current purchased tickets, crew members, plane, tickets 
+	*/
+
 	if (this == &f)
 		return false;
 
-	flightNumber = f.flightNumber;
-	info = f.info;
-
-	//in the copied flight the tickets are not taken!!!
-	currentPurchasedTickets = 0;
-
-	if (pPlane != nullptr)
-		delete pPlane;
-
-	pPlane = f.pPlane;
-
-	if (ticketArr != nullptr)
-	{
-		for (int i = 0; i < pPlane->getNumOfSeats(); i++)
-		{
-			delete ticketArr[i];
-		}
-		delete[] ticketArr;
-	}
-
-	if (f.ticketArr != nullptr)
-	{
-		ticketArr = new Ticket * [pPlane->getNumOfSeats()];
-		createTickets( ticketArr[0]->getPrice(), ticketArr[0]->getGateNumber() );
-	}
-
-	if (crewMembers != nullptr) //not deleting the members but not disconnecting them 
-		for (int i = 0; i < currentNumOfCrewMembers; i++)
-			crewMembers[i] = nullptr;
-		
-	currentNumOfCrewMembers = f.currentNumOfCrewMembers;
+	flightNumber = flightNumberGen++;
 	
-	for (int i = 0; i < currentNumOfCrewMembers; i++) //assigning pointer = pointer
-		crewMembers[i] = f.crewMembers[i];
+	airLine = f.airLine;
+	info = f.info;
+	boardingTime = f.boardingTime;
+	meal = _strdup(f.meal);
+	
+	numberOfDishes = f.numberOfDishes;
+	for (int i = 0; i < numberOfDishes; i++)
+	{
+		firstClassMenu[i] = _strdup(f.firstClassMenu[i]);
+	}
 
 
 	return true;
@@ -197,8 +173,20 @@ ostream& operator<<(ostream& out, const Flight& f)
 {
 	out << "Flight Number: " << f.flightNumber << endl;
 	out << f.info;
+	out << "Boarding Time: " << f.boardingTime << endl;
 	out << "Current Purchased Tickets: " << f.currentPurchasedTickets << endl;
 	out << "Current Number of Crew Members: " << f.currentNumOfCrewMembers << endl;
+	if(f.meal != nullptr)
+		out << "Standart meal: " << f.meal << endl;
+	if(f.numberOfDishes == 0)
+		out << "No dishes in first class menu " << endl;
+	else
+	{
+		out << "First Class Menu: " << endl;
+		for (int i = 0; i < f.numberOfDishes; ++i)
+			out << (i+1) <<") " << f.currentPurchasedTickets << endl;
+		
+	}
 
 	return out;
 }
@@ -215,7 +203,7 @@ bool Flight::setPlane(Plane* pl)
 
 bool Flight::setDuration(const Time& t)
 {
-	info.setDuration(t);
+	info.setDuration(t.getHours(), t.getMinutes());
 	return true;
 }
 
@@ -224,56 +212,123 @@ bool Flight::addCrewMember(Worker* w)
 	if (currentNumOfCrewMembers >= MAX_CREW_MEMBERS)
 		return false;
 
-	crewMembers[currentNumOfCrewMembers] = w->clone();
-	currentNumOfCrewMembers++;
+	
 
-	return true;
+	if (w->isAvailable() && checkAddCrewMember(w))
+	{
+		crewMembers[currentNumOfCrewMembers] = w;
+		currentNumOfCrewMembers++;
+		return true;
+	}
+
+	return false;
 }
 
 
 
-bool Flight::assignCrew(ostream& out, istream& in)
+void Flight::assignCrew(ostream& out, istream& in)
 {
 	int choose;
+	Worker* w;
 	do 
 	{
 		out << "Please choose: \nadd crew member - 0";
-		out << "\ndon't add crew member right now - 1" << endl;
+		out << "\nadd new crew member - 1" << endl;
+		out << "\ndon't add crew member right now - 2" << endl;
 		in.ignore(); // Ignore the newline character
 		in >> choose;
 		if (choose == 0)
-		{
-			crewMembers[currentNumOfCrewMembers] = airLine->chooseWorker();
-			currentNumOfCrewMembers++;
-		}
+			w = airLine->chooseWorker();
+		else if (choose == 1)
+			w = airLine->interactiveAddWorker(out, in);
 
-	}while(choose == 0)
-}
+		addCrewMember(w);
 
-bool Flight::assignCrew(Worker** workers, int workersSize)
-{
-	if (currentNumOfCrewMembers + workersSize > MAX_CREW_MEMBERS)
-	{
-		cout << "Maximum number of crew members reached." << endl;
-		return false;
-	}
-
-	for (int i = 0; i < workersSize; i++)
-	{
-		crewMembers[currentNumOfCrewMembers] = workers[i]->clone();
-		currentNumOfCrewMembers++;
-	}
+	} while (choose != 2);
 
 	return true;
 }
+
+
 
 bool Flight::checkIfFlightReady()
 {
-	if (currentNumOfCrewMembers < 2)
-		return false;
-
-	if (currentPurchasedTickets == 0)
-		return false;
-
-	return true;
+	return (
+			checkCrewTypes() && //check crew members 
+			currentPurchasedTickets >= MIN_TICKETS && //check tickets purchased 
+			pPlane->isReadyToFly() //check plane is ready 
+			);
 }
+
+void Flight::interactiveSetPlane(ostream& out, istream& in)
+{
+	
+
+	out << "Please choose: New plane - 0 | Existing plane - 1" << endl;
+	in.ignore(); // Ignore the newline character
+	int choose;
+	in >> choose;
+	if (choose == 0)
+	{
+		pPlane = new Plane(out, in);
+		airLine->addPlane(*pPlane);
+	}
+	else
+	{
+		setPlane(airLine->choosePlane());
+	}
+}
+
+
+
+bool Flight::checkCrewTypes()
+{
+	return (
+			workersOfType[0] >= MIN_PILOTS &&
+			workersOfType[1] >= MIN_TECHNICHIAN &&
+			workersOfType[0] >= MIN_FLIGHT_ATTENDENT
+			);
+}
+
+bool Flight::checkAddCrewMember(Worker* w)
+{
+	if (strcmp(typeid(*w).name(), typeid(Pilot).name()) == 0)
+	{
+		if (workersOfType[0] < 2)
+		{
+			workersOfType[0]++;
+			return true;
+		}
+		return false;
+
+
+	}
+
+	else if (strcmp(typeid(*w).name(), typeid(Technician).name()) == 0)
+	{
+		if (workersOfType[1] < 4)
+		{
+			workersOfType[1]++;
+			return true;
+		}
+		return false;
+	}
+
+	else // flight attendent
+	{
+		if (workersOfType[2] < 4)
+		{
+			workersOfType[2]++;
+			return true;
+		}
+		return false;
+	}
+}
+
+void Flight::assignCrew(Worker** workers, int workersSize)
+{
+	for (int i = 0; i < workersSize; ++i)
+		addCrewMember(workers[i]);
+}
+
+

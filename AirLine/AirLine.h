@@ -67,6 +67,11 @@ public:
     Plane* choosePlane();
     Worker* chooseWorker();
 
+    //interactive 
+    Plane* interactiveAddPlane(ostream& out, istream& in);
+    Worker* interactiveAddWorker(ostream& out, istream& in);
+
+
 
 };
 

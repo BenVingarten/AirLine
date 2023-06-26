@@ -13,15 +13,21 @@ using namespace std;
 #include "AirLine.h"
 
 
-#define MAX_CREW_MEMBERS 10 // 2 pilot 4-5 flightAttendets and 3-4 technicians
+#define MAX_CREW_MEMBERS 10 // 2 pilot 4 flightAttendets and 4 technicians
 #define PRECENTAGE_OF_FIRST_CLASS_TICKETS 0.3
 #define FIRST_CLASS_COST_PRECENT 1.5
 #define MAX_DISHES 10
 
+#define MIN_PILOTS 1
+#define MIN_TECHNICHIAN 2
+#define MIN_FLIGHT_ATTENDENT 2
+
+#define MIN_TICKETS 2
 
 class Flight
 {
 private:
+	static int workersOfType[3]; //workers of type [pilot], [flightAttendent], [Technichian]
 	static int flightNumberGen; //initialized outside of the class to 4444
 
 	AirLine* airLine;
@@ -34,9 +40,9 @@ private:
 	Ticket** ticketArr;
 	Worker* crewMembers[MAX_CREW_MEMBERS];
 	char* meal;
-	char** firstClassMenu;
+	char* firstClassMenu[MAX_DISHES];
+	int numberOfDishes;
 	
-
 
 	bool addCrewMember(Worker* w);
 	void createTickets(int ticketCost, int gate);
@@ -67,12 +73,20 @@ public:
 	
 	bool setPlane(Plane* pl);
 	bool setDuration(const Time& t);
-	bool assignCrew(ostream& out, istream& in);
-	bool assignCrew(Worker** workers, int workersSize);
+	void assignCrew(ostream& out, istream& in);
+	void assignCrew(Worker** workers, int workersSize);
 	bool checkIfFlightReady();
 	bool addDishToMenu(const char* dish);
 	
+	void interactiveSetPlane(ostream& out, istream& in);
+	bool checkCrewTypes();
+	bool checkAddCrewMember(Worker* w);
+	
+
+
+
 };
 
 
 int Flight::flightNumberGen = 4444;
+int Flight::workersOfType[3] = { 0, 0, 0 };

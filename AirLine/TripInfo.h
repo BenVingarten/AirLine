@@ -21,7 +21,7 @@ public:
 	TripInfo(ostream& out, istream& in);
 
 
-	void setTime(int hour, int minute);
+	void setDuration(int hour, int minute);
 	const Time& getFlightDuration()const;
 	
 	//we must implement operator << because two of our parents has the same operator

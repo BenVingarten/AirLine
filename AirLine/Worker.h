@@ -34,7 +34,7 @@ protected:
 	Worker(ostream& out, istream& in);
 	virtual ~Worker() {};
 
-	
+public:
 	int getWorkerId()const;
 	float getSalary()const;
 	int getSeniority()const;

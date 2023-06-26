@@ -50,7 +50,7 @@ void TripInfo::print(ostream& out) const {
     out << " \nFlight Duration: " << flightDuration<< endl;
 }
 
-void TripInfo::setTime(int hour, int minute) {
+void TripInfo::setDuration(int hour, int minute) {
     flightDuration.setHours(hour);
     flightDuration.setMinutes(minute);
 }

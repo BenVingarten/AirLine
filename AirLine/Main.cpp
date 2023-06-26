@@ -33,7 +33,7 @@ int main() {
 
     cout << "-----------------------" << endl;
     // Set the flight duration
-    trip.setTime(3, 15);
+    trip.setDuration(3, 15);
     cout << "Trip Info:" << trip << endl;
 
 
