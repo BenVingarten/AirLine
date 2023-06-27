@@ -4,6 +4,8 @@ using namespace std;
 
 class Person
 {
+private:
+	static const char DEL = ',';
 
 protected:
 	char* name;
@@ -19,8 +21,11 @@ public:
 	Person(const char* pName, int theAge, char gen);				//c'tor
 	Person(const Person& other);									// copy c'tor
 	Person(Person&& other) noexcept;								//  move copy c'tor
-	Person(ostream& out, istream& in); //c'tor create with user (talks with the user)
 	virtual ~Person();                                                            // d'tor
+	
+	//read and write from file
+	Person(ifstream& in); 
+	void saveToFile(ofstream& out)const;
 
 	Person& operator =(const Person& p);							// operator =
 	const Person& operator =(Person&& p) noexcept;					// operator move =

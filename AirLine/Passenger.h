@@ -16,7 +16,7 @@ private:
 	char airportCode[MAX_CHAR_CODE];
 
 	void print(ostream& out)const;
-	bool airportCodeValid(char* code) const; //the code has only 3 charss and adds '\0'
+	bool airportCodeValid(char* code) const;//IN TRAVEL //the code has only 3 charss and adds '\0'
 
 
 public:

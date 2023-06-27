@@ -64,13 +64,6 @@ void Passenger::print(ostream& out) const {
         out << ticket << endl;
 }
 
-bool Passenger::airportCodeValid(char* code) const {
-    if (strlen(code) == MAX_CHAR_CODE - 1) {
-        code[MAX_CHAR_CODE - 1] = '\0';
-        return true;
-    }
-    return false;
-}
 
 const char* Passenger::getAirPortCode() const {
     return airportCode;

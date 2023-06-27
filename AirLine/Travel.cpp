@@ -1,20 +1,39 @@
-#include "Travel.h"
+#define _CRT_SECURE_NO_WARNINGS
 
-Travel::Travel(const char s[MAX_CHAR_CODE], const char d[MAX_CHAR_CODE]) {
+#include "Travel.h"
+#include <fstream>
+
+Travel::Travel(const char* s, const char* d) 
+{
+    if (airportCodeValid(s))
+        setSource(s);
+
+    if (airportCodeValid(d))
+        setDest(d);
+
+}
+
+Travel::Travel(ifstream& in)
+{
+    char tmp;
+    in >> source >> tmp >> destination;
+}
+
+void Travel::saveTravel(ofstream& out) const
+{
+    out << source << DEL << destination << endl;
+}
+
+
+
+void Travel::setSource(const char* s) {
     strcpy(source, s);
-    source[MAX_CHAR_CODE - 1] = '\0';
+    source[MAX_CHAR_CODE-1] = '\0';
+}
+
+void Travel::setDest(const char* d) {
     strcpy(destination, d);
     destination[MAX_CHAR_CODE - 1] = '\0';
-}
-
-bool Travel::setSource(const char s[MAX_CHAR_CODE]) {
-    strcpy(source, s);
-    return true;
-}
-
-bool Travel::setDest(const char d[MAX_CHAR_CODE]) {
-    strcpy(destination, d);
-    return true;
 }
 
 
@@ -34,3 +53,9 @@ const char* Travel::getSource() const {
 const char* Travel::getDestenation() const {
     return destination;
 }
+
+bool Travel::airportCodeValid(const char* code) const {
+    
+    return strlen(code) == (MAX_CHAR_CODE - 1);
+}
+

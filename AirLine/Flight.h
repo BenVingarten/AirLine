@@ -14,7 +14,7 @@ using namespace std;
 
 
 #define MAX_CREW_MEMBERS 10 // 2 pilot 4 flightAttendets and 4 technicians
-#define PRECENTAGE_OF_FIRST_CLASS_TICKETS 0.3
+#define PRECENTAGE_OF_FIRST_CLASS_TICKETS 0.3 //TODO: CHANGE to const 
 #define FIRST_CLASS_COST_PRECENT 1.5
 #define MAX_DISHES 10
 
@@ -30,7 +30,7 @@ private:
 	static int workersOfType[3]; //workers of type [pilot], [flightAttendent], [Technichian]
 	static int flightNumberGen; //initialized outside of the class to 4444
 
-	AirLine* airLine;
+	AirLine* airLine; //TODO: Reference 
 	int flightNumber;
 	TripInfo info;
 	int currentPurchasedTickets;
@@ -49,12 +49,12 @@ private:
 
 public:
 
-	Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[MAX_CHAR_CODE], 
+	Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[MAX_CHAR_CODE], //get char*
 		int durHour, int durMinute, int borHour, int borMinute, int day, int month, int year, Plane* plane = nullptr,
 		int ticketCost = 20, int gate = 1, char* meal = nullptr);
 	Flight(AirLine* myAirLine, const Travel & trav, const Date& d, const Time& time, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
 	Flight(AirLine* myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
-	Flight(AirLine* myAirLine, ostream& out, istream& in);
+	Flight(AirLine* myAirLine, ostream& out, istream& in); //change to ifstream&
 	~Flight();
 
 

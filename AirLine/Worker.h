@@ -9,7 +9,7 @@ using namespace std;
 class Flight;
 class Worker : public Person
 {
-
+										//TODO worker passenger 
 
 protected:
 	 static int workerCardNumberGenerator; //initiallized outside of the class to 2222 (only once!)
@@ -28,10 +28,10 @@ protected:
 */
 
 	Worker(const char* pName, int theAge, char gen, float  salary, int seniority);
-	Worker(const Person& p, float salary, int seniority);
+	Worker(const Person& p, float salary, int seniority); //PERSON is abstract
 	Worker(const Worker& w);
 	Worker(Worker&& w) noexcept;
-	Worker(ostream& out, istream& in);
+	Worker(ostream& out, istream& in); //TODO: ONLY in, if in is std we write to std
 	virtual ~Worker() {};
 
 public:

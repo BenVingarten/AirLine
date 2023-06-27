@@ -1,5 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 using namespace std;
+#include <fstream>
 
 #include "Date.h"
 
@@ -10,6 +13,19 @@ Date::Date(int d, int m, int y)
 {
 	setDate(d, m, y); //This function check the input
 }
+
+Date::Date(ifstream& in)
+{
+	char tmp;
+	in >> day >> tmp >> month >> tmp >> year;
+}
+
+void Date::saveDate(ofstream& out) const
+{
+	out << day << DEL << month << DEL << year << endl;
+}
+
+
 
 ostream& operator << (ostream& out, const Date& date)
 {
@@ -71,6 +87,7 @@ void Date::addOneDay()
 	month = 1;
 	day = 1;
 }
+
 void	 Date::setDay(int d)
 {
 	if ((d < MIN_DAY) || (d > DAY_MONTH_LIMIT[month - 1]))

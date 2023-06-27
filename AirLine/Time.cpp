@@ -1,6 +1,20 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Time.h"
+#include <fstream>
 
 Time::Time(int hours, int minutes) : hours(hours), minutes(minutes) {}
+
+Time::Time(ifstream& in)
+{
+    char tmp;
+    in >> hours >> tmp >> minutes;
+}
+
+void Time::saveTime(ofstream& out) const
+{
+    out << hours << DEL << minutes << endl;
+}
 
 Time::~Time() {}
 
@@ -29,7 +43,7 @@ int Time::getMinutes() const {
 }
 
 void Time::print(ostream& out) const {
-    out << hours << ":" << minutes << ":" << seconds;
+    out << hours << ":" << minutes << endl;
 }
 
 Time& Time::operator+=(const Time& other)
@@ -37,14 +51,14 @@ Time& Time::operator+=(const Time& other)
     hours += other.hours;
     
     int m = other.minutes + minutes;
-    if (m >= 60)
+    if (m >= MINUTES_LIMIT)
     {
         hours++;
-        m -= 60;
+        m -= MINUTES_LIMIT;
     }
     minutes = m;
 
-   
+    return *this;
 
 }
 

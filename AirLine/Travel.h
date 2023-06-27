@@ -7,6 +7,8 @@ using namespace std;
 class Travel
 {
 private:
+	static const char DEL = '|';
+
 	char source[MAX_CHAR_CODE];
 	char destination[MAX_CHAR_CODE];
 
@@ -16,13 +18,21 @@ protected:
 
 public:
 	Travel() = default; //so we can create TripInfo(ostrem, istream)
-	Travel(const char s[MAX_CHAR_CODE], const char d[MAX_CHAR_CODE]);
-	bool setSource(const char s[MAX_CHAR_CODE]);
-	bool setDest(const char d[MAX_CHAR_CODE]);
+	Travel(const char* s, const char* d);
+
+	//read and save to file
+	Travel(ifstream& in);
+	void saveTravel(ofstream& out)const;
+
+	
+	void setSource(const char* s);
+	void setDest(const char* d);
 	virtual ~Travel() {};
 
 	friend ostream& operator << (ostream& out, const Travel& t);
 	const char* getSource()const;
 	const char* getDestenation()const;
+
+	bool airportCodeValid(const char* code) const;
 };
 

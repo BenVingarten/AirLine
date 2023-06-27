@@ -5,10 +5,12 @@ using namespace std;
 #include "Time.h"
 #include "Travel.h"
 
-class TripInfo: public Date, public Travel
+class TripInfo: public Travel
 {
-private:
+private:		
+
 	Time flightDuration;
+	Date date;
 
 protected:
 	virtual void print(ostream& out)const;
@@ -16,9 +18,12 @@ protected:
 
 
 public:
-	TripInfo(const char src[3], const char des[3], int d, int m, int y, int hour, int minute);
+	TripInfo(const char* src, const char* des, int d, int m, int y, int hour, int minute);
 	TripInfo(const Date& d, const Travel& trav, const Time& time);
-	TripInfo(ostream& out, istream& in);
+	
+	//read and write to file
+	TripInfo(ifstream& in);
+	void saveToFile(ofstream& out);
 
 
 	void setDuration(int hour, int minute);

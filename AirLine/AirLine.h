@@ -8,7 +8,7 @@ using namespace std;
 
 class AirLine
 {
-
+                                //TODO design PATTERN observer; 
 private:
     char* name;
     char* country;

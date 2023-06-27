@@ -14,10 +14,10 @@ protected:
 	int price;
 	int gate;
 	Time boarding;
-	TripInfo* pInfo;
+	TripInfo* pInfo; //TODO to have the tripInfo as Time 
 	int seat; // accroding to the index in the tickets array (in flight class)
 	Passenger* pPassenger;
-	Flight* flight;
+	Flight* flight;	//TODO reference 
 
 	virtual void print(ostream& out)const;
 

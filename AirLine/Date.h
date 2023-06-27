@@ -17,6 +17,10 @@ public:
 
 	Date(int d=MIN_DAY, int m=MIN_MONTH, int y=DEF_YEAR);
 	
+	//read from file and save to fule
+	Date(ifstream& in);
+	void saveDate(ofstream& out) const;
+	
 	friend ostream& operator << (ostream& out, const Date& date);
 
 
@@ -28,6 +32,7 @@ public:
 	int		getMonth() const { return month; }
 	int		getYear()const { return year; }
 
+
 	Date operator+ (int days) const;
 	const Date& operator++ ();		//prefix
 	Date operator++ (int);		//postfix
@@ -38,6 +43,7 @@ protected:
 	void print(ostream& out) const;
 
 private:
+	const static char DEL = '/';
 
 	int day;
 	int month;
@@ -45,6 +51,7 @@ private:
 
 	void	addOneDay();
 	void setDate(int d, int m, int y);
+
 };
 
 Date operator+(int days, const Date& date);

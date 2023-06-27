@@ -1,4 +1,5 @@
 #include "Person.h"
+#include <fstream>
 
 
 
@@ -25,33 +26,22 @@ Person::Person(Person&& other)noexcept
 	gender = other.gender;
 }
 
-Person::Person(ostream& out, istream& in)
-{
-	cout << "Enter Person details:" << endl;
-
-	cout << "Name: ";
-	char name[100];
-	in.getline(name, 100);
-	setName(name);
-
-	cout << "Age: ";
-	int ageUser;
-	in >> ageUser;
-	in.ignore();
-	age = ageUser;
-
-	cout << "Gender (M/F): ";
-	char genderUser;
-	in >> genderUser;
-	in.ignore();
-	gender = genderUser;
-
-}
-
 Person:: ~Person()
 {
 	delete[] name;
 }
+
+Person::Person(ifstream& in)
+{
+	char tmp; 
+	in >> name >> tmp >> age >> tmp >> gender;
+}
+
+void Person::saveToFile(ofstream& out) const
+{
+	out << name << DEL << age << DEL << gender << endl;
+}
+
 
 Person& Person::operator=(const Person& p)
 {
