@@ -246,7 +246,7 @@ void Flight::assignCrew(ostream& out, istream& in)
 
 	} while (choose != 2);
 
-	return true;
+
 }
 
 
@@ -260,6 +260,8 @@ bool Flight::checkIfFlightReady()
 			);
 }
 
+
+//moving to the AirLine
 void Flight::interactiveSetPlane(ostream& out, istream& in)
 {
 	
