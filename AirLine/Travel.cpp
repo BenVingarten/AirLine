@@ -7,21 +7,24 @@ Travel::Travel(const char* s, const char* d)
 {
     if (airportCodeValid(s))
         setSource(s);
+    else
+        setSource(DEFAULT_SOURCE_CODE);
 
     if (airportCodeValid(d))
         setDest(d);
+    else
+        setDest(DEFAULT_DEST_CODE);
 
 }
 
 Travel::Travel(ifstream& in)
 {
-    char tmp;
-    in >> source >> tmp >> destination;
+   in >> source >> destination;
 }
 
 void Travel::saveTravel(ofstream& out) const
 {
-    out << source << DEL << destination << endl;
+    out << source << endl << destination << endl;
 }
 
 

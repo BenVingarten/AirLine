@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#define MAX_NAME_LEN 100
+
 
 class Person
 {

@@ -33,13 +33,15 @@ Person:: ~Person()
 
 Person::Person(ifstream& in)
 {
-	char tmp; 
-	in >> name >> tmp >> age >> tmp >> gender;
+	char temp[MAX_NAME_LEN];
+	in.getline(temp, MAX_NAME_LEN);
+	setName(temp);
+	in >> age >> gender;
 }
 
 void Person::saveToFile(ofstream& out) const
 {
-	out << name << DEL << age << DEL << gender << endl;
+	out << name << endl << age << gender << endl;
 }
 
 
@@ -93,7 +95,8 @@ void Person::setName(const char* pName)
 	if (name != nullptr)
 		delete[] name;
 
-	name = _strdup(pName);
+	name = new char[strlen(pName) + 1];
+	strcpy(name, pName);
 }
 
 ostream& operator<<(ostream& out, const Person& p)

@@ -13,13 +13,12 @@ TripInfo::TripInfo(const Date& d, const Travel& trav, const Time& time)
 {
 }
 
-TripInfo::TripInfo(ifstream& in) : Travel(in), date(in), flightDuration(in)
+TripInfo::TripInfo(ifstream& in) : Travel(in)
 {
-
     in.ignore();
     date = Date(in);
+    in.ignore();
     flightDuration = Time(in);
-
 }
 
 void TripInfo::saveToFile(ofstream& out)

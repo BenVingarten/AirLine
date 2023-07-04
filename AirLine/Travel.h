@@ -3,6 +3,9 @@
 using namespace std;
 
 #define MAX_CHAR_CODE 4
+#define DEFAULT_SOURCE_CODE "TLV"
+#define DEFAULT_DEST_CODE "ATH" //Athens
+
 
 class Travel
 {
