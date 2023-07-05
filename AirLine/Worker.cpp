@@ -1,15 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Worker.h"
-
+#include <fstream>
 
 Worker::Worker(const char* pName, int theAge, char gen, float salary, int seniority)
     : Person(pName, theAge, gen), salary(salary), seniority(seniority),
-        isWorkerAvailable(true), currentFlight(nullptr)
-{
-    cardNumber = workerCardNumberGenerator++;
-}
-
-Worker::Worker(const Person& p, float salary, int seniority)
-    : Person(p), salary(salary), seniority(seniority),
         isWorkerAvailable(true), currentFlight(nullptr)
 {
     cardNumber = workerCardNumberGenerator++;
@@ -32,13 +26,21 @@ Worker::Worker(Worker&& w) noexcept
     w.isWorkerAvailable = false;
 }
 
-Worker::Worker(ostream& out, istream& in)
-    : Person(out, in), salary(0.0f), seniority(0), 
-        isWorkerAvailable(true), currentFlight(nullptr)
+
+Worker::Worker(ifstream& in): Person(in), currentFlight(nullptr)
 {
-    readAndsetSalary(out, in);
-    readAndsetSeniority(out, in);
-    cardNumber = workerCardNumberGenerator++;
+    //when we read from file we read from data base to create worker
+    // the pointers won't be saved or wrtitten (Flight*)
+
+    in>> cardNumber >> salary >> seniority >> isWorkerAvailable;
+ 
+}
+
+void Worker::saveToFile(ofstream& out) const
+{
+    Person::saveToFile(out);
+    
+    out << cardNumber << salary << seniority << isWorkerAvailable << endl;
 }
 
 bool Worker::isSalaryValid(float salary)const 

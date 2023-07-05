@@ -1,14 +1,12 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "Technician.h"
 #include "Plane.h"
+#include <fstream>
 using namespace std;
 
 Technician::Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type)
     : Worker(n, age, gender, salary, seniority), type(type), planesPreparedThisYear(0)
-{
-}
-
-Technician::Technician(const Worker& w, eTechnicianType type)
-    : Worker(w), type(type), planesPreparedThisYear(0)
 {
 }
 
@@ -18,18 +16,18 @@ Technician::Technician(Technician&& t) noexcept
     t.planesPreparedThisYear = 0;
 }
 
-Technician::Technician(ostream& out, istream& in)
-    : Worker(out, in), type(eTechnicianType::GENERAL), planesPreparedThisYear(0)
+Technician::Technician(ifstream& in): Worker(in)
 {
-    
     int typeVal;
-    do {
-        cout << "Enter technician type (0 - Avionics, 1 - Navigations, 2 - Communication, 3 - Engines, 4 - General): ";
-        in >> typeVal;
-        in.ignore(); // Ignore the newline character
-    } while (typeVal < 0 || typeVal > 4);
-
+    in >> planesPreparedThisYear >> typeVal;
     type = static_cast<eTechnicianType>(typeVal);
+}
+
+void Technician::saveToFile(ofstream& out) const
+{
+    Worker::saveToFile(out);
+    //TODO: TO CHECK -------------------------------------------------
+    out << planesPreparedThisYear << static_cast<int>(type);
 }
 
 Technician::eTechnicianType Technician::getType() const {

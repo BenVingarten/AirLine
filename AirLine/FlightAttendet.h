@@ -18,12 +18,13 @@ private:
 public:
 
 	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, char* baseLang = nullptr);
-	FlightAttendet(const Worker& w, char* baseLang = nullptr);
 	FlightAttendet(const FlightAttendet& other) = delete;
 	FlightAttendet(FlightAttendet&& w) noexcept;
-	FlightAttendet(ostream& out, istream& in);
 	~FlightAttendet();
 	
+	//read and write from file
+	FlightAttendet(ifstream& in);
+	void saveToFile(ofstream& out)const;
 
 	const char** getLanguages()const;
 	int getCurrentNumOfLanguages()const;

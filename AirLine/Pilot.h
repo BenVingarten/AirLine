@@ -18,12 +18,13 @@ private:
 public:
 
 	Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours);
-	Pilot(const Worker& w, Time flightHours);
 	Pilot(const Pilot& p) = delete;
 	Pilot(Pilot&& p) noexcept;
-	Pilot(ostream& out, istream& in);
 	~Pilot() {};
 
+	//read and write from file
+	Pilot(ifstream& in);
+	void saveToFile(ofstream& out)const;
 	
 	
 	Time getflightHours()const;

@@ -18,11 +18,13 @@ public:
 								};
 
 	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type = eTechnicianType::GENERAL);
-	Technician(const Worker& w, eTechnicianType type);
 	Technician(const Technician& other) = delete;
 	Technician(Technician&& t) noexcept;
-	Technician(ostream& out, istream& in);
 	~Technician() {};
+
+	//read and write from file
+	Technician(ifstream& in);
+	void saveToFile(ofstream& out)const;
 
 	eTechnicianType getType() const;
 	int getNumOfPlanesPrepared()const;

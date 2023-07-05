@@ -1,14 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "FlightAttendet.h"
+#include <fstream>
 
 FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary, int seniority, char* baseLang)
     : Worker(n, age, gender, salary, seniority), currentNumOfLanguages(0)
-{
-    if (baseLang != nullptr)
-        addLanugage(baseLang);
-}
-
-FlightAttendet::FlightAttendet(const Worker& w, char* baseLang)
-    : Worker(w), currentNumOfLanguages(0)
 {
     if (baseLang != nullptr)
         addLanugage(baseLang);
@@ -26,27 +22,30 @@ FlightAttendet::FlightAttendet(FlightAttendet&& w) noexcept
     w.currentNumOfLanguages = 0;
 }
 
-FlightAttendet::FlightAttendet(ostream& out, istream& in)
-    : Worker(out, in), currentNumOfLanguages(0)
-{
-    out << "Enter the number of languages: ";
-    int numLanguages;
-    in >> numLanguages;
-
-    for (int i = 0; i < numLanguages; ++i)
-    {
-        out << "Enter language " << i + 1 << ": ";
-        char language[100];
-        in >> language;
-        addLanugage(language);  
-        currentNumOfLanguages++;
-    }
-}
-
 FlightAttendet::~FlightAttendet()
 {
     for (int i = 0; i < currentNumOfLanguages; ++i)
         delete[] allLanguages[i];
+}
+
+FlightAttendet::FlightAttendet(ifstream& in): Worker(in)
+{
+    in >> currentNumOfLanguages;
+    char temp[100];
+    for (int i = 0; i < currentNumOfLanguages; ++i)
+    {
+        in.getline(temp, 100);
+        allLanguages[i] = new char[strlen(temp) + 1];
+        strcpy(allLanguages[i], temp);
+    }
+}
+
+void FlightAttendet::saveToFile(ofstream& out) const
+{
+    Worker::saveToFile(out);
+    out << currentNumOfLanguages;
+    for (int i = 0; i < currentNumOfLanguages; ++i)
+        out << allLanguages[i] << endl;
 }
 
 const char** FlightAttendet::getLanguages() const

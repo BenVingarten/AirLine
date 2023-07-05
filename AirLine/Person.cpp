@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Person.h"
 #include <fstream>
 
@@ -41,7 +42,7 @@ Person::Person(ifstream& in)
 
 void Person::saveToFile(ofstream& out) const
 {
-	out << name << endl << age << gender << endl;
+	out << *this;
 }
 
 

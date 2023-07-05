@@ -16,18 +16,16 @@ private:
 	char airportCode[MAX_CHAR_CODE];
 
 	void print(ostream& out)const;
-	bool airportCodeValid(char* code) const;//IN TRAVEL //the code has only 3 charss and adds '\0'
-
 
 public:
 	//Passenger can't have Ticket as he initialized because he needs to buy a ticket
-	Passenger(const char* n, int age, char gender, int luggageWeight, char code[MAX_CHAR_CODE]);
-	Passenger(const Person& p, int luggageWeight, char code[MAX_CHAR_CODE]);
+	Passenger(const char* n, int age, char gender, int luggageWeight, const char* code);
 	Passenger(const Passenger& p) = delete;
-	Passenger(ostream& out, istream& in); //c'tor create with user (talks with the user)
 	Passenger(Passenger&& p) noexcept;
 	
-
+	//read and write from file
+	Passenger(ifstream& in);
+	void saveToFile(ofstream& out)const;
 	
 	const char* getAirPortCode()const;
 	int getLuggageWeight()const;

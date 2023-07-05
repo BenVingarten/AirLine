@@ -1,12 +1,9 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Pilot.h"
+#include <fstream>
 
 Pilot::Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours)
     : Worker(n, age, gender, salary, seniority), flightHours(flightHours)
-{
-}
-
-Pilot::Pilot(const Worker& w, Time flightHours)
-    : Worker(w), flightHours(flightHours)
 {
 }
 
@@ -15,27 +12,17 @@ Pilot::Pilot(Pilot&& p) noexcept
 {
 }
 
-Pilot::Pilot(ostream& out, istream& in)
-    : Worker(out, in)
+Pilot::Pilot(ifstream& in): Worker(in), flightHours(in)
 {
-    int h = 0, m = 0;
-    
-    do
-    {
-        cout << "Enter flight hours (only hours): ";
-        in >> h;
-    } while (!flightHours.setHours(h));
-    
-    do 
-    {
-        cout << "Enter flight minutes (only minutes): ";
-        in >> m;
-
-    } while (!flightHours.setMinutes(m));
-
-
-
 }
+
+void Pilot::saveToFile(ofstream& out) const
+{
+    Worker::saveToFile(out);
+
+    flightHours.saveTime(out);
+}
+
 
 Time Pilot::getflightHours() const
 {

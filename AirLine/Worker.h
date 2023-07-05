@@ -28,11 +28,13 @@ protected:
 */
 
 	Worker(const char* pName, int theAge, char gen, float  salary, int seniority);
-	Worker(const Person& p, float salary, int seniority); //PERSON is abstract
 	Worker(const Worker& w);
 	Worker(Worker&& w) noexcept;
-	Worker(ostream& out, istream& in); //TODO: ONLY in, if in is std we write to std
 	virtual ~Worker() {};
+
+	//read and write from file
+	Worker(ifstream& in);
+	void saveToFile(ofstream& out)const;
 
 public:
 	int getWorkerId()const;

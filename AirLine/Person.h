@@ -6,9 +6,6 @@ using namespace std;
 
 class Person
 {
-private:
-	static const char DEL = ',';
-
 protected:
 	char* name;
 	int age;
@@ -20,10 +17,10 @@ protected:
 
 public:
 
-	Person(const char* pName, int theAge, char gen);				//c'tor
-	Person(const Person& other);									// copy c'tor
-	Person(Person&& other) noexcept;								//  move copy c'tor
-	virtual ~Person();                                                            // d'tor
+	Person(const char* pName, int theAge, char gen);	//c'tor
+	Person(const Person& other);	// copy c'tor
+	Person(Person&& other) noexcept;	//  move copy c'tor
+	virtual ~Person();	// d'tor
 	
 	//read and write from file
 	Person(ifstream& in); 

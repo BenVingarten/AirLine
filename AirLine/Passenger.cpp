@@ -1,42 +1,16 @@
-#include "Passenger.h"
+#define _CRT_SECURE_NO_WARNINGS
 
-Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, char code[MAX_CHAR_CODE])
+#include "Passenger.h"
+#include <fstream>
+
+Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, const char* code)
     : Person(n, age, gender), luggageWeight(luggageWeight), ticket(nullptr)
 {
     passport = passportGen++;
-    if (airportCodeValid(code))
+    if (Travel::airportCodeValid(code))
         strcpy(airportCode, code);
-}
-
-Passenger::Passenger(const Person& p, int luggageWeight, char code[MAX_CHAR_CODE])
-    : Person(p), luggageWeight(luggageWeight)
-{
-    passport = passportGen++;
-    if (airportCodeValid(code))
-        strcpy(airportCode, code);
-}
-
-Passenger::Passenger(ostream& out, istream& in)
-    : Person(out, in)
-{
-    cout << "Enter Passenger details:" << endl;
-   
-    cout << "Luggage Weight: ";
-    int weight;
-    in >> weight;
-    in.ignore();
-    luggageWeight = weight;
-
-    char code[MAX_CHAR_CODE];
-    do {
-        cout << "Airport Code: ";
-        in.getline(code, MAX_CHAR_CODE);
-
-    } while (!airportCodeValid(code));
-    strcpy_s(airportCode, MAX_CHAR_CODE, code);
-
-
-    passport = passportGen++;
+    else
+        strcpy(airportCode, DEFAULT_SOURCE_CODE);
 }
 
 Passenger::Passenger(Passenger&& p) noexcept
@@ -49,6 +23,20 @@ Passenger::Passenger(Passenger&& p) noexcept
     p.luggageWeight = 0;
     p.passport = 0;
     p.ticket = nullptr;
+
+}
+
+Passenger::Passenger(ifstream& in): Person(in), ticket(nullptr)
+{
+    in >> passport >> luggageWeight;
+    in.getline(airportCode, MAX_CHAR_CODE);
+}
+
+void Passenger::saveToFile(ofstream& out) const
+{
+    Person::saveToFile(out);
+    out << passport << luggageWeight << airportCode << endl;
+
 
 }
 

@@ -36,6 +36,6 @@ public:
 	const char* getSource()const;
 	const char* getDestenation()const;
 
-	bool airportCodeValid(const char* code) const;
+	static bool airportCodeValid(const char* code); //We use this method also in Passenger ->static
 };
 

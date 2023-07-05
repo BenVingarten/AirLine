@@ -57,8 +57,8 @@ const char* Travel::getDestenation() const {
     return destination;
 }
 
-bool Travel::airportCodeValid(const char* code) const {
+bool Travel::airportCodeValid(const char* code) {
     
-    return strlen(code) == (MAX_CHAR_CODE - 1);
+    return strlen(code) >= (MAX_CHAR_CODE - 1);
 }
 
