@@ -17,7 +17,7 @@ private:
 
 public:
 
-	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, char* baseLang = nullptr);
+	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang = nullptr);
 	FlightAttendet(const FlightAttendet& other) = delete;
 	FlightAttendet(FlightAttendet&& w) noexcept;
 	~FlightAttendet();
@@ -28,7 +28,7 @@ public:
 
 	const char** getLanguages()const;
 	int getCurrentNumOfLanguages()const;
-	bool addLanugage(char* language);
+	bool addLanugage(const char* language);
 
 	virtual void setRaise() override;	//+100 NIS per language she speaks
 	virtual void prepareForFlight(ostream& out) override ;

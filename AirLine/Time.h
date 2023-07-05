@@ -9,7 +9,6 @@ class Time
 private:
     static const int DEF_H = 0;
     static const int DEF_M = 0;
-    static const char DEL = ':';
     static const int HOURS_LIMIT_FOR_CLOCK = 24;
     static const int MINUTES_LIMIT = 60;
 

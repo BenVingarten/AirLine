@@ -6,17 +6,17 @@
 using namespace std;
 
 Technician::Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type)
-    : Worker(n, age, gender, salary, seniority), type(type), planesPreparedThisYear(0)
+    :Person(n, age, gender), Worker(n, age, gender, salary, seniority), type(type), planesPreparedThisYear(0)
 {
 }
 
 Technician::Technician(Technician&& t) noexcept
-    : Worker(move(t)), type(t.type), planesPreparedThisYear(t.planesPreparedThisYear)
+    : Person(std::move(t)), Worker(move(t)), type(t.type), planesPreparedThisYear(t.planesPreparedThisYear)
 {
     t.planesPreparedThisYear = 0;
 }
 
-Technician::Technician(ifstream& in): Worker(in)
+Technician::Technician(ifstream& in): Person(in), Worker(in)
 {
     int typeVal;
     in >> planesPreparedThisYear >> typeVal;
@@ -27,7 +27,7 @@ void Technician::saveToFile(ofstream& out) const
 {
     Worker::saveToFile(out);
     //TODO: TO CHECK -------------------------------------------------
-    out << planesPreparedThisYear << static_cast<int>(type);
+    out << planesPreparedThisYear << endl << static_cast<int>(type) << endl;
 }
 
 Technician::eTechnicianType Technician::getType() const {

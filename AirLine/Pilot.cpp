@@ -3,17 +3,18 @@
 #include <fstream>
 
 Pilot::Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours)
-    : Worker(n, age, gender, salary, seniority), flightHours(flightHours)
+    : Person(n, age, gender), Worker(n, age, gender, salary, seniority), flightHours(flightHours)
 {
 }
 
 Pilot::Pilot(Pilot&& p) noexcept
-    : Worker(std::move(p)), flightHours(std::move(p.flightHours))
+    : Person(std::move(p)), Worker(std::move(p)), flightHours(std::move(p.flightHours))
 {
 }
 
-Pilot::Pilot(ifstream& in): Worker(in), flightHours(in)
+Pilot::Pilot(ifstream& in): Person(in), Worker(in), flightHours(in)
 {
+    in.ignore();
 }
 
 void Pilot::saveToFile(ofstream& out) const

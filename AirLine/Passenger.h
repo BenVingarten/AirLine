@@ -5,9 +5,9 @@ using namespace std;
 #include "Travel.h"
 
 class Ticket;
-class Passenger : public Person
+class Passenger : virtual public Person
 {
-private:
+protected:
 	static int passportGen; // initiallize to 1111 outside the class (only once)
 
 	Ticket* ticket;

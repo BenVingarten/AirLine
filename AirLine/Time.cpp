@@ -13,7 +13,7 @@ Time::Time(ifstream& in)
 
 void Time::saveTime(ofstream& out) const
 {
-    out << hours << DEL << minutes << endl;
+    out << hours << endl << minutes << endl;
 }
 
 Time::~Time() {}

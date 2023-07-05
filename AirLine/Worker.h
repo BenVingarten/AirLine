@@ -7,7 +7,7 @@ using namespace std;
 #define MINIMUM_WAGE 1000
 
 class Flight;
-class Worker : public Person
+class Worker : virtual public Person
 {
 										//TODO worker passenger 
 

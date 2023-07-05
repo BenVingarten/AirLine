@@ -3,15 +3,15 @@
 #include "FlightAttendet.h"
 #include <fstream>
 
-FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary, int seniority, char* baseLang)
-    : Worker(n, age, gender, salary, seniority), currentNumOfLanguages(0)
+FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang)
+    : Person(n, age, gender), Worker(n, age, gender, salary, seniority), currentNumOfLanguages(0)
 {
     if (baseLang != nullptr)
         addLanugage(baseLang);
 }
 
 FlightAttendet::FlightAttendet(FlightAttendet&& w) noexcept
-    : Worker(std::move(w)), currentNumOfLanguages(w.currentNumOfLanguages)
+    : Person(std::move(w)), Worker(std::move(w)), currentNumOfLanguages(w.currentNumOfLanguages)
 {
     for (int i = 0; i < currentNumOfLanguages; ++i)
     {
@@ -28,9 +28,10 @@ FlightAttendet::~FlightAttendet()
         delete[] allLanguages[i];
 }
 
-FlightAttendet::FlightAttendet(ifstream& in): Worker(in)
+FlightAttendet::FlightAttendet(ifstream& in): Person(in), Worker(in)
 {
     in >> currentNumOfLanguages;
+    in.ignore();
     char temp[100];
     for (int i = 0; i < currentNumOfLanguages; ++i)
     {
@@ -58,13 +59,15 @@ int FlightAttendet::getCurrentNumOfLanguages() const
     return currentNumOfLanguages;
 }
 
-bool FlightAttendet::addLanugage(char* language)
+bool FlightAttendet::addLanugage(const char* language)
 {
     if (currentNumOfLanguages >= MAX_LANGUAGES || language == nullptr)
         return false;
 
     
-    allLanguages[currentNumOfLanguages++] = _strdup(language);
+    allLanguages[currentNumOfLanguages] = new char[strlen(language) + 1];
+    strcpy(allLanguages[currentNumOfLanguages], language);
+    currentNumOfLanguages++;
     return true;
 }
 
@@ -74,7 +77,7 @@ void FlightAttendet::print(ostream& out) const
     Worker::print(out);
     out << "Languages: {";
     for (int i = 0; i < currentNumOfLanguages; ++i)
-        out << allLanguages[i] << ", ";
+        out << allLanguages[i] << ((i == currentNumOfLanguages - 1)? "" : ", ");
     out << "}" << endl;
 }
 

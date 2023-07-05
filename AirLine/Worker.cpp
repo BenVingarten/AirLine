@@ -40,7 +40,7 @@ void Worker::saveToFile(ofstream& out) const
 {
     Person::saveToFile(out);
     
-    out << cardNumber << salary << seniority << isWorkerAvailable << endl;
+    out << cardNumber << endl << salary << endl << seniority << endl << isWorkerAvailable << endl;
 }
 
 bool Worker::isSalaryValid(float salary)const 

@@ -3,7 +3,7 @@
 #include "Passenger.h"
 
 Ticket::Ticket(int cost, int gate, const Time& board, TripInfo* info, int seat,
-			Flight* myFlight = nullptr)
+			Flight& myFlight)
 	: price(cost), gate(gate), boarding(board), pInfo(info), seat(seat), flight(myFlight)
 {
 }
@@ -18,7 +18,6 @@ Ticket::Ticket(Ticket&& ticket) noexcept
 {
 	ticket.pInfo = nullptr;
 	ticket.pPassenger = nullptr;
-	ticket.flight = nullptr;
 }
 
 
@@ -47,7 +46,7 @@ const Ticket& Ticket::operator=(Ticket&& t) noexcept
 
 		t.pInfo = nullptr;
 		t.pPassenger = nullptr;
-		t.flight = nullptr;
+		
 	}
 	return *this;
 }
@@ -55,7 +54,7 @@ const Ticket& Ticket::operator=(Ticket&& t) noexcept
 void Ticket::print(ostream& out) const
 {
 	out << "Ticket Information:" << endl;
-	out << "Flight number: " << flight->getFlightNumber();
+	out << "Flight number: " << flight.getFlightNumber();
 	out << ", Price: " << price;
 	out << ", Gate: " << gate;
 	out << ", Boarding Time: " << boarding;

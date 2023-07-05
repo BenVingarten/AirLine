@@ -34,6 +34,7 @@
     <ClInclude Include="Travel.h" />
     <ClInclude Include="TripInfo.h" />
     <ClInclude Include="Worker.h" />
+    <ClInclude Include="WorkerPassenger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirLine.cpp" />
@@ -52,6 +53,7 @@
     <ClCompile Include="Travel.cpp" />
     <ClCompile Include="TripInfo.cpp" />
     <ClCompile Include="Worker.cpp" />
+    <ClCompile Include="WorkerPassanger.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
