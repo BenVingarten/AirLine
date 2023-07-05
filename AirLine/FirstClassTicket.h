@@ -11,13 +11,12 @@ class FirstClassTicket: public Ticket
 {
 
 public:
-	FirstClassTicket(int cost, int gate, const Time& board, TripInfo* info, int seat, Flight* myFlight = nullptr);
+	FirstClassTicket(int cost, int gate, const Time& board, TripInfo* info, int seat, Flight& myFlight);
 	FirstClassTicket(const FirstClassTicket& fct);
 	FirstClassTicket(FirstClassTicket&& t) noexcept;
 	~FirstClassTicket() {};
 
 
-	//FirstClassTicket& operator =(const FirstClassTicket& p);  // operator =
 	Ticket* clone()const override;
 
 	const FirstClassTicket& operator =(FirstClassTicket&& p) noexcept;

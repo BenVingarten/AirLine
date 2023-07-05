@@ -4,14 +4,14 @@ using namespace std;
 #include "Person.h"
 #include "Flight.h"
 
-#define MINIMUM_WAGE 1000
+
 
 class Flight;
 class Worker : virtual public Person
 {
-										//TODO worker passenger 
-
 protected:
+	static const int MINIMUM_WAGE = 1000;
+
 	 static int workerCardNumberGenerator; //initiallized outside of the class to 2222 (only once!)
 	 int cardNumber;
 	 float salary;

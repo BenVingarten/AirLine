@@ -5,9 +5,16 @@
 #include "FlightAttendet.h"
 
 
+int Flight::flightNumberGen = 4444;
+int Flight::workersOfType[3] = { 0, 0, 0 };
+const float Flight::PRECENTAGE_OF_FIRST_CLASS_TICKETS = 0.3;
+const float Flight::FIRST_CLASS_COST_PRECENT = 1.5;
 
-Flight::Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[MAX_CHAR_CODE], int durHour, int durMinute, int borHour, int borMinute,
-				int day, int month, int year, Plane* plane, int ticketCost, int gate, char* meal)
+
+
+Flight::Flight(AirLine& myAirLine, char* destination, char* source,
+	int durHour, int durMinute, int borHour, int borMinute, int day, int month, int year, Plane* plane,
+	int ticketCost, int gate, char* meal)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(destination, source, durHour, durMinute, day, month, year),
 		boardingTime(borHour, borMinute), currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
 		crewMembers(), numberOfDishes(0)
@@ -22,7 +29,8 @@ Flight::Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[
 void Flight::createTickets(int ticketCost, int gate)
 {
 
-	FirstClassTicket tmp(ticketCost, gate, boardingTime, &info, 0, this);
+	FirstClassTicket tmp = FirstClassTicket(ticketCost, gate, boardingTime, &info, 0, *this);
+
 	int numOfSeats = pPlane->getNumOfSeats();
 
 	for (int i = 0; i < numOfSeats; i++)
@@ -37,8 +45,9 @@ void Flight::createTickets(int ticketCost, int gate)
 	}
 }
 
-Flight::Flight(AirLine* myAirLine, const Travel& trav, const Date& d, const Time& time, Plane* plane = nullptr,
-				int ticketCost = 20, int gate = 1, char* meal = nullptr)
+Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
+	const Time& time, Plane* plane = nullptr, int ticketCost = 20,
+	int gate = 1, char* meal = nullptr)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, time), currentPurchasedTickets(0), 
 	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
 {
@@ -48,7 +57,7 @@ Flight::Flight(AirLine* myAirLine, const Travel& trav, const Date& d, const Time
 	}
 }
 
-Flight::Flight(AirLine* myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr)
+Flight::Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane, int ticketCost, int gate, char* meal)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(t), currentPurchasedTickets(0), 
 	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
 {

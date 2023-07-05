@@ -4,7 +4,7 @@ using namespace std;
 #include "Worker.h"
 #include "Passenger.h"
 
-#define MAX_LANGUAGES  10
+#define MAX_LANGUAGES  10	//define because its limiter for array
 
 class FlightAttendet: public Worker
 {

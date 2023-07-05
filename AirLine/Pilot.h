@@ -5,11 +5,12 @@ using namespace std;
 #include "Time.h"
 #include "Flight.h"
 
-#define RAISE_PRECENTAGE 0.7
+
 
 class Pilot: public Worker
 {
 private:
+	static const float RAISE_PRECENTAGE;
 
 	Time flightHours;
 

@@ -5,7 +5,7 @@ using namespace std;
 #define MIN_SEATS 10
 #define MAX_SEATS 250
 #define MIN_WEIGHT 3000 //avarage 150 passengers * 20 kg/pas
-#define MAX_WEIGHT 9000
+#define MAX_WEIGHT_PLANE 9000
 #define MIN_SPEED 800 //km per hour
 #define MAX_SPEED 1000 
 

@@ -7,10 +7,13 @@ using namespace std;
 class TripInfo;
 class Passenger;
 
-#define MAX_WEIGHT 24.0;
+
 class Ticket
 {
 protected:
+
+	static const float MAX_WEIGHT;
+
 	int price;
 	int gate;
 	Time boarding;
@@ -18,6 +21,7 @@ protected:
 	int seat; // accroding to the index in the tickets array (in flight class)
 	Passenger* pPassenger;
 	Flight& flight;	
+	
 	virtual void print(ostream& out)const;
 
 public:

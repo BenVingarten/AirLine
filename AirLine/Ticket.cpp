@@ -2,6 +2,8 @@
 #include "TripInfo.h"
 #include "Passenger.h"
 
+const float Ticket::MAX_WEIGHT = 24.0;
+
 Ticket::Ticket(int cost, int gate, const Time& board, TripInfo* info, int seat,
 			Flight& myFlight)
 	: price(cost), gate(gate), boarding(board), pInfo(info), seat(seat), flight(myFlight)

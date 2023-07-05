@@ -86,7 +86,7 @@ void Plane::readAndsetNumOfSeats(ostream& out, istream& in)
 void Plane::readAndsetLuggageWeight(ostream& out, istream& in)
 {
     do {
-        cout << "Enter maximum luggage weight between " << MIN_WEIGHT << " and " << MAX_WEIGHT << ": ";
+        cout << "Enter maximum luggage weight between " << MIN_WEIGHT << " and " << MAX_WEIGHT_PLANE << ": ";
         in >> maxLuggageWeight;
         in.ignore(); // Ignore the newline character
 
@@ -110,7 +110,7 @@ bool Plane::isNumOfSeatsValid(int numOfSeats)const
 
 bool Plane::isMaxLuggageWeightValid(int weight)const
 {
-    return (weight < MIN_WEIGHT || weight > MAX_WEIGHT);
+    return (weight < MIN_WEIGHT || weight > MAX_WEIGHT_PLANE);
 }
 
 bool Plane::isMaxSpeedValid(float speed)const

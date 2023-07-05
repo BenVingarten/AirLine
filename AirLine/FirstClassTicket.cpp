@@ -1,9 +1,9 @@
 #include "FirstClassTicket.h"
 #include "Passenger.h"
 
-FirstClassTicket::FirstClassTicket(int cost, int gate, const Time& board, TripInfo* info, int seat,
-	Flight* myFlight = nullptr)
-	: Ticket(cost, gate, board, info, seat, p, myFlight) {}
+FirstClassTicket::FirstClassTicket(int cost, int gate, const Time& boardingT, TripInfo* info, 
+	int seat, Flight& myFlight)
+	: Ticket(cost, gate, boardingT, info, seat, myFlight) {}
 
 
 FirstClassTicket::FirstClassTicket(const FirstClassTicket& fct)
@@ -15,10 +15,6 @@ FirstClassTicket::FirstClassTicket(FirstClassTicket&& t) noexcept
 
 }
 
-FirstClassTicket::~FirstClassTicket()
-{
-
-}
 
 Ticket* FirstClassTicket::clone() const
 {
@@ -42,7 +38,7 @@ void FirstClassTicket::print(ostream& out) const
 
 void FirstClassTicket::showMenu(ostream& out) const
 {
-	flight->showMenu();
+	flight.showMenu();
 }
 
 ostream& operator<<(ostream& out, const FirstClassTicket& fct)

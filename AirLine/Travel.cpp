@@ -3,6 +3,9 @@
 #include "Travel.h"
 #include <fstream>
 
+const char* Travel::DEFAULT_SOURCE_CODE = "TLV";
+const char* Travel::DEFAULT_DEST_CODE = "ATH";
+
 Travel::Travel(const char* s, const char* d) 
 {
     if (airportCodeValid(s))

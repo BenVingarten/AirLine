@@ -13,34 +13,37 @@ using namespace std;
 #include "AirLine.h"
 
 
-#define MAX_CREW_MEMBERS 10 // 2 pilot 4 flightAttendets and 4 technicians
-#define PRECENTAGE_OF_FIRST_CLASS_TICKETS 0.3 //TODO: CHANGE to const 
-#define FIRST_CLASS_COST_PRECENT 1.5
-#define MAX_DISHES 10
+#define MAX_CREW_MEMBERS 10 //(limit array) 2 pilot 4 flightAttendets and 4 technicians
+#define MAX_DISHES 10 //limit array of dishes
 
-#define MIN_PILOTS 1
-#define MIN_TECHNICHIAN 2
-#define MIN_FLIGHT_ATTENDENT 2
-
-#define MIN_TICKETS 2
 
 class Flight
 {
 private:
 	static int workersOfType[3]; //workers of type [pilot], [flightAttendent], [Technichian]
 	static int flightNumberGen; //initialized outside of the class to 4444
+	static const  int MIN_PILOTS = 1;
+	static const  int MIN_TECHNICHIAN = 2;
+	static const  int MIN_FLIGHT_ATTENDENT = 2;
+	static const  int MIN_TICKETS = 2;
+	static const float PRECENTAGE_OF_FIRST_CLASS_TICKETS;
+	static const float FIRST_CLASS_COST_PRECENT;
 
-	AirLine* airLine; //TODO: Reference 
+	AirLine& airLine; 
+	
 	int flightNumber;
 	TripInfo info;
-	int currentPurchasedTickets;
-	int currentNumOfCrewMembers;
 	Time boardingTime;
-	Plane* pPlane;
+	
+	int currentPurchasedTickets;
 	Ticket** ticketArr;
+	
 	Worker* crewMembers[MAX_CREW_MEMBERS];
-	char* meal;
+	int currentNumOfCrewMembers;
+	
+	Plane* pPlane;
 	char* firstClassMenu[MAX_DISHES];
+	char* meal;
 	int numberOfDishes;
 	
 
@@ -49,24 +52,27 @@ private:
 
 public:
 
-	Flight(AirLine* myAirLine, char destination[MAX_CHAR_CODE], char source[MAX_CHAR_CODE], //get char*
+	Flight(AirLine& myAirLine, char* destination, char* source, 
 		int durHour, int durMinute, int borHour, int borMinute, int day, int month, int year, Plane* plane = nullptr,
 		int ticketCost = 20, int gate = 1, char* meal = nullptr);
-	Flight(AirLine* myAirLine, const Travel & trav, const Date& d, const Time& time, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
-	Flight(AirLine* myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
-	Flight(AirLine* myAirLine, ostream& out, istream& in); //change to ifstream&
+	Flight(AirLine& myAirLine, const Travel & trav, const Date& d, 
+			const Time& time, Plane* plane = nullptr, int ticketCost = 20, 
+			int gate = 1, char* meal = nullptr);
+	Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
 	~Flight();
 
 
-	int getFlightNumber()const;
-	const Time& getDuration()const;
+	Flight(AirLine* myAirLine, ostream& out, istream& in); //change to ifstream&
+
+	int				getFlightNumber()const;
+	const Time&		getDuration()const;
 	const TripInfo& getInfo()const;
-	Plane* getPlane()const;
-	int getNumOfcurrentPurchasedTickets()const;
-	int getNumOfTickets()const; //number of seats in plane
-	Ticket** getTicketArray()const;
-	void showMenu()const;
-	void showDish()const;
+	Plane*			getPlane()const;
+	int				getNumOfcurrentPurchasedTickets()const;
+	int				getNumOfTickets()const; //number of seats in plane
+	Ticket**		getTicketArray()const;
+	void			showMenu()const;
+	void			showDish()const;
 
 	bool operator = (const Flight& f);
 	friend ostream& operator <<(ostream& out, const Flight& f);
@@ -88,5 +94,4 @@ public:
 };
 
 
-int Flight::flightNumberGen = 4444;
-int Flight::workersOfType[3] = { 0, 0, 0 };
+

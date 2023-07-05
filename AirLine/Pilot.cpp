@@ -2,6 +2,8 @@
 #include "Pilot.h"
 #include <fstream>
 
+const float Pilot::RAISE_PRECENTAGE = 0.7;
+
 Pilot::Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours)
     : Person(n, age, gender), Worker(n, age, gender, salary, seniority), flightHours(flightHours)
 {

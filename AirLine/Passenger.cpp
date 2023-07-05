@@ -3,6 +3,8 @@
 #include "Passenger.h"
 #include <fstream>
 
+
+
 Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, const char* code)
     : Person(n, age, gender), luggageWeight(luggageWeight), ticket(nullptr)
 {
@@ -10,7 +12,7 @@ Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, con
     if (Travel::airportCodeValid(code))
         strcpy(airportCode, code);
     else
-        strcpy(airportCode, DEFAULT_SOURCE_CODE);
+        strcpy(airportCode, Travel::DEFAULT_SOURCE_CODE);
 }
 
 Passenger::Passenger(Passenger&& p) noexcept
