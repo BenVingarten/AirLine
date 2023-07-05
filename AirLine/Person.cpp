@@ -42,7 +42,7 @@ Person::Person(ifstream& in)
 
 void Person::saveToFile(ofstream& out) const
 {
-	out << *this;
+	out << name << endl << age << gender;
 }
 
 
