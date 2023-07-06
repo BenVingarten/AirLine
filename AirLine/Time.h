@@ -21,7 +21,7 @@ public:
 
     //read and save to file
     Time(ifstream& in);
-    void saveTime(ofstream& out) const;
+    void saveToFile(ofstream& out) const;
 
     virtual ~Time();
 

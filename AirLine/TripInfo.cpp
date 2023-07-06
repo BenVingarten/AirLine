@@ -15,17 +15,15 @@ TripInfo::TripInfo(const Date& d, const Travel& trav, const Time& time)
 
 TripInfo::TripInfo(ifstream& in) : Travel(in)
 {
-    in.ignore();
     date = Date(in);
-    in.ignore();
     flightDuration = Time(in);
 }
 
-void TripInfo::saveToFile(ofstream& out)
+void TripInfo::saveToFile(ofstream& out)const
 {
-    Travel::saveTravel(out);
+    Travel::saveToFile(out);
     date.saveDate(out);
-    flightDuration.saveTime(out);
+    flightDuration.saveToFile(out);
 }
 
 

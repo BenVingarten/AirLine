@@ -37,12 +37,15 @@ Person::Person(ifstream& in)
 	char temp[MAX_NAME_LEN];
 	in.getline(temp, MAX_NAME_LEN);
 	setName(temp);
-	in >> age >> gender;
+
+	in >> age;
+	in >> gender;
+	in.ignore();
 }
 
 void Person::saveToFile(ofstream& out) const
 {
-	out << name << endl << age << gender;
+	out << name << endl << age << endl << gender << endl;
 }
 
 

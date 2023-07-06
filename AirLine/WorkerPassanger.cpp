@@ -38,7 +38,6 @@ WorkerPassenger::WorkerPassenger(WorkerPassenger&& wp) noexcept
 WorkerPassenger::WorkerPassenger(ifstream& in)
     :  Person(in), Passenger(in), Worker(in)
 {
-    in.ignore();
     in >> discount;
     in.ignore();
 }

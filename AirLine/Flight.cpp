@@ -5,7 +5,7 @@
 #include "Passenger.h"
 #include "FlightAttendet.h"
 
-
+//Initializing
 int Flight::flightNumberGen = 4444;
 int Flight::workersOfType[3] = { 0, 0, 0 };
 
@@ -38,8 +38,8 @@ Flight::Flight(AirLine& myAirLine, char* destination, char* source,
 
 
 Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
-	const Time& time, Plane* plane = nullptr, int ticketCost = 20,
-	int gate = 1, const char* meal = nullptr)
+	const Time& time, Plane* plane, int ticketCost,
+	int gate, const char* meal)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, time), 
 		currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), 
 		ticketArr(nullptr), numberOfDishesInMenu(0)
@@ -94,8 +94,8 @@ Flight::Flight(AirLine& myAirLine, ifstream& in)
 
 void Flight::saveToFile(ofstream& out) const 
 {
-	info.saveTravel(out);
-	boardingTime.saveTime(out);
+	info.saveToFile(out);
+	boardingTime.saveToFile(out);
 	out << flightNumber << endl;
 
 	out << meal << endl;
@@ -162,6 +162,7 @@ Ticket** Flight::getTicketArray() const
 
 void Flight::showDish() const
 {
+
 }
 
 bool Flight::operator=(const Flight& f)

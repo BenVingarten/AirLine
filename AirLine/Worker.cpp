@@ -32,15 +32,19 @@ Worker::Worker(ifstream& in): Person(in), currentFlight(nullptr)
     //when we read from file we read from data base to create worker
     // the pointers won't be saved or wrtitten (Flight*)
 
-    in>> cardNumber >> salary >> seniority >> isWorkerAvailable;
+    in >> cardNumber;
+    in >> salary;
+    in >> seniority;
+    in >> isWorkerAvailable;
+    in.ignore();
  
 }
 
 void Worker::saveToFile(ofstream& out) const
 {
     Person::saveToFile(out);
-    
-    out << cardNumber << endl << salary << endl << seniority << endl << isWorkerAvailable << endl;
+    out << cardNumber << endl << salary << endl <<
+        seniority << endl << isWorkerAvailable << endl;
 }
 
 bool Worker::isSalaryValid(float salary)const 

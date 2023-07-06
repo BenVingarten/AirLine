@@ -19,14 +19,15 @@ Technician::Technician(Technician&& t) noexcept
 Technician::Technician(ifstream& in): Person(in), Worker(in)
 {
     int typeVal;
-    in >> planesPreparedThisYear >> typeVal;
+    in >> planesPreparedThisYear;
+    in >> typeVal;
     type = static_cast<eTechnicianType>(typeVal);
+    in.ignore();
 }
 
 void Technician::saveToFile(ofstream& out) const
 {
     Worker::saveToFile(out);
-    //TODO: TO CHECK -------------------------------------------------
     out << planesPreparedThisYear << endl << static_cast<int>(type) << endl;
 }
 

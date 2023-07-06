@@ -22,13 +22,14 @@ class Flight
 private:
 	static int workersOfType[3]; //workers of type [pilot], [flightAttendent], [Technichian]
 	static int flightNumberGen; //initialized outside of the class to 4444
-	static const  int MIN_PILOTS = 1;
-	static const  int MIN_TECHNICHIAN = 2;
-	static const  int MIN_FLIGHT_ATTENDENT = 2;
-	static const  int MIN_TICKETS = 2;
 	static const float PRECENTAGE_OF_FIRST_CLASS_TICKETS;
 	static const float FIRST_CLASS_COST_PRECENT;
 	static const char* DEFAULT_FLIGHT_MEAL;
+
+	static const int MIN_PILOTS = 1;
+	static const int MIN_TECHNICHIAN = 2;
+	static const int MIN_FLIGHT_ATTENDENT = 2;
+	static const int MIN_TICKETS = 2;
 
 	AirLine& airLine; 
 	
@@ -36,13 +37,15 @@ private:
 	TripInfo info;
 	Time boardingTime;
 	
+	Plane* pPlane;
+
 	int currentPurchasedTickets;
 	Ticket** ticketArr;
 	
 	Worker* crewMembers[MAX_CREW_MEMBERS];
 	int currentNumOfCrewMembers;
 	
-	Plane* pPlane;
+	
 	char* firstClassMenu[MAX_DISHES];
 	char* meal;
 	int numberOfDishesInMenu;

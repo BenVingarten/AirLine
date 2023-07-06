@@ -23,7 +23,7 @@ public:
 	
 	//read and write to file
 	TripInfo(ifstream& in);
-	void saveToFile(ofstream& out);
+	void saveToFile(ofstream& out) const;
 
 
 	void setDuration(int hour, int minute);

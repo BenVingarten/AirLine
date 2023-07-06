@@ -7,8 +7,9 @@ Time::Time(int hours, int minutes) : hours(hours), minutes(minutes) {}
 
 Time::Time(ifstream& in)
 {
-    char tmp;
-    in >> hours >> tmp >> minutes;
+    in >> hours;
+    in >> minutes;
+    in.ignore();
 }
 
 void Time::saveTime(ofstream& out) const

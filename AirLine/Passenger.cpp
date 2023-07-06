@@ -30,15 +30,17 @@ Passenger::Passenger(Passenger&& p) noexcept
 
 Passenger::Passenger(ifstream& in): Person(in), ticket(nullptr)
 {
-    in >> passport >> luggageWeight >> airportCode;
+    in >> passport;
+    in >> luggageWeight;
+    in >> airportCode;
     in.ignore();
 }
 
 void Passenger::saveToFile(ofstream& out) const
 {
     Person::saveToFile(out);
-    out << passport << endl << luggageWeight << endl << airportCode << endl;
-
+    out << passport << endl <<
+        luggageWeight << endl << airportCode << endl;
 
 }
 

@@ -23,7 +23,7 @@ public:
 
 	//read and save to file
 	Travel(ifstream& in);
-	void saveTravel(ofstream& out)const;
+	void saveToFile(ofstream& out)const;
 
 	
 	void setSource(const char* s);

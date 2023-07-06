@@ -32,20 +32,24 @@ FlightAttendet::FlightAttendet(ifstream& in): Person(in), Worker(in)
 {
     in >> currentNumOfLanguages;
     in.ignore();
-    char temp[100];
-    for (int i = 0; i < currentNumOfLanguages; ++i)
+    char tmpLang[MAX_NAME_LEN];
+    for (int i = 0; i < currentNumOfLanguages; i++)
     {
-        in.getline(temp, 100);
-        allLanguages[i] = new char[strlen(temp) + 1];
-        strcpy(allLanguages[i], temp);
+        in.getline(tmpLang, MAX_NAME_LEN);
+
+        if (allLanguages[i] != nullptr)
+            delete[] allLanguages[i];
+
+        allLanguages[i] = new char[strlen(tmpLang) + 1];
+        strcpy(allLanguages[i], tmpLang);
     }
 }
 
 void FlightAttendet::saveToFile(ofstream& out) const
 {
     Worker::saveToFile(out);
-    out << currentNumOfLanguages;
-    for (int i = 0; i < currentNumOfLanguages; ++i)
+    out << currentNumOfLanguages << endl;
+    for (int i = 0; i < currentNumOfLanguages; i++)
         out << allLanguages[i] << endl;
 }
 

@@ -22,13 +22,17 @@ Travel::Travel(const char* s, const char* d)
 
 Travel::Travel(ifstream& in)
 {
-   in >> source >> destination;
+    in >> source;
+    in >> destination;
+    in.ignore();
 }
 
 void Travel::saveTravel(ofstream& out) const
 {
     out << source << endl << destination << endl;
 }
+
+
 
 
 
