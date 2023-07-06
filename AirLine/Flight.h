@@ -45,7 +45,6 @@ private:
 	Worker* crewMembers[MAX_CREW_MEMBERS];
 	int currentNumOfCrewMembers;
 	
-	
 	char* firstClassMenu[MAX_DISHES];
 	char* meal;
 	int numberOfDishesInMenu;
