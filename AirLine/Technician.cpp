@@ -43,6 +43,16 @@ void Technician::setRaise() {
      salary += planesPreparedThisYear * 5;
 }
 
+bool Technician::setFlight(Flight* flight)
+{
+    if (Worker::setFlight(flight))
+    {
+        planesPreparedThisYear++;
+        return true;
+    }
+    return false;
+}
+
 void Technician::prepareForFlight(ostream& out)
 {
     testSystems(out);

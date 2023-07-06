@@ -183,16 +183,15 @@ bool Flight::operator=(const Flight& f)
 	boardingTime = f.boardingTime;
 	
 	//Deep copy meal
-	delete[] meal;
-	if (f.meal != nullptr) 
-		meal = _strdup(f.meal);
+	setMeal(f.meal);
 	
 
 	//Deep copy menu
 	numberOfDishesInMenu = f.numberOfDishesInMenu;
 	for (int i = 0; i < numberOfDishesInMenu; i++)
 	{
-		firstClassMenu[i] = _strdup(f.firstClassMenu[i]);
+		firstClassMenu[i] = new char[strlen(f.firstClassMenu[i]) + 1];
+		strcpy(firstClassMenu[i], f.firstClassMenu[i]);
 	}
 
 	f.airLine.addFlight(*this); // cannot do myReference = other.Reference therefore we add the AirlineRef from Airline
@@ -209,21 +208,16 @@ ostream& operator<<(ostream& out, const Flight& f)
 	out << "Current Number of Crew Members: " << f.currentNumOfCrewMembers << endl;
 	if(f.meal != nullptr)
 		out << "Standart meal: " << f.meal << endl;
-	if(f.numberOfDishesInMenu == 0)
-		out << "No dishes in first class menu " << endl;
-	else
-	{
-		out << "First Class Menu: " << endl;
-		for (int i = 0; i < f.numberOfDishesInMenu; ++i)
-			out << (i+1) <<") " << f.currentPurchasedTickets << endl;
-		
-	}
 
+	f.showFirstClassMenu(out);
 	return out;
 }
 
 bool Flight::setPlane(Plane* pl)
 {
+	if (pl == nullptr)
+		return false;
+
 	if (pPlane != nullptr)
 		delete pPlane;
 
@@ -238,6 +232,19 @@ bool Flight::setDuration(const Time& t)
 	return true;
 }
 
+bool Flight::setMeal(const char* pMeal)
+{
+	if (pMeal == nullptr)
+		return false;
+
+	if (meal != nullptr)
+		delete meal;
+	
+	meal = new char[strlen(pMeal) + 1];
+	strcpy(meal, pMeal);
+	return true;
+}
+
 bool Flight::addCrewMember(Worker* w)
 {
 	if (currentNumOfCrewMembers >= MAX_CREW_MEMBERS)
@@ -246,9 +253,14 @@ bool Flight::addCrewMember(Worker* w)
 	
 
 	if (w->isAvailable() && checkAddCrewMember(w))
+		// no need to check if the worker is already in crew,
+		// because if he does, then he is no loger available.
 	{
 		crewMembers[currentNumOfCrewMembers] = w;
 		currentNumOfCrewMembers++;
+		w->setFlight(this); // if this is technicain will also increase number of planes prepeard because: setFlight is virtual
+		w->changeAvailability();
+
 		return true;
 	}
 
@@ -257,6 +269,29 @@ bool Flight::addCrewMember(Worker* w)
 
 bool Flight::addDishToMenu(const char* dish)
 {
+	if(numberOfDishesInMenu >= MAX_DISHES)
+		return false;
+
+	if (isMealInMenu(dish))
+		return false;
+
+	firstClassMenu[numberOfDishesInMenu] = new char[strlen(dish) + 1];
+	strcpy(firstClassMenu[numberOfDishesInMenu], dish);
+	numberOfDishesInMenu++;
+	return true;
+	
+	
+}
+
+bool Flight::isMealInMenu(const char* pMeal) const
+{
+	if (firstClassMenu == nullptr)
+		return false;
+
+	for (int i = 0; i < numberOfDishesInMenu; i++)
+		if (strcmp(firstClassMenu[i], pMeal) == 0)
+			return true;
+
 	return false;
 }
 
@@ -313,10 +348,18 @@ bool Flight::checkAddCrewMember(Worker* w)
 	}
 }
 
-bool Flight::setMainMealToFlight(const char* meal)
+bool Flight::setMainMealToFlight(const char* pMeal)
 {
+	if (strcmp(pMeal,meal) == 0 )
+		return false;
 
-	return false;
+	if (pMeal == nullptr)
+		setMeal(DEFAULT_FLIGHT_MEAL);
+
+	else
+		setMeal(pMeal);
+
+	return true;
 }
 
 void Flight::assignCrew(Worker** workers, int workersSize)

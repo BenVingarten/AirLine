@@ -85,10 +85,12 @@ public:
 	
 	bool setPlane(Plane* pl);
 	bool setDuration(const Time& t);
+	bool setMeal(const char* pMeal);
 	void assignCrew(Worker** workers, int workersSize);
 	bool checkIfFlightReady();
 	bool addDishToMenu(const char* dish);
-	bool setMainMealToFlight(const char*);
+	bool isMealInMenu(const char* pMeal) const;
+	bool setMainMealToFlight(const char* pMeal);
 	
 	bool checkCrewTypes();
 	bool checkAddCrewMember(Worker* w);

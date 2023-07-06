@@ -108,6 +108,11 @@ bool Worker::setFlight(Flight* flight) {
     return false;
 }
 
+void Worker::changeAvailability()
+{
+    isWorkerAvailable = !isWorkerAvailable;
+}
+
 Worker& Worker::operator++() {
     ++seniority;
     setRaise();

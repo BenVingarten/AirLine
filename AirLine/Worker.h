@@ -46,8 +46,9 @@ public:
 	bool isSalaryValid(float salary)const;
 	void readAndsetSalary(ostream& out, istream& in);
 	void readAndsetSeniority(ostream& out, istream& in);
-	bool setFlight(Flight* flight);
-
+	virtual bool setFlight(Flight* flight); // we put it virtual because technicain will also need to increase the number of planes 
+	                                        // he prepeard in his implementation. pilot and flightAttendet will have the same implementation as worker.
+	void changeAvailability();
 	Worker& operator ++(); // add 1 year seniority
 	bool operator ==(const Worker& worker)const;
 
