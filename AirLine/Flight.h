@@ -77,21 +77,19 @@ public:
 	int				getNumOfcurrentPurchasedTickets()const;
 	int				getNumOfTickets()const; //number of seats in plane
 	Ticket**		getTicketArray()const;
-	void			showMenu()const;
-	void			showDish()const;
+	void			showFirstClassMenu(ostream& out)const;
+	void			showMainMeal(ostream& out)const;
 
 	bool operator = (const Flight& f);
 	friend ostream& operator <<(ostream& out, const Flight& f);
 	
 	bool setPlane(Plane* pl);
 	bool setDuration(const Time& t);
-	void assignCrew(ostream& out, istream& in);
 	void assignCrew(Worker** workers, int workersSize);
 	bool checkIfFlightReady();
 	bool addDishToMenu(const char* dish);
 	bool setMainMealToFlight(const char*);
 	
-	void interactiveSetPlane(ostream& out, istream& in);
 	bool checkCrewTypes();
 	bool checkAddCrewMember(Worker* w);
 	

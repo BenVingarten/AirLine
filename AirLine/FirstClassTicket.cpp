@@ -38,7 +38,7 @@ void FirstClassTicket::print(ostream& out) const
 
 void FirstClassTicket::showMenu(ostream& out) const
 {
-	flight.showMenu();
+	flight.showFirstClassMenu();
 }
 
 ostream& operator<<(ostream& out, const FirstClassTicket& fct)

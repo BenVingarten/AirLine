@@ -110,6 +110,9 @@ Flight::~Flight()
 	
 }
 
+
+//Get and Show
+
 int Flight::getFlightNumber() const
 {
 	return flightNumber;
@@ -146,12 +149,24 @@ Ticket** Flight::getTicketArray() const
 	return ticketArr;
 }
 
-void Flight::showDish() const
+void Flight::showMainMeal(ostream& out) const
 {
-
+	out << "Plane Main Meal is: " << meal << endl;
 }
 
-bool Flight::operator=(const Flight& f)
+void Flight::showFirstClassMenu(ostream& out) const
+{
+	out << "First Class Menu: " << endl;
+	for (int i = 0; i < numberOfDishesInMenu; ++i)
+		out << (i + 1) << ") " << firstClassMenu[i] << endl;
+	if (numberOfDishesInMenu == 0)
+		out << "No extra dishes for first class on this flight." << endl;
+}
+
+
+//Operators, Set and Check
+
+bool Flight::operator=(const Flight& f) 
 {
 	/*
 	* We copy the dry details of flight
@@ -162,20 +177,26 @@ bool Flight::operator=(const Flight& f)
 	if (this == &f)
 		return false;
 
-	flightNumber = flightNumberGen++;
 	
-	airLine = f.airLine;
+	flightNumber = flightNumberGen++;
 	info = f.info;
 	boardingTime = f.boardingTime;
-	meal = _strdup(f.meal);
 	
+	//Deep copy meal
+	delete[] meal;
+	if (f.meal != nullptr) 
+		meal = _strdup(f.meal);
+	
+
+	//Deep copy menu
 	numberOfDishesInMenu = f.numberOfDishesInMenu;
 	for (int i = 0; i < numberOfDishesInMenu; i++)
 	{
 		firstClassMenu[i] = _strdup(f.firstClassMenu[i]);
 	}
 
-
+	f.airLine.addFlight(*this); // cannot do myReference = other.Reference therefore we add the AirlineRef from Airline
+	//TODO: To check if working ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	return true;
 }
 
@@ -234,69 +255,19 @@ bool Flight::addCrewMember(Worker* w)
 	return false;
 }
 
-
-
-void Flight::assignCrew(ostream& out, istream& in)
-{
-	int choose;
-	Worker* w;
-	do 
-	{
-		out << "Please choose: \nadd crew member - 0";
-		out << "\nadd new crew member - 1" << endl;
-		out << "\ndon't add crew member right now - 2" << endl;
-		in.ignore(); // Ignore the newline character
-		in >> choose;
-		if (choose == 0)
-			w = airLine.chooseWorker();
-		else if (choose == 1)
-			w = airLine.interactiveAddWorker(out, in);
-
-		addCrewMember(w);
-
-	} while (choose != 2);
-
-
-}
-
-
-
-bool Flight::checkIfFlightReady()
-{
-	return (
-			checkCrewTypes() && //check crew members 
-			currentPurchasedTickets >= MIN_TICKETS && //check tickets purchased 
-			pPlane->isReadyToFly() //check plane is ready 
-			);
-}
-
 bool Flight::addDishToMenu(const char* dish)
 {
 	return false;
 }
 
-
-//moving to the AirLine
-void Flight::interactiveSetPlane(ostream& out, istream& in)
+bool Flight::checkIfFlightReady()
 {
-	
-
-	out << "Please choose: New plane - 0 | Existing plane - 1" << endl;
-	in.ignore(); // Ignore the newline character
-	int choose;
-	in >> choose;
-	if (choose == 0)
-	{
-		pPlane = new Plane(out, in);
-		airLine->addPlane(*pPlane);
-	}
-	else
-	{
-		setPlane(airLine->choosePlane());
-	}
+	return (
+		checkCrewTypes() && //check crew members 
+		currentPurchasedTickets >= MIN_TICKETS && //check tickets purchased 
+		pPlane->isReadyToFly() //check plane is ready 
+		);
 }
-
-
 
 bool Flight::checkCrewTypes()
 {
