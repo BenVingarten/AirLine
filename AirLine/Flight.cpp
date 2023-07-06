@@ -38,9 +38,9 @@ Flight::Flight(AirLine& myAirLine, char* destination, char* source,
 
 
 Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
-	const Time& time, Plane* plane, int ticketCost,
+	const Time& durTime, const Time& borTime, Plane* plane, int ticketCost,
 	int gate, const char* meal)
-	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, time), 
+	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, durTime), boardingTime(borTime),
 		currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), 
 		ticketArr(nullptr), numberOfDishesInMenu(0)
 {
@@ -54,20 +54,6 @@ Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
 		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
 }
 
-Flight::Flight(AirLine& myAirLine, const TripInfo& t, 
-	Plane* plane, int ticketCost, int gate, const char* meal)
-	: airLine(myAirLine), flightNumber(flightNumberGen++), info(t), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishesInMenu(0)
-{
-	if (plane != nullptr)
-		createTickets(ticketCost, gate);
-
-
-	if (meal != nullptr)
-		setMainMealToFlight(meal);
-	else
-		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
-}
 
 Flight::Flight(AirLine& myAirLine, ifstream& in)
 	: airLine(myAirLine), info(in), boardingTime(in)
@@ -75,16 +61,16 @@ Flight::Flight(AirLine& myAirLine, ifstream& in)
 	
 	in >> flightNumber;
 	
-	char tmp[100];
+	char tmp[MAX_NAME_LEN];
 	
-	in.getline(tmp, 100);
+	in.getline(tmp, MAX_NAME_LEN);
 	meal = new char[strlen(tmp) + 1];
 	strcpy(meal, tmp);
 
 	in >> numberOfDishesInMenu;
 	for (int i = 0; i < numberOfDishesInMenu; ++i)
 	{
-		in.getline(tmp, 100);
+		in.getline(tmp, MAX_NAME_LEN);
 		firstClassMenu[i] = new char[strlen(tmp) + 1];
 		strcpy(firstClassMenu[i], tmp);
 		
@@ -120,7 +106,7 @@ Flight::~Flight()
 	}
 	
 	//we save the workers in the airline database so we don't delete them when flight is deleted
-	delete[] crewMembers; 
+	// also the array is allocated on the stack, so we dont need to delete it as well
 	
 }
 

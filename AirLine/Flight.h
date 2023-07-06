@@ -61,12 +61,9 @@ public:
 		int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
 	Flight(AirLine& myAirLine, const Travel & trav, const Date& d, 
-			const Time& time, Plane* plane = nullptr, 
+			const Time& durTime, const Time& borTime, Plane* plane = nullptr,
 			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
-	Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane = nullptr, 
-			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
-	
 	~Flight();
 
 	//read and save to file
