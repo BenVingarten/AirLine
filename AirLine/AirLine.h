@@ -50,10 +50,10 @@ public:
 
     friend ostream& operator<<(ostream& out, const AirLine& al); // Print operator
 
-    bool addWorker(const Worker& w); // Add worker
+    bool addWorker(Worker& w); // Add worker
     bool addFlight(Flight& f); // Add flight
-    bool addPlane(const Plane& p); // Add plane
-    bool addPassenger(const Passenger* p); // Add passenger
+    bool addPlane(Plane& p); // Add plane
+    bool addPassenger(Passenger* p); // Add passenger
 
     void printFlights()const; // Print all flights
     void printWorkers()const; // Print all workers
@@ -69,6 +69,11 @@ public:
     Worker* chooseWorker()const;
     Flight* chooseFlight()const;
     Passenger* choosePassenger()const;
+
+    bool isWorkerExist(const Worker& w)const;
+    bool isFlightExist(const Flight& f)const;
+    bool isPlaneExist(const Plane& p)const;
+    bool isPassengerExist(const Passenger& p)const;
     
     float executeFlight(Flight& f); // Execute flight
     bool buyTicket(); // Buy ticket

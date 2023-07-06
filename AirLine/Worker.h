@@ -30,13 +30,14 @@ protected:
 	Worker(const char* pName, int theAge, char gen, float  salary, int seniority);
 	Worker(const Worker& w);
 	Worker(Worker&& w) noexcept;
-	virtual ~Worker() {};
 
 	//read and write from file
 	Worker(ifstream& in);
 	void saveToFile(ofstream& out)const;
 
 public:
+	virtual ~Worker() {};
+
 	int getWorkerId()const;
 	float getSalary()const;
 	int getSeniority()const;
