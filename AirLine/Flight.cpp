@@ -1,4 +1,5 @@
 #include <typeinfo>
+#include <fstream>
 #include "Flight.h"
 #include "Ticket.h"
 #include "Passenger.h"
@@ -7,77 +8,102 @@
 
 int Flight::flightNumberGen = 4444;
 int Flight::workersOfType[3] = { 0, 0, 0 };
+
 const float Flight::PRECENTAGE_OF_FIRST_CLASS_TICKETS = 0.3;
 const float Flight::FIRST_CLASS_COST_PRECENT = 1.5;
-
+const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
 
 
 Flight::Flight(AirLine& myAirLine, char* destination, char* source,
 	int durHour, int durMinute, int borHour, int borMinute,
 	int day, int month, int year, Plane* plane,
-	int ticketCost, int gate, char* meal)
-	: airLine(myAirLine), flightNumber(flightNumberGen++), info(destination, source, durHour, durMinute, day, month, year),
-		boardingTime(borHour, borMinute), currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
-		crewMembers(), numberOfDishes(0)
+	int ticketCost, int gate, const char* meal)
+	: airLine(myAirLine), flightNumber(flightNumberGen++), 
+		info(destination, source, durHour, durMinute, day, month, year),
+		boardingTime(borHour, borMinute), currentPurchasedTickets(0), 
+		currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
+		numberOfDishesInMenu(0)
 {
 	if (plane != nullptr)
-	{
 		createTickets(ticketCost, gate);
-		
-	}
+
+	
+	if (meal != nullptr)
+		setMainMealToFlight(meal);
+	else
+		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
+
 }
 
 
 
 Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
 	const Time& time, Plane* plane = nullptr, int ticketCost = 20,
-	int gate = 1, char* meal = nullptr)
-	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, time), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
+	int gate = 1, const char* meal = nullptr)
+	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, time), 
+		currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), 
+		ticketArr(nullptr), numberOfDishesInMenu(0)
 {
 	if (plane != nullptr)
-	{
 		createTickets(ticketCost, gate);
-	}
+
+
+	if (meal != nullptr)
+		setMainMealToFlight(meal);
+	else
+		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
 }
 
-Flight::Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane, int ticketCost, int gate, char* meal)
+Flight::Flight(AirLine& myAirLine, const TripInfo& t, 
+	Plane* plane, int ticketCost, int gate, const char* meal)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(t), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
+	currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr), crewMembers(), numberOfDishesInMenu(0)
 {
 	if (plane != nullptr)
-	{
-		int numOfSeats = plane->getNumOfSeats();
 		createTickets(ticketCost, gate);
-	}
+
+
+	if (meal != nullptr)
+		setMainMealToFlight(meal);
+	else
+		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
 }
 
-Flight::Flight(AirLine* myAirLine, ostream& out, istream& in)
-	: airLine(myAirLine), info(out, in), currentPurchasedTickets(0), 
-	currentNumOfCrewMembers(0), pPlane(nullptr), ticketArr(nullptr), crewMembers(), numberOfDishes(0)
+Flight::Flight(AirLine& myAirLine, ifstream& in)
+	: airLine(myAirLine), info(in), boardingTime(in)
 {
-	// Create Plane object
-	setPlane(airLine->interactiveAddPlane(out, in));
-
-	//create tickets 
-	int ticketCost, gate;
 	
-	out << "Enter ticket cost: " << endl;
-	in.ignore(); // Ignore the newline character
-	in >> ticketCost;
-
-	out << "Enter gate number: " << endl;
-	in.ignore(); // Ignore the newline character
-	in >> gate;
-
-	createTickets(ticketCost, gate);
-
-	//crew members
-	assignCrew(out, in);
+	in >> flightNumber;
 	
-	//flight Numebr
-	flightNumber = flightNumberGen++;
+	char tmp[100];
 	
+	in.getline(tmp, 100);
+	meal = new char[strlen(tmp) + 1];
+	strcpy(meal, tmp);
+
+	in >> numberOfDishesInMenu;
+	for (int i = 0; i < numberOfDishesInMenu; ++i)
+	{
+		in.getline(tmp, 100);
+		firstClassMenu[i] = new char[strlen(tmp) + 1];
+		strcpy(firstClassMenu[i], tmp);
+		
+	}
+	
+}
+
+void Flight::saveToFile(ofstream& out) const 
+{
+	info.saveTravel(out);
+	boardingTime.saveTime(out);
+	out << flightNumber << endl;
+
+	out << meal << endl;
+	out << numberOfDishesInMenu << endl;
+	for (int i = 0; i < numberOfDishesInMenu; ++i)
+	{
+		out << firstClassMenu[i] << endl;
+	}
 
 }
 
@@ -134,6 +160,10 @@ Ticket** Flight::getTicketArray() const
 	return ticketArr;
 }
 
+void Flight::showDish() const
+{
+}
+
 bool Flight::operator=(const Flight& f)
 {
 	/*
@@ -152,8 +182,8 @@ bool Flight::operator=(const Flight& f)
 	boardingTime = f.boardingTime;
 	meal = _strdup(f.meal);
 	
-	numberOfDishes = f.numberOfDishes;
-	for (int i = 0; i < numberOfDishes; i++)
+	numberOfDishesInMenu = f.numberOfDishesInMenu;
+	for (int i = 0; i < numberOfDishesInMenu; i++)
 	{
 		firstClassMenu[i] = _strdup(f.firstClassMenu[i]);
 	}
@@ -171,12 +201,12 @@ ostream& operator<<(ostream& out, const Flight& f)
 	out << "Current Number of Crew Members: " << f.currentNumOfCrewMembers << endl;
 	if(f.meal != nullptr)
 		out << "Standart meal: " << f.meal << endl;
-	if(f.numberOfDishes == 0)
+	if(f.numberOfDishesInMenu == 0)
 		out << "No dishes in first class menu " << endl;
 	else
 	{
 		out << "First Class Menu: " << endl;
-		for (int i = 0; i < f.numberOfDishes; ++i)
+		for (int i = 0; i < f.numberOfDishesInMenu; ++i)
 			out << (i+1) <<") " << f.currentPurchasedTickets << endl;
 		
 	}
@@ -253,6 +283,11 @@ bool Flight::checkIfFlightReady()
 			);
 }
 
+bool Flight::addDishToMenu(const char* dish)
+{
+	return false;
+}
+
 
 //moving to the AirLine
 void Flight::interactiveSetPlane(ostream& out, istream& in)
@@ -318,6 +353,12 @@ bool Flight::checkAddCrewMember(Worker* w)
 		}
 		return false;
 	}
+}
+
+bool Flight::setMainMealToFlight(const char* meal)
+{
+
+	return false;
 }
 
 void Flight::assignCrew(Worker** workers, int workersSize)

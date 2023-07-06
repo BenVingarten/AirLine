@@ -28,6 +28,7 @@ private:
 	static const  int MIN_TICKETS = 2;
 	static const float PRECENTAGE_OF_FIRST_CLASS_TICKETS;
 	static const float FIRST_CLASS_COST_PRECENT;
+	static const char* DEFAULT_FLIGHT_MEAL;
 
 	AirLine& airLine; 
 	
@@ -44,7 +45,7 @@ private:
 	Plane* pPlane;
 	char* firstClassMenu[MAX_DISHES];
 	char* meal;
-	int numberOfDishes;
+	int numberOfDishesInMenu;
 	
 
 	bool addCrewMember(Worker* w);
@@ -55,19 +56,20 @@ public:
 	Flight(AirLine& myAirLine, char* destination, char* source, 
 		int durHour, int durMinute, int borHour, int borMinute, 
 		int day, int month, int year, Plane* plane = nullptr,
-		int ticketCost = 20, int gate = 1, char* meal = nullptr);
+		int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
 	Flight(AirLine& myAirLine, const Travel & trav, const Date& d, 
 			const Time& time, Plane* plane = nullptr, 
-			int ticketCost = 20, int gate = 1, char* meal = nullptr);
+			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
 	Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane = nullptr, 
-			int ticketCost = 20, int gate = 1, char* meal = nullptr);
+			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 	
 	~Flight();
 
-
-	Flight(AirLine* myAirLine, ostream& out, istream& in); //change to ifstream&
+	//read and save to file
+	Flight(AirLine& myAirLine, ifstream& in); 
+	void saveToFile(ofstream& out)const;
 
 	int				getFlightNumber()const;
 	const Time&		getDuration()const;
@@ -88,6 +90,7 @@ public:
 	void assignCrew(Worker** workers, int workersSize);
 	bool checkIfFlightReady();
 	bool addDishToMenu(const char* dish);
+	bool setMainMealToFlight(const char*);
 	
 	void interactiveSetPlane(ostream& out, istream& in);
 	bool checkCrewTypes();

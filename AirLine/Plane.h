@@ -2,12 +2,6 @@
 #include <iostream>
 using namespace std;
 
-#define MIN_SEATS 10
-#define MAX_SEATS 250
-#define MIN_WEIGHT 3000 //avarage 150 passengers * 20 kg/pas
-#define MAX_WEIGHT_PLANE 9000
-#define MIN_SPEED 800 //km per hour
-#define MAX_SPEED 1000 
 
 #include "Technician.h"
 
@@ -16,7 +10,14 @@ class Plane
 	const static int refuelAfter = 2; //every 2 flights
 	static int planeNumberGen; //initialized outside the class to 3333
 
-	int planeNumber;
+	static const int MIN_SEATS = 10;
+	static const int MAX_SEATS = 250;
+	static const int MIN_WEIGHT_PLANE = 3000;
+	static const int MAX_WEIGHT_PLANE = 9000;
+	static const int MIN_SPEED_PLANE = 800;
+	static const int MAX_SPEED_PLANE = 1000;
+
+	int		planeNumber;
 	float	maxSpeed;
 	int		maxLuggageWeight;
 	int		currentWeight;
@@ -27,7 +28,10 @@ class Plane
 
 public:
 	Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed);
-	Plane(ostream& out, istream& in);
+	
+	//read and save to file
+	Plane(ifstream& in);
+	void saveToFile(ofstream& out)const;
 
 
 	int getNumOfSeats()const;
@@ -57,4 +61,4 @@ public:
 	
 };
 
-int Plane::planeNumberGen = 3333;
+

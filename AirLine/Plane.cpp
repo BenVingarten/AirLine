@@ -1,4 +1,8 @@
 #include "Plane.h"
+#include <fstream>
+
+int Plane::planeNumberGen = 3333;
+
 
 Plane::Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed)
     : numOfSeats(numOfSeats), maxLuggageWeight(maxLuggageWeight), 
@@ -8,15 +12,21 @@ Plane::Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed)
     planeNumber = planeNumberGen++;
 }
 
-Plane::Plane(ostream& out, istream& in)
-    :currentWeight(0), isAvailable(true), flightsCounter(0), 
-        needToRefuel(false)
+Plane::Plane(ifstream& in)
 {
-    readAndsetNumOfSeats(out, in);
-    readAndsetLuggageWeight(out, in);
-    readAndsetMaxSpeed(out, in);
-    planeNumber = planeNumberGen++;
+    in >> planeNumber >> maxSpeed >> maxLuggageWeight >>
+        currentWeight >> numOfSeats >> isAvailable >>
+        flightsCounter >> needToRefuel;
 }
+
+void Plane::saveToFile(ofstream& out) const
+{
+    out << planeNumber << endl << maxSpeed << endl << maxLuggageWeight <<
+        endl << currentWeight << endl << numOfSeats << endl << isAvailable <<
+        endl << flightsCounter << endl << needToRefuel << endl;
+
+}
+
 
 int Plane::getNumOfSeats() const {
     return numOfSeats;
@@ -86,7 +96,7 @@ void Plane::readAndsetNumOfSeats(ostream& out, istream& in)
 void Plane::readAndsetLuggageWeight(ostream& out, istream& in)
 {
     do {
-        cout << "Enter maximum luggage weight between " << MIN_WEIGHT << " and " << MAX_WEIGHT_PLANE << ": ";
+        cout << "Enter maximum luggage weight between " << MIN_WEIGHT_PLANE << " and " << MAX_WEIGHT_PLANE << ": ";
         in >> maxLuggageWeight;
         in.ignore(); // Ignore the newline character
 
@@ -96,7 +106,7 @@ void Plane::readAndsetLuggageWeight(ostream& out, istream& in)
 void Plane::readAndsetMaxSpeed(ostream& out, istream& in)
 {
     do {
-        cout << "Enter maximum speed between " << MIN_SPEED << " and " << MAX_SPEED << ": ";
+        cout << "Enter maximum speed between " << MIN_SPEED_PLANE << " and " << MAX_SPEED_PLANE << ": ";
         in >> maxSpeed;
         in.ignore(); // Ignore the newline character
 
@@ -110,12 +120,12 @@ bool Plane::isNumOfSeatsValid(int numOfSeats)const
 
 bool Plane::isMaxLuggageWeightValid(int weight)const
 {
-    return (weight < MIN_WEIGHT || weight > MAX_WEIGHT_PLANE);
+    return (weight < MIN_WEIGHT_PLANE || weight > MAX_WEIGHT_PLANE);
 }
 
 bool Plane::isMaxSpeedValid(float speed)const
 {
-    return(speed < MIN_SPEED || speed > MAX_SPEED);
+    return(speed < MIN_SPEED_PLANE || speed > MAX_SPEED_PLANE);
 }
 
 bool Plane::isPlaneAvailable() const {
