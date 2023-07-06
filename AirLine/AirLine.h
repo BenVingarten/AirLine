@@ -10,6 +10,8 @@ class AirLine
 {
                                 //TODO design PATTERN observer; 
 private:
+    static AirLine* theAirLine;
+
     char* name;
     char* country;
     
@@ -36,11 +38,14 @@ private:
     void landing(); // Landing function (for internal use)
     void checkReady(); // Check flight readiness (for internal use)
 
+    AirLine(const char* name, const char* country); // Constructor in private because Singleton 
+    AirLine(const AirLine* a) = delete;
+    void operator = (const AirLine& a) = delete;
+
 public:
-    AirLine(const char* name, const char* country); // Constructor
-    AirLine(istream& cin); // Constructor with user input
-    AirLine(const AirLine& al) = delete; // Copy constructor (deleted)
-    AirLine(AirLine&& al); // Move constructor
+    static AirLine& getInstance(const char* name, const char* countryCode);
+    static void releaseInstance();
+    
     ~AirLine(); // Destructor
 
     friend ostream& operator<<(ostream& out, const AirLine& al); // Print operator
@@ -60,17 +65,25 @@ public:
     void removePlane(); // Remove plane
     void removePassenger(); // Remove passenger
 
+    Plane* choosePlane()const;
+    Worker* chooseWorker()const;
+    Flight* chooseFlight()const;
+    Passenger* choosePassenger()const;
+    
     float executeFlight(Flight& f); // Execute flight
     bool buyTicket(); // Buy ticket
     void yearPassed(); // Add a year
+ 
+    //read and save to file
+    void readPassengersFromFile(ifstream& in);
+    void readWorkersFromFile(ifstream& in);
+    void readFlightsFromFile(ifstream& in);
+    void readPlanesFromFile(ifstream& in);
 
-    Plane* choosePlane();
-    Worker* chooseWorker();
-
-    //interactive 
-    Plane* interactiveAddPlane(ostream& out, istream& in);
-    Worker* interactiveAddWorker(ostream& out, istream& in);
-
+    void savePassengersFromFile(ofstream& out);
+    void saveWorkersFromFile(ofstream& out);
+    void saveFlightsFromFile(ofstream& out);
+    void savePlanesFromFile(ofstream& out);
 
 
 };
