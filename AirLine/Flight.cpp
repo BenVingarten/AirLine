@@ -13,7 +13,8 @@ const float Flight::FIRST_CLASS_COST_PRECENT = 1.5;
 
 
 Flight::Flight(AirLine& myAirLine, char* destination, char* source,
-	int durHour, int durMinute, int borHour, int borMinute, int day, int month, int year, Plane* plane,
+	int durHour, int durMinute, int borHour, int borMinute,
+	int day, int month, int year, Plane* plane,
 	int ticketCost, int gate, char* meal)
 	: airLine(myAirLine), flightNumber(flightNumberGen++), info(destination, source, durHour, durMinute, day, month, year),
 		boardingTime(borHour, borMinute), currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
@@ -26,24 +27,7 @@ Flight::Flight(AirLine& myAirLine, char* destination, char* source,
 	}
 }
 
-void Flight::createTickets(int ticketCost, int gate)
-{
 
-	FirstClassTicket tmp = FirstClassTicket(ticketCost, gate, boardingTime, &info, 0, *this);
-
-	int numOfSeats = pPlane->getNumOfSeats();
-
-	for (int i = 0; i < numOfSeats; i++)
-	{
-		if (i < PRECENTAGE_OF_FIRST_CLASS_TICKETS * numOfSeats) //30 precent from all tickets
-			ticketArr[i] = new FirstClassTicket(tmp);
-		else
-			ticketArr[i] = new Ticket(tmp);
-		
-		ticketArr[i]->setSeat(i + 1);
-
-	}
-}
 
 Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
 	const Time& time, Plane* plane = nullptr, int ticketCost = 20,
@@ -247,9 +231,9 @@ void Flight::assignCrew(ostream& out, istream& in)
 		in.ignore(); // Ignore the newline character
 		in >> choose;
 		if (choose == 0)
-			w = airLine->chooseWorker();
+			w = airLine.chooseWorker();
 		else if (choose == 1)
-			w = airLine->interactiveAddWorker(out, in);
+			w = airLine.interactiveAddWorker(out, in);
 
 		addCrewMember(w);
 
@@ -342,4 +326,21 @@ void Flight::assignCrew(Worker** workers, int workersSize)
 		addCrewMember(workers[i]);
 }
 
+void Flight::createTickets(int ticketCost, int gate)
+{
 
+	FirstClassTicket tmp = FirstClassTicket(ticketCost, gate, boardingTime, &info, 0, *this);
+
+	int numOfSeats = pPlane->getNumOfSeats();
+
+	for (int i = 0; i < numOfSeats; i++)
+	{
+		if (i < PRECENTAGE_OF_FIRST_CLASS_TICKETS * numOfSeats) //30 precent from all tickets
+			ticketArr[i] = new FirstClassTicket(tmp);
+		else
+			ticketArr[i] = new Ticket(tmp);
+
+		ticketArr[i]->setSeat(i + 1);
+
+	}
+}

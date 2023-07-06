@@ -53,12 +53,17 @@ private:
 public:
 
 	Flight(AirLine& myAirLine, char* destination, char* source, 
-		int durHour, int durMinute, int borHour, int borMinute, int day, int month, int year, Plane* plane = nullptr,
+		int durHour, int durMinute, int borHour, int borMinute, 
+		int day, int month, int year, Plane* plane = nullptr,
 		int ticketCost = 20, int gate = 1, char* meal = nullptr);
+
 	Flight(AirLine& myAirLine, const Travel & trav, const Date& d, 
-			const Time& time, Plane* plane = nullptr, int ticketCost = 20, 
-			int gate = 1, char* meal = nullptr);
-	Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane = nullptr, int ticketCost = 20, int gate = 1, char* meal = nullptr);
+			const Time& time, Plane* plane = nullptr, 
+			int ticketCost = 20, int gate = 1, char* meal = nullptr);
+
+	Flight(AirLine& myAirLine, const TripInfo& t, Plane* plane = nullptr, 
+			int ticketCost = 20, int gate = 1, char* meal = nullptr);
+	
 	~Flight();
 
 
