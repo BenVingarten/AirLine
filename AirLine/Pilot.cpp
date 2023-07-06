@@ -21,7 +21,7 @@ Pilot::Pilot(ifstream& in): Person(in), Worker(in), flightHours(in)
 void Pilot::saveToFile(ofstream& out) const
 {
     Worker::saveToFile(out);
-    flightHours.saveTime(out);
+    flightHours.saveToFile(out);
 }
 
 

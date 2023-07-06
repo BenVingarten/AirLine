@@ -27,7 +27,7 @@ Travel::Travel(ifstream& in)
     in.ignore();
 }
 
-void Travel::saveTravel(ofstream& out) const
+void Travel::saveToFile(ofstream& out) const
 {
     out << source << endl << destination << endl;
 }

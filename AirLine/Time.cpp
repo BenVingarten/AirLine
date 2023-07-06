@@ -12,7 +12,7 @@ Time::Time(ifstream& in)
     in.ignore();
 }
 
-void Time::saveTime(ofstream& out) const
+void Time::saveToFile(ofstream& out) const
 {
     out << hours << endl << minutes << endl;
 }
