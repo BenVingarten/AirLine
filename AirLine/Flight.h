@@ -22,6 +22,14 @@ class Flight
 private:
 	static int workersOfType[3]; //workers of type [pilot], [flightAttendent], [Technichian]
 	static int flightNumberGen; //initialized outside of the class to 4444
+
+	static int maxPilotPrintsInTakeoffAndLandingOrPreparingPlane;
+	static int maxTechnicianPrintsInTakeOffOrLanding;
+	static int maxFlightAttendetPrintsInTakeOffOrLanding;
+	static int maxFlightAttendetsPreparingPlane;
+	static int maxTechnicianPreparingPlane;
+	
+
 	static const float PRECENTAGE_OF_FIRST_CLASS_TICKETS;
 	static const float FIRST_CLASS_COST_PRECENT;
 	static const char* DEFAULT_FLIGHT_MEAL;
@@ -75,8 +83,23 @@ public:
 	const TripInfo& getInfo()const;
 	Plane*			getPlane()const;
 	int				getNumOfcurrentPurchasedTickets()const;
+	int             getCurrentNumOfCrewMembers()const;
 	int				getNumOfTickets()const; //number of seats in plane
+
+	int             getMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane()const;
+	int             getMaxTechnicianPrintsInTakeOffOrLanding()const;
+	int             getMaxFlightAttendetPrintsInTakeOffOrLanding()const;
+	int             getMaxFlightAttendetsPreparingPlane()const;
+	int             getMaxTechnicianPreparingPlane()const;
+
+	void            setMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane(int val);
+	void            setMaxTechnicianPrintsInTakeOffOrLanding(int val);
+	void            setMaxFlightAttendetPrintsInTakeOffOrLanding(int val);
+	void            setMaxFlightAttendetsPreparingPlane(int val);
+	void            setMaxTechnicianPreparingPlane(int val);
+
 	Ticket**		getTicketArray()const;
+	Worker**        getCrew()const;
 	void			showFirstClassMenu(ostream& out)const;
 	void			showMainMeal(ostream& out)const;
 
@@ -91,6 +114,7 @@ public:
 	bool checkIfFlightReady();
 	bool addDishToMenu(const char* dish);
 	bool isMealInMenu(const char* pMeal) const;
+	bool areThereEnoughPurchasedTickets()const;
 	bool setMainMealToFlight(const char* pMeal);
 	
 	bool checkCrewTypes();

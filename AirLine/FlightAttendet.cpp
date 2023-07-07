@@ -95,9 +95,10 @@ void FlightAttendet::prepareForFlight(ostream& out)
     srand(time(nullptr)); // use current time as seed for random generator
     int rnd = rand() % 4;
     
-    out << "I am fligh attendet " << name;
-    switch (rnd)
+    out << "I'm " << name << " flight Attendet " << getWorkerId() << " preparing for flight" << endl;
+    switch(rnd)
     {
+      
     case 0:
         out << " and I prepared emergency equipment" << endl;
         break;
@@ -111,7 +112,7 @@ void FlightAttendet::prepareForFlight(ostream& out)
         break;
 
     case 3:
-        out << " and I prepared and ensure proper catering and supplies" << endl;
+        out << " and I prepared and ensured proper catering and supplies" << endl;
         break;
 
     }
@@ -125,4 +126,9 @@ void FlightAttendet::annualRefresh(ostream& out)
 
 
     out << "I am " << name << " the flight attendent and I went to " << allLanguages[rnd] << " language refreshment" << endl;
+}
+
+void FlightAttendet::takeoff(ostream& out)
+{
+    out << "this is " << name << " Flight attendet " << getWorkerId() << " asking for your attention\nwe are about to takeoff, so please fasten your seat belt and stay seated" << endl;
 }

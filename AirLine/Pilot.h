@@ -34,6 +34,7 @@ public:
 	virtual void setRaise()override; //70% of his flightHours from current year
 	virtual void prepareForFlight(ostream& out)override;
 	virtual void annualRefresh(ostream& out)override;
+	virtual void takeoff(ostream& out)override;
 
 };
 

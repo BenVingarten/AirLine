@@ -3,8 +3,9 @@
 using namespace std;
 #include "Person.h"
 #include "Travel.h"
+#include "Ticket.h"
 
-class Ticket;
+
 class Passenger : virtual public Person
 {
 protected:
@@ -30,9 +31,12 @@ public:
 	const char* getAirPortCode()const;
 	int getLuggageWeight()const;
 	int getPassportNum()const;
+	Ticket* getTicket()const;
 
 	void setLuggageWeight(int weight);
 	bool setTicket(Ticket* ticket);
+	void setAirPortCode(const char* newCode);
+	void board();
 
 	bool operator ==(const Passenger& p)const;
 

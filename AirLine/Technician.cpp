@@ -35,6 +35,27 @@ Technician::eTechnicianType Technician::getType() const {
     return type;
 }
 
+const char* Technician::getStringType()const
+{
+    switch (type) {
+    case eTechnicianType::STRUCTURE:
+        return "Structure";
+
+    case eTechnicianType::NAVIGATIONS:
+        return "Navigations";
+        
+    case eTechnicianType::COMMUNICATION:
+        return "Communication";
+       
+    case eTechnicianType::ENGINES:
+        return "Engines";
+
+    case eTechnicianType::GENERAL:
+        return "General";
+ 
+    }
+}
+
 int Technician::getNumOfPlanesPrepared() const {
     return planesPreparedThisYear;
 }
@@ -43,18 +64,10 @@ void Technician::setRaise() {
      salary += planesPreparedThisYear * 5;
 }
 
-bool Technician::setFlight(Flight* flight)
-{
-    if (Worker::setFlight(flight))
-    {
-        planesPreparedThisYear++;
-        return true;
-    }
-    return false;
-}
 
 void Technician::prepareForFlight(ostream& out)
 {
+    out << "I'm " << name << " technician " << getWorkerId() << "in field: " << getStringType() << "preparing for flight" << endl;
     testSystems(out);
     if (!currentFlight->getPlane()->isPlaneFuled())
         fillFuel(currentFlight->getPlane(), out);
@@ -84,6 +97,11 @@ void Technician::annualRefresh(ostream& out) {
     out << endl;
 
     planesPreparedThisYear = 0;
+}
+
+void Technician::takeoff(ostream& out)
+{
+    out << "this is " << name << " technician " << getWorkerId() << "keeping alert for any unwanted malfunction system during takeoff" << endl;
 }
 
 void Technician::testSystems(ostream& out) {
@@ -149,23 +167,7 @@ void Technician::print(ostream& out) const {
     out << "Technician: ";
     Worker::print(out);
     out << "Type: ";
-    switch (type) {
-    case eTechnicianType::STRUCTURE:
-        out << "Structure";
-        break;
-    case eTechnicianType::NAVIGATIONS:
-        out << "Navigations";
-        break;
-    case eTechnicianType::COMMUNICATION:
-        out << "Communication";
-        break;
-    case eTechnicianType::ENGINES:
-        out << "Engines";
-        break;
-    case eTechnicianType::GENERAL:
-        out << "General";
-        break;
-    }
+    out << getStringType();
     out << " and I prepared " << planesPreparedThisYear << " flights" << endl;
 }
 

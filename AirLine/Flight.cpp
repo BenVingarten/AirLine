@@ -9,6 +9,14 @@
 int Flight::flightNumberGen = 4444;
 int Flight::workersOfType[3] = { 0, 0, 0 };
 
+
+int Flight::maxPilotPrintsInTakeoffAndLandingOrPreparingPlane = 1;
+int Flight::maxTechnicianPrintsInTakeOffOrLanding = 1;
+int Flight::maxFlightAttendetPrintsInTakeOffOrLanding = 1;
+int Flight::maxFlightAttendetsPreparingPlane = 2;
+int Flight::maxTechnicianPreparingPlane = 2;
+
+
 const float Flight::PRECENTAGE_OF_FIRST_CLASS_TICKETS = 0.3;
 const float Flight::FIRST_CLASS_COST_PRECENT = 1.5;
 const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
@@ -138,6 +146,11 @@ int Flight::getNumOfcurrentPurchasedTickets() const
 	return currentPurchasedTickets;
 }
 
+int Flight::getCurrentNumOfCrewMembers() const
+{
+	return currentNumOfCrewMembers;
+}
+
 int Flight::getNumOfTickets() const
 {
 	//number of tickets as number of seats 
@@ -149,9 +162,35 @@ Ticket** Flight::getTicketArray() const
 	return ticketArr;
 }
 
+int Flight::getMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane() const
+{
+	return maxPilotPrintsInTakeoffAndLandingOrPreparingPlane;
+}
+
+Worker** Flight::getCrew()const
+{
+	Worker* crewMembers[MAX_CREW_MEMBERS]; // Array of Worker pointers
+
+	for (int i = 0; i < currentNumOfCrewMembers; ++i) {
+		crewMembers[i] = crewMembers[i]; 
+	}
+	return crewMembers;
+
+}
+
+int Flight::getMaxTechnicianPrintsInTakeOffOrLanding() const
+{
+	return maxTechnicianPrintsInTakeOffOrLanding;
+}
+
 void Flight::showMainMeal(ostream& out) const
 {
 	out << "Plane Main Meal is: " << meal << endl;
+}
+
+int Flight::getMaxFlightAttendetsPreparingPlane() const
+{
+	return maxFlightAttendetsPreparingPlane;
 }
 
 void Flight::showFirstClassMenu(ostream& out) const
@@ -162,6 +201,39 @@ void Flight::showFirstClassMenu(ostream& out) const
 	if (numberOfDishesInMenu == 0)
 		out << "No extra dishes for first class on this flight." << endl;
 }
+
+int Flight::getMaxFlightAttendetPrintsInTakeOffOrLanding() const
+{
+	return maxFlightAttendetPrintsInTakeOffOrLanding;
+}
+
+int Flight::getMaxTechnicianPreparingPlane()const
+{
+	return maxTechnicianPreparingPlane;
+}
+
+void  Flight::setMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane(int val)
+{
+	maxPilotPrintsInTakeoffAndLandingOrPreparingPlane += val;
+}
+void Flight::setMaxTechnicianPrintsInTakeOffOrLanding(int val)
+{
+	maxTechnicianPrintsInTakeOffOrLanding += val;
+}
+void Flight::setMaxFlightAttendetPrintsInTakeOffOrLanding(int val)
+{
+	maxFlightAttendetPrintsInTakeOffOrLanding += val;
+}
+void Flight::setMaxFlightAttendetsPreparingPlane(int val)
+{
+	maxFlightAttendetsPreparingPlane += val;
+}
+
+void Flight::setMaxTechnicianPreparingPlane(int val)
+{
+	maxTechnicianPreparingPlane += val;
+}
+
 
 
 //Operators, Set and Check
@@ -263,7 +335,7 @@ bool Flight::addCrewMember(Worker* w)
 	{
 		crewMembers[currentNumOfCrewMembers] = w;
 		currentNumOfCrewMembers++;
-		w->setFlight(this); // if this is technicain will also increase number of planes prepeard because: setFlight is virtual
+		w->setFlight(this);
 		w->changeAvailability();
 
 		return true;
@@ -300,11 +372,19 @@ bool Flight::isMealInMenu(const char* pMeal) const
 	return false;
 }
 
+bool Flight::areThereEnoughPurchasedTickets() const
+{
+	if (currentPurchasedTickets >= MIN_TICKETS)
+		return true;
+
+	return false;
+}
+
 bool Flight::checkIfFlightReady()
 {
 	return (
 		checkCrewTypes() && //check crew members 
-		currentPurchasedTickets >= MIN_TICKETS && //check tickets purchased 
+		areThereEnoughPurchasedTickets() && //check tickets purchased 
 		pPlane->isReadyToFly() //check plane is ready 
 		);
 }

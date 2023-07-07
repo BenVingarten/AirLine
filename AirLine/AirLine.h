@@ -46,12 +46,12 @@ private:
     void landing(Flight& f, ostream& out); // Landing function (for internal use)
     bool checkReady(Flight& f, ostream& out); // Check flight readiness (for internal use)
 
-    AirLine(const char* name, const char* country); // Constructor in private because Singleton 
+    AirLine(const char* pName, const char* pCountry); // Constructor in private because Singleton 
     AirLine(const AirLine* a) = delete;
     void operator = (const AirLine& a) = delete;
 
 public:
-    static AirLine& getInstance(const char* name, const char* countryCode);
+    static AirLine& getInstance(const char* name, const char* countryCode); // we initiallize airLine 
     static void releaseInstance();
     
     ~AirLine(); // Destructor
@@ -62,6 +62,7 @@ public:
     bool addFlight(Flight& f); // Add flight
     bool addPlane(Plane& p); // Add plane
     bool addPassenger(Passenger* p); // Add passenger
+    
 
     void printFlights(ostream& out)const; // Print all flights
     void printWorkers(ostream& out)const; // Print all workers
@@ -97,7 +98,8 @@ public:
     void saveWorkersFromFile(ofstream& out);
     void saveFlightsFromFile(ofstream& out);
     void savePlanesFromFile(ofstream& out);
-
-
+    bool isPassengerInFlight(const Passenger& p, const Flight& f) const;
+    void CrewPreparations(Flight& f,ostream& out)const;
+    
 };
 

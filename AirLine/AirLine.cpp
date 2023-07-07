@@ -12,10 +12,38 @@
 
 void AirLine::boarding(Flight& f, ostream& out)
 {
+	out << "All Passengers of Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << endl;
+	out << "are requested to reach gate: " << f.getTicketArray()[0]->getGateNumber() << " for boarding" << endl;
+
+	Passenger* p = nullptr;
+	for (int i = 0; i < f.getNumOfcurrentPurchasedTickets(); i++)
+	{
+		p = f.getTicketArray()[i]->getPassenger();
+		p->board();
+	}
+		
+	
+	for (int i = 0; i < f.getNumOfcurrentPurchasedTickets(); i++)
+	{
+		Passenger* p = f.getTicketArray()[i]->getPassenger();
+		out << "I'm " << p->getName() << " passenger " << p->getPassportNum() << " for flight " << f.getFlightNumber() << " seating in seat " << (i+1) << ", ready to fly!" << endl;
+	}
+
+
 }
 
 void AirLine::takeoff(Flight& f, ostream& out)
 {
+	int limit = 0;
+	for (int i = 0; i < f.getCurrentNumOfCrewMembers() && limit < 2; i++)
+	{
+		if (typeid(f.getCrew()[i]).name() == typeid(FlightAttendet).name())
+			f.getCrew()[i].takeOff(out);
+
+	    else if(typeid(f.getCrew()[i]).name() == typeid(Pilot).name())
+
+	}
+		
 }
 
 void AirLine::landing(Flight& f, ostream& out)
@@ -24,15 +52,27 @@ void AirLine::landing(Flight& f, ostream& out)
 
 bool AirLine::checkReady(Flight& f, ostream& out)
 {
+	if (f.checkIfFlightReady())
+	{
+		out << "The plane is available and fuled!" << endl;
+		out << "Enough tickets have been purchased" << endl;
+		out << "crew members are in position, and prepared the plane" << endl;
+	}
+	else
+		return false;
 }
 
-AirLine::AirLine(const char* name, const char* country) : 
+AirLine::AirLine(const char* pName, const char* pCountry) : 
 	currentNumOfFlights(0), currentNumOfPassengers(0), currentNumOfPlanes(0), currentNumOfWorkers(0),
 	allWorkers(nullptr), allFlights(nullptr), allPlanes(nullptr), allPassengers(nullptr), 
 	income(0)
 {
-	name = _strdup(name);
-	country = _strdup(country);
+	name = new char[strlen(pName) + 1];
+	strcpy(name, pName);
+
+	country = new char[strlen(pCountry) + 1];
+	strcpy(country, pCountry);
+
 }
 
 
@@ -84,8 +124,12 @@ bool AirLine::addWorker(Worker& w)
 	if (isWorkerExist(w) != -1)
 		return false;
 
+	// If reached maximum Workers
+	if (currentNumOfWorkers == MAX_WORKERS)
+		return false;
+
 	// Check if there is space at the end of the array
-	int arrSize = sizeof(allWorkers) / sizeof(Worker&);
+	int arrSize = sizeof(allWorkers) / sizeof(Worker*);
 	
 	if (currentNumOfWorkers < arrSize)
 	{
@@ -93,16 +137,12 @@ bool AirLine::addWorker(Worker& w)
 		return true;
 	}
 
-	// If reached maximum Workers
-	if (currentNumOfWorkers == MAX_WORKERS)
-		return false;
-
 	// Extend the array by creating a new array with double the capacity
 	int newCapacity = 2 * currentNumOfWorkers;
 	if (newCapacity > MAX_WORKERS)
 		newCapacity = MAX_WORKERS;
 
-	Worker** newWorkers = new Worker * [newCapacity];
+	Worker** newWorkers = new Worker* [newCapacity];
 
 	// Copy the existing workers into the new array
 	for (int i = 0; i < currentNumOfWorkers; ++i)
@@ -111,11 +151,12 @@ bool AirLine::addWorker(Worker& w)
 	}
 
 	// Add the new worker to the extended array
-	newWorkers[currentNumOfWorkers++] = &w;
+	newWorkers[currentNumOfWorkers] = &w;
 
 	// Delete the old workers array and update the pointer to the new array
 	delete[] allWorkers;
 	allWorkers = newWorkers;
+	currentNumOfWorkers = newCapacity;
 
 	return true;
 }
@@ -127,7 +168,7 @@ bool AirLine::addFlight(Flight& f)
 		return false;
 
 	// Check if there is space at the end of the array
-	int arrSize = sizeof(allFlights) / sizeof(Flight&);
+	int arrSize = sizeof(allFlights) / sizeof(Flight*);
 	if (currentNumOfFlights < arrSize)
 	{
 		allFlights[currentNumOfFlights++] = &f;
@@ -152,12 +193,12 @@ bool AirLine::addFlight(Flight& f)
 	}
 
 	// Add the new flight to the extended array
-	newFlights[currentNumOfFlights++] = &f;
+	newFlights[currentNumOfFlights] = &f;
 
 	// Delete the old flights array and update the pointer to the new array
 	delete[] allFlights;
 	allFlights = newFlights;
-
+	currentNumOfFlights = newCapacity;
 	return true;
 }
 
@@ -168,7 +209,7 @@ bool AirLine::addPlane(Plane& p)
 		return false;
 
 	// Check if there is space at the end of the array
-	int arrSize = sizeof(allPlanes) / sizeof(Plane&);
+	int arrSize = sizeof(allPlanes) / sizeof(Plane*);
 	if (currentNumOfPlanes < arrSize)
 	{
 		allPlanes[currentNumOfPlanes++] = &p;
@@ -193,11 +234,12 @@ bool AirLine::addPlane(Plane& p)
 	}
 
 	// Add the new plane to the extended array
-	newPlanes[currentNumOfPlanes++] = &p;
+	newPlanes[currentNumOfPlanes] = &p;
 
 	// Delete the old planes array and update the pointer to the new array
 	delete[] allPlanes;
 	allPlanes = newPlanes;
+	currentNumOfPlanes = newCapacity;
 
 	return true;
 }
@@ -225,7 +267,7 @@ bool AirLine::addPassenger(Passenger* p)
 	if (newCapacity > MAX_PASSENGERS)
 		newCapacity = MAX_PASSENGERS;
 
-	Passenger** newPassengers = new Passenger * [newCapacity];
+	Passenger** newPassengers = new Passenger* [newCapacity];
 
 	// Copy the existing passengers into the new array
 	for (int i = 0; i < currentNumOfPassengers; ++i)
@@ -234,12 +276,12 @@ bool AirLine::addPassenger(Passenger* p)
 	}
 
 	// Add the new passenger to the extended array
-	newPassengers[currentNumOfPassengers++] = p;
+	newPassengers[currentNumOfPassengers] = p;
 
 	// Delete the old passengers array and update the pointer to the new array
 	delete[] allPassengers;
 	allPassengers = newPassengers;
-
+	currentNumOfPassengers = newCapacity;
 	return true;
 }
 
@@ -521,13 +563,29 @@ int AirLine::isPassengerExist(const Passenger& p) const
 
 void AirLine::executeFlight(Flight& f, ostream& out)
 {
+	out << "Executing Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << endl;
+	CrewPreparations(f, out); 
+
+	out << "Checking last  requirments..." << endl;
 	if (checkReady(f, out))
-		out << "Flight Is Ready !" << endl;
+		out << "Flight Is Ready!" << endl;
 	else
 	{
 		out << "flight is not ready.... " << endl;
 		return;
 	}
+	boarding(f,out);
+	out << "ready for takeoff" << endl;
+	takeoff(f,out); //TODO
+	landing(f, out); //TODO
+
+	refreshFlight(); //TODO
+
+
+	
+
+	
+	
 
 	boarding(f, out);
 	takeoff(f, out);
@@ -564,16 +622,15 @@ void AirLine::readPassengersFromFile(ifstream& in)
 		in >> passengerType;
 
 		// Check the type of the worker and create a corresponding object
+		Passenger* p = nullptr;
 		if (passengerType == WORKER_PASSENGER)
-		{
-			Passenger* wp = new WorkerPassenger(in);
-			addPassenger(wp);
-		}
+			p = new WorkerPassenger(in);
+			
+		
 		else if (passengerType == PASSENGER)
-		{
-			Passenger* passenger = new Passenger(in);
-			addPassenger(passenger);
-		}
+			 p = new Passenger(in);
+			
+		addPassenger(p);
 
 	}
 }
@@ -754,6 +811,51 @@ void AirLine::savePlanesFromFile(ofstream& out)
 		allPlanes[i]->saveToFile(out);
 	}
 }
+
+bool AirLine::isPassengerInFlight(const Passenger& p, const Flight& f) const
+{
+	for (int i = 0; i < f.getNumOfcurrentPurchasedTickets(); i++)
+		if (p == *(f.getTicketArray()[i]->getPassenger()))
+			return true;
+
+	return false;
+}
+
+void AirLine::CrewPreparations(Flight& f, ostream& out) const
+{
+	out << "Prepare flight:" << endl;
+	for (int i = 0; i < f.getCurrentNumOfCrewMembers(); i++)
+	{
+		if (typeid(f.getCrew()[i]).name() == typeid(Pilot).name())
+			if (f.getMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane() != 0)
+			{
+				f.getCrew()[i]->prepareForFlight(out);
+				f.setMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane(-1);
+			}
+
+
+			else if (typeid(f.getCrew()[i]).name() == typeid(Technician).name())
+				if (f.getMaxTechnicianPreparingPlane() != 0)
+				{
+					f.getCrew()[i]->prepareForFlight(out);
+					f.setMaxTechnicianPreparingPlane(-1);
+				}
+				else
+					if (f.getMaxFlightAttendetsPreparingPlane() != 0)
+					{
+						f.getCrew()[i]->prepareForFlight(out);
+						f.setMaxFlightAttendetsPreparingPlane(-1);
+					}
+	}
+
+	//reset
+	f.setMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane(1);
+	f.setMaxFlightAttendetsPreparingPlane(2);
+	f.setMaxTechnicianPreparingPlane(2);
+}
+	
+
+
 
 
 

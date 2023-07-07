@@ -27,13 +27,14 @@ public:
 	void saveToFile(ofstream& out)const;
 
 	eTechnicianType getType() const;
+	const char* getStringType()const;
 	int getNumOfPlanesPrepared()const;
 
 	
 	virtual void setRaise() override; //the number of planes prepared times 5 
-	virtual bool setFlight(Flight* flight);
 	virtual void prepareForFlight(ostream& out)override;
 	virtual void annualRefresh(ostream& out)override;
+	virtual void takeoff(ostream& out)override;
 
 
 private:

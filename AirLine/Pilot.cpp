@@ -45,7 +45,7 @@ void Pilot::setRaise()
 
 void Pilot::prepareForFlight(ostream& out)
 {
-    out << "I am " << name <<", your Pilot! Perform pre-flight inspection for flight " << currentFlight->getFlightNumber() << endl;
+    out << "I'm " << name <<", pilot " << getWorkerId() << " Perform pre - flight inspection for flight " << endl;
 }
 
 void Pilot::annualRefresh(ostream& out)
@@ -74,6 +74,15 @@ void Pilot::annualRefresh(ostream& out)
 
     }
     out << endl;
+}
+
+void Pilot::takeoff(ostream& out)
+{
+    out << "this is your pilot " << name << " for flight " << currentFlight->getFlightNumber() << " from " << currentFlight->getInfo().getSource() <<
+        " to " << currentFlight->getInfo().getDestenation() << endl;
+    out << "the duration of the flight is " << currentFlight->getInfo().getFlightDuration().getHours() << " hours and " <<
+        currentFlight->getInfo().getFlightDuration().getMinutes() << " minutes" << endl;
+    out << "get ready for takeoff, and have a wonderful flight" << endl;
 }
 
 void Pilot::print(ostream& out) const

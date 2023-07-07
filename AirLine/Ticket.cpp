@@ -83,6 +83,16 @@ int Ticket::getGateNumber() const
 	return gate;
 }
 
+Passenger* Ticket::getPassenger() const
+{
+	return pPassenger;
+}
+
+TripInfo* Ticket::getTicketInfo() const
+{
+	return pInfo;
+}
+
 const Time& Ticket::getTime() const
 {
 	return boarding;

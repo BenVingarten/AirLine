@@ -33,7 +33,7 @@ public:
 	virtual void setRaise() override;	//+100 NIS per language she speaks
 	virtual void prepareForFlight(ostream& out) override ;
 	virtual void annualRefresh(ostream& out) override;
-
+	virtual void takeoff(ostream& out)override;
 	
 };
 

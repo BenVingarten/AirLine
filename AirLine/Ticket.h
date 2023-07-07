@@ -41,6 +41,8 @@ public:
 
 	int getPrice()const;
 	int getGateNumber()const;
+	Passenger* getPassenger()const;
+	TripInfo* getTicketInfo()const;
 	const Time& getTime()const;
 };
 

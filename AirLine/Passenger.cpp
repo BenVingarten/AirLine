@@ -69,6 +69,11 @@ int Passenger::getPassportNum() const {
     return passport;
 }
 
+Ticket* Passenger::getTicket() const
+{
+    return ticket;
+}
+
 void Passenger::setLuggageWeight(int weight) {
     luggageWeight = weight;
 }
@@ -79,6 +84,19 @@ bool Passenger::setTicket(Ticket* otherTicket) {
         return true;
     }
     return false;
+}
+
+void Passenger::setAirPortCode(const char* newCode)
+{
+   if(Travel::airportCodeValid(newCode))
+       strcpy(airportCode, newCode);
+}
+
+void Passenger::board()
+{
+    if (strcmp(ticket->getTicketInfo()->getSource(), airportCode) != 0)
+        setAirPortCode(ticket->getTicketInfo()->getSource());
+    
 }
 
 bool Passenger::operator==(const Passenger& p) const
