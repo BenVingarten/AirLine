@@ -21,7 +21,7 @@ public:
 
     // read and write from file
     WorkerPassenger(ifstream& in);
-    void saveToFile(ofstream& out) const;
+    void saveToFile(ofstream& out) const override;
 
     virtual void setRaise() override;
     virtual void prepareForFlight(std::ostream& out) override;

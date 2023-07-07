@@ -43,6 +43,7 @@ public:
 	void readAndsetLuggageWeight(ostream& out, istream& in);
 	void readAndsetMaxSpeed(ostream& out, istream& in);
 
+	bool operator ==(const Plane& p)const;
 	bool operator += (int weight); //add weight
 	void operator ++ (); //add flight 
 	friend ostream& operator << (ostream& out, const Plane& p);

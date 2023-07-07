@@ -80,6 +80,7 @@ public:
 	void			showFirstClassMenu(ostream& out)const;
 	void			showMainMeal(ostream& out)const;
 
+	bool operator ==(const Flight& f)const;
 	bool operator = (const Flight& f);
 	friend ostream& operator <<(ostream& out, const Flight& f);
 	

@@ -166,6 +166,11 @@ void Flight::showFirstClassMenu(ostream& out) const
 
 //Operators, Set and Check
 
+bool Flight::operator==(const Flight& f)const
+{
+	return flightNumber == f.flightNumberGen;
+}
+
 bool Flight::operator=(const Flight& f) 
 {
 	/*

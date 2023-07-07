@@ -44,6 +44,11 @@ float Plane::getMaxSpeed() const {
     return maxSpeed;
 }
 
+bool Plane::operator==(const Plane& p)const
+{
+    return planeNumber == p.planeNumber;
+}
+
 bool Plane::operator+=(int weight) {
     if (currentWeight + weight <= maxLuggageWeight)
     {

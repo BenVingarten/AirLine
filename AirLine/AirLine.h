@@ -6,17 +6,25 @@ using namespace std;
 #include "Flight.h"
 #include "Worker.h"
 
+
 class AirLine
 {
                                 //TODO design PATTERN observer; 
 private:
     static AirLine* theAirLine;
 
+    static const int PILOT = 0;
+    static const int FLIGHT_ATTENDENT = 1;
+    static const int TECHNICHIAN = 2;
+    static const int PASSENGER = 2;
+    static const int WORKER_PASSENGER = 2;
+
+
     char* name;
     char* country;
     
     int currentNumOfWorkers;
-    int currentNumOfFlight;
+    int currentNumOfFlights;
     int currentNumOfPlanes;
     int currentNumOfPassengers;
 
@@ -33,10 +41,10 @@ private:
     float income;
 
 
-    void boarding(); // Boarding function (for internal use)
-    void takeoff(); // Takeoff function (for internal use)
-    void landing(); // Landing function (for internal use)
-    void checkReady(); // Check flight readiness (for internal use)
+    void boarding(Flight& f, ostream& out); // Boarding function (for internal use)
+    void takeoff(Flight& f, ostream& out); // Takeoff function (for internal use)
+    void landing(Flight& f, ostream& out); // Landing function (for internal use)
+    bool checkReady(Flight& f, ostream& out); // Check flight readiness (for internal use)
 
     AirLine(const char* name, const char* country); // Constructor in private because Singleton 
     AirLine(const AirLine* a) = delete;
@@ -55,27 +63,27 @@ public:
     bool addPlane(Plane& p); // Add plane
     bool addPassenger(Passenger* p); // Add passenger
 
-    void printFlights()const; // Print all flights
-    void printWorkers()const; // Print all workers
-    void printPlanes()const; // Print all planes
-    void printPassengers()const; // Print all passengers
+    void printFlights(ostream& out)const; // Print all flights
+    void printWorkers(ostream& out)const; // Print all workers
+    void printPlanes(ostream& out)const; // Print all planes
+    void printPassengers(ostream& out)const; // Print all passengers
 
-    void removeWorker(); // Remove worker
-    void removeFlight(); // Remove flight
-    void removePlane(); // Remove plane
-    void removePassenger(); // Remove passenger
+    void removeWorker(Worker& w); // Remove worker
+    void removeFlight(Flight& f); // Remove flight
+    void removePlane(Plane& p); // Remove plane
+    void removePassenger(Passenger& p); // Remove passenger
 
-    Plane* choosePlane()const;
-    Worker* chooseWorker()const;
-    Flight* chooseFlight()const;
-    Passenger* choosePassenger()const;
+    Plane* choosePlane(ostream& out, istream& in)const;
+    Worker* chooseWorker(ostream& out, istream& in)const;
+    Flight* chooseFlight(ostream& out, istream& in)const;
+    Passenger* choosePassenger(ostream& out, istream& in)const;
 
-    bool isWorkerExist(const Worker& w)const;
-    bool isFlightExist(const Flight& f)const;
-    bool isPlaneExist(const Plane& p)const;
-    bool isPassengerExist(const Passenger& p)const;
+    int isWorkerExist(const Worker& w)const;
+    int isFlightExist(const Flight& f)const;
+    int isPlaneExist(const Plane& p)const;
+    int isPassengerExist(const Passenger& p)const;
     
-    float executeFlight(Flight& f); // Execute flight
+    void executeFlight(Flight& f, ostream& out); // Execute flight
     bool buyTicket(); // Buy ticket
     void yearPassed(); // Add a year
  

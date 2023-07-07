@@ -15,7 +15,7 @@ protected:
 	int luggageWeight;
 	char airportCode[MAX_CHAR_CODE];
 
-	void print(ostream& out)const;
+	virtual void print(ostream& out)const;
 
 public:
 	//Passenger can't have Ticket as he initialized because he needs to buy a ticket
@@ -25,7 +25,7 @@ public:
 	
 	//read and write from file
 	Passenger(ifstream& in);
-	void saveToFile(ofstream& out)const;
+	virtual void saveToFile(ofstream& out)const;
 	
 	const char* getAirPortCode()const;
 	int getLuggageWeight()const;
@@ -33,6 +33,9 @@ public:
 
 	void setLuggageWeight(int weight);
 	bool setTicket(Ticket* ticket);
+
+	bool operator ==(const Passenger& p)const;
+
 };
 
 

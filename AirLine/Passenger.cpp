@@ -80,3 +80,8 @@ bool Passenger::setTicket(Ticket* otherTicket) {
     }
     return false;
 }
+
+bool Passenger::operator==(const Passenger& p) const
+{
+    return passport == p.passport;
+}
