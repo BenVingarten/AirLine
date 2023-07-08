@@ -50,7 +50,7 @@ void Pilot::prepareForFlight(ostream& out)
 
 void Pilot::annualRefresh(ostream& out)
 {
-    srand(time(nullptr)); // use current time as seed for random generator
+    srand((unsigned int)time(NULL)); // use current time as seed for random generator
     unsigned int rnd = rand() % 4;
 
     out << "Pilot " << name;

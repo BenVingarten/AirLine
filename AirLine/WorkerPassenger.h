@@ -24,11 +24,11 @@ public:
     WorkerPassenger(ifstream& in);
     virtual void saveToFile(ofstream& out)const;
 
-    virtual void setRaise() override;
-    virtual void prepareForFlight(ostream& out) ;
-    virtual void annualRefresh(ostream& out) ;
-    virtual void takeoff(ostream& out)const ;
-    virtual void landing(ostream& out)const ;
+    void setRaise() ;
+    void prepareForFlight(ostream& out) ;
+    void annualRefresh(ostream& out) ;
+    void takeoff(ostream& out)const ;
+    void landing(ostream& out)const ;
 };
 
 

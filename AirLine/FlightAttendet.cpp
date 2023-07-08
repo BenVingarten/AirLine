@@ -6,6 +6,9 @@
 FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang)
     : Person(n, age, gender), Worker(n, age, gender, salary, seniority), currentNumOfLanguages(0)
 {
+    for (int i = 0; i < MAX_LANGUAGES; ++i)
+        allLanguages[i] = nullptr;
+
     if (baseLang != nullptr)
         addLanugage(baseLang);
 }
@@ -100,7 +103,7 @@ void FlightAttendet::landing(ostream& out) const
 
 void FlightAttendet::prepareForFlight(ostream& out)
 {
-    srand(time(nullptr)); // use current time as seed for random generator
+    srand((unsigned int)time(NULL)); // use current time as seed for random generator
     unsigned int rnd = (unsigned int)(rand() % 4);
     
     out << "I'm " << name << " flight Attendet " << getWorkerId() << " preparing for flight" << endl;
@@ -129,7 +132,7 @@ void FlightAttendet::prepareForFlight(ostream& out)
 
 void FlightAttendet::annualRefresh(ostream& out)
 {
-    srand(time(nullptr)); // use current time as seed for random generator
+    srand((unsigned int)time(NULL)); // use current time as seed for random generator
     unsigned int  rnd = (unsigned int)(rand() % currentNumOfLanguages);
 
 

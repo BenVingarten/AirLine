@@ -3,7 +3,7 @@
 #include "Ticket.h"
 
 
-
+AirLine* AirLine::theAirLine = nullptr;
 const char* AirLine::DEFAULT_COUNTRY = "Israel";
 const char* AirLine::DEFAULT_NAME = "EL-AL";
 
@@ -18,15 +18,18 @@ bool AirLine::checkReady(Flight& f, ostream& out)
 		out << "The plane is available and fuled!" << endl;
 		out << "Enough tickets have been purchased" << endl;
 		out << "crew members are in position, and prepared the plane" << endl;
+		return true;
 	}
-	else
-		return false;
+
+	return false;
+
+
 }
 
 AirLine::AirLine(const char* pName, const char* pCountry) : 
 	currentNumOfFlights(0), currentNumOfPassengers(0), currentNumOfPlanes(0), currentNumOfWorkers(0),
 	allWorkers(nullptr), allFlights(nullptr), allPlanes(nullptr), allPassengers(nullptr), 
-	income(0)
+	income(0), sizeOfWorkers(0), sizeOfFlights(0), sizeOfPlanes(0),sizeOfPassengers(0)
 {
 	name = new char[strlen(pName) + 1];
 	strcpy(name, pName);
@@ -91,19 +94,22 @@ bool AirLine::addWorker(Worker& w)
 	if (currentNumOfWorkers == MAX_WORKERS)
 		return false;
 
-	// Check if there is space at the end of the array
-	int arrSize = sizeof(allWorkers) / sizeof(Worker*);
-	
-	if (currentNumOfWorkers < arrSize)
+	if (currentNumOfWorkers < sizeOfWorkers)
 	{
 		allWorkers[currentNumOfWorkers++] = &w;
 		return true;
 	}
 
 	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * currentNumOfWorkers;
+	int newCapacity = 2 * sizeOfWorkers;
+	
+	if (newCapacity == 0)
+		newCapacity = 1;
+
 	if (newCapacity > MAX_WORKERS)
 		newCapacity = MAX_WORKERS;
+	
+	sizeOfWorkers = newCapacity;
 
 	Worker** newWorkers = new Worker* [newCapacity];
 
@@ -114,12 +120,12 @@ bool AirLine::addWorker(Worker& w)
 	}
 
 	// Add the new worker to the extended array
-	newWorkers[currentNumOfWorkers] = &w;
+	newWorkers[currentNumOfWorkers++] = &w;
 
 	// Delete the old workers array and update the pointer to the new array
 	delete[] allWorkers;
 	allWorkers = newWorkers;
-	currentNumOfWorkers = newCapacity;
+
 
 	return true;
 }
@@ -131,8 +137,7 @@ bool AirLine::addFlight(Flight& f)
 		return false;
 
 	// Check if there is space at the end of the array
-	int arrSize = sizeof(allFlights) / sizeof(Flight*);
-	if (currentNumOfFlights < arrSize)
+	if (currentNumOfFlights < sizeOfFlights)
 	{
 		allFlights[currentNumOfFlights++] = &f;
 		return true;
@@ -143,9 +148,15 @@ bool AirLine::addFlight(Flight& f)
 		return false;
 
 	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * currentNumOfFlights;
+	int newCapacity = 2 * sizeOfFlights;
+	
+	if (newCapacity == 0)
+		newCapacity = 1;
+
 	if (newCapacity > MAX_FLIGHTS)
 		newCapacity = MAX_FLIGHTS;
+
+	sizeOfFlights = newCapacity;
 
 	Flight** newFlights = new Flight * [newCapacity];
 
@@ -156,12 +167,12 @@ bool AirLine::addFlight(Flight& f)
 	}
 
 	// Add the new flight to the extended array
-	newFlights[currentNumOfFlights] = &f;
+	newFlights[currentNumOfFlights++] = &f;
 
 	// Delete the old flights array and update the pointer to the new array
 	delete[] allFlights;
 	allFlights = newFlights;
-	currentNumOfFlights = newCapacity;
+	
 	return true;
 }
 
@@ -172,8 +183,7 @@ bool AirLine::addPlane(Plane& p)
 		return false;
 
 	// Check if there is space at the end of the array
-	int arrSize = sizeof(allPlanes) / sizeof(Plane*);
-	if (currentNumOfPlanes < arrSize)
+	if (currentNumOfPlanes < sizeOfPlanes)
 	{
 		allPlanes[currentNumOfPlanes++] = &p;
 		return true;
@@ -184,9 +194,15 @@ bool AirLine::addPlane(Plane& p)
 		return false;
 
 	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * currentNumOfPlanes;
+	int newCapacity = 2 * sizeOfPlanes;
+
+	if (newCapacity == 0)
+		newCapacity = 1;
+
 	if (newCapacity > MAX_PLANES)
 		newCapacity = MAX_PLANES;
+
+	sizeOfPlanes = newCapacity;
 
 	Plane** newPlanes = new Plane * [newCapacity];
 
@@ -197,12 +213,12 @@ bool AirLine::addPlane(Plane& p)
 	}
 
 	// Add the new plane to the extended array
-	newPlanes[currentNumOfPlanes] = &p;
+	newPlanes[currentNumOfPlanes++] = &p;
 
 	// Delete the old planes array and update the pointer to the new array
 	delete[] allPlanes;
 	allPlanes = newPlanes;
-	currentNumOfPlanes = newCapacity;
+	
 
 	return true;
 }
@@ -214,8 +230,7 @@ bool AirLine::addPassenger(Passenger* p)
 		return false;
 
 	// Check if there is space at the end of the array
-	int arrSize = sizeof(allPassengers) / sizeof(Passenger*);
-	if (currentNumOfPassengers < arrSize)
+	if (currentNumOfPassengers < sizeOfPassengers)
 	{
 		allPassengers[currentNumOfPassengers++] = p;
 		return true;
@@ -226,9 +241,15 @@ bool AirLine::addPassenger(Passenger* p)
 		return false;
 
 	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * currentNumOfPassengers;
+	int newCapacity = 2 * sizeOfPassengers;
+
+	if (newCapacity == 0)
+		newCapacity = 1;
+
 	if (newCapacity > MAX_PASSENGERS)
 		newCapacity = MAX_PASSENGERS;
+
+	sizeOfPassengers = newCapacity;
 
 	Passenger** newPassengers = new Passenger* [newCapacity];
 
@@ -239,12 +260,12 @@ bool AirLine::addPassenger(Passenger* p)
 	}
 
 	// Add the new passenger to the extended array
-	newPassengers[currentNumOfPassengers] = p;
+	newPassengers[currentNumOfPassengers++] = p;
 
 	// Delete the old passengers array and update the pointer to the new array
 	delete[] allPassengers;
 	allPassengers = newPassengers;
-	currentNumOfPassengers = newCapacity;
+	
 	return true;
 }
 

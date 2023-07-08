@@ -113,7 +113,7 @@ void Technician::landing(ostream& out) const
 void Technician::testSystems(ostream& out)const {
     // Implementation for testing plane systems
 
-    srand(time(nullptr)); // use current time as seed for random generator
+    srand((unsigned int)time(NULL)); // use current time as seed for random generator
 
     unsigned int  rnd = rand() % 8;
     if (rnd == 7)

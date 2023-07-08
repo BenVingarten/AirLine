@@ -51,6 +51,11 @@ private:
     Flight** allFlights;
     Passenger** allPassengers;
 
+    int sizeOfWorkers; //size of Workers array
+    int sizeOfFlights; //size of Flights array
+    int sizeOfPlanes; //size of Planes  array
+    int sizeOfPassengers; //size of Passengers array
+
     const int MAX_WORKERS = 50;
     const int MAX_PLANES = 10;
     const int MAX_FLIGHTS = 15;
