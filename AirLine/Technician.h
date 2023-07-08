@@ -54,4 +54,3 @@ private:
 	void print(ostream& out)const;
 
 };
-

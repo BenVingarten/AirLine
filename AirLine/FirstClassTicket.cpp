@@ -6,7 +6,7 @@ const float FirstClassTicket::ADDITIONAL_PRICE = 1.5;
 
 FirstClassTicket::FirstClassTicket(int cost, int gate, const Time& boardingT, TripInfo* info, 
 	int seat, Flight& myFlight)
-	: Ticket(cost * ADDITIONAL_PRICE, gate, boardingT, info, seat, myFlight) {}
+	: Ticket((float)cost * ADDITIONAL_PRICE, gate, boardingT, info, seat, myFlight) {}
 
 
 FirstClassTicket::FirstClassTicket(const FirstClassTicket& fct)

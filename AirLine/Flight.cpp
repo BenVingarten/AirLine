@@ -5,6 +5,7 @@
 #include "Ticket.h"
 #include "Passenger.h"
 #include "FlightAttendet.h"
+#include "Pilot.h"
 
 //Initializing
 int Flight::flightNumberGen = 4444;
@@ -18,8 +19,8 @@ int Flight::maxFlightAttendetsPreparingPlane = 2;
 int Flight::maxTechnicianPreparingPlane = 2;
 
 
-const float Flight::PRECENTAGE_OF_FIRST_CLASS_TICKETS = 0.3;
-const float Flight::FIRST_CLASS_COST_PRECENT = 1.5;
+const float Flight::PRECENTAGE_OF_FIRST_CLASS_TICKETS = 0.3f;
+const float Flight::FIRST_CLASS_COST_PRECENT = 1.5f;
 const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
 
 
@@ -67,7 +68,14 @@ Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
 Flight::Flight(AirLine& myAirLine, ifstream& in)
 	: airLine(myAirLine), info(in), boardingTime(in)
 {
-	
+	currentNumOfCrewMembers = 0;
+	currentPurchasedTickets = 0;
+	pPlane = nullptr;
+	ticketArr = nullptr;
+
+	for (int i = 0; i < MAX_CREW_MEMBERS; i++)
+		crewMembers[i] = nullptr;
+
 	in >> flightNumber;
 	
 	char tmp[MAX_NAME_LEN];

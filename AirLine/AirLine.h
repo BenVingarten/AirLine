@@ -7,7 +7,8 @@ using namespace std;
 #include "Flight.h"
 
 
-
+class Worker;
+class Plane;
 class AirLine
 {
                                 //TODO design PATTERN observer; 

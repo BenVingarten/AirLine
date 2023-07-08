@@ -1,8 +1,10 @@
 #pragma once
 #include <iostream>
 using namespace std;
-#include "Ticket.h"
+
 #include "Date.h"
+#include "Ticket.h"
+
 
 class Passenger;
 class Ticket;
