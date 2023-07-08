@@ -2,10 +2,10 @@
 #include "AirLine.h"
 #include <fstream>
 
-#include "FlightAttendet.h"
 #include "Pilot.h"
-#include "Technician.h"
 #include "WorkerPassenger.h"
+#include "Technician.h"
+#include "FlightAttendet.h"
 
 
 
@@ -633,18 +633,18 @@ void AirLine::readWorkersFromFile(ifstream& in)
 		// Check the type of the worker and create a corresponding object
 		if (workerType == FLIGHT_ATTENDENT)
 		{
-			FlightAttendet* flightAttendant = new FlightAttendet(in);
-			addWorker(*flightAttendant);
+			FlightAttendet* w = new FlightAttendet(in);
+			addWorker(*w);
 		}
 		else if (workerType == PILOT)
 		{
-			Pilot* pilot = new Pilot(in);
-			addWorker(*pilot);
+			Pilot* w = new Pilot(in);
+			addWorker(*w);
 		}
 		else if (workerType == TECHNICHIAN)
 		{
-			Technician* technician = new Technician(in);
-			addWorker(*technician);
+			Technician* w = new Technician(in);
+			addWorker(*w);
 		}
 	}
 }

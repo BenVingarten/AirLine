@@ -6,7 +6,7 @@ using namespace std;
 
 class TripInfo;
 class Passenger;
-
+class Flight;
 
 class Ticket
 {
@@ -26,8 +26,7 @@ protected:
 
 public:
 
-	Ticket(int cost, int gate, const Time& board, TripInfo* info, int seat,
-			Flight& myFlight);
+	Ticket(int cost, int gate, const Time& board, TripInfo* info, int seat, Flight& myFlight);
 	Ticket(const Ticket& other);
 	Ticket(Ticket&& ticket) noexcept;
 	virtual ~Ticket();

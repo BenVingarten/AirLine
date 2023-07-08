@@ -130,7 +130,7 @@ void FlightAttendet::prepareForFlight(ostream& out)
 void FlightAttendet::annualRefresh(ostream& out)
 {
     srand(time(nullptr)); // use current time as seed for random generator
-    int rnd = rand() % currentNumOfLanguages;
+    unsigned int rnd = rand() % currentNumOfLanguages;
 
 
     out << "I am " << name << " the flight attendent and I went to " << allLanguages[rnd] << " language refreshment" << endl;

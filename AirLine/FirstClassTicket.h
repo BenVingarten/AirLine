@@ -1,11 +1,12 @@
 #pragma once
 #include <iostream>
 using namespace std;
-
+#include "Ticket.h"
 #include "Date.h"
 
 class Passenger;
 class Ticket;
+
 class FirstClassTicket : public Ticket
 {
 	
@@ -17,11 +18,11 @@ public:
 	~FirstClassTicket() {};
 
 
-	Ticket* clone()const override;
+	Ticket* clone()const;
 
 	const FirstClassTicket& operator =(FirstClassTicket&& p) noexcept;
 	
-	void print(ostream& out)const override;
+	void print(ostream& out)const;
 
 private:
 	static const float ADDITIONAL_PRICE;

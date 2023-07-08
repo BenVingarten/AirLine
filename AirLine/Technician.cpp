@@ -114,6 +114,7 @@ void Technician::testSystems(ostream& out)const {
     // Implementation for testing plane systems
 
     srand(time(nullptr)); // use current time as seed for random generator
+
     int rnd = rand() % 8;
     if (rnd == 7)
         fixProblem(out);

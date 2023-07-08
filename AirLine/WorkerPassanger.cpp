@@ -57,7 +57,7 @@ void WorkerPassenger::setRaise()
 {
     Worker::setRaise();
 
-    discount += 0.1; // Increase discount by 10%
+    discount += 0.1f; // Increase discount by 10%
     if (discount > MAX_DISCOUNT)
         discount = MAX_DISCOUNT;
 }

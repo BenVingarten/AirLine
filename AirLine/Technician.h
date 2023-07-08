@@ -2,9 +2,13 @@
 #include <iostream>
 using namespace std;
 
+#include "Person.h"
+#include "Worker.h"
+
 
 class Plane;
 class Worker;
+
 class Technician : public Worker
 {
 
@@ -31,11 +35,11 @@ public:
 	int getNumOfPlanesPrepared()const;
 
 	
-	virtual void setRaise() override; //the number of planes prepared times 5 
-	virtual void prepareForFlight(ostream& out) override;
-	virtual void annualRefresh(ostream& out) override;
-	virtual void takeoff(ostream& out)const override;
-	virtual void landing(ostream& out)const override;
+	virtual void setRaise() ; //the number of planes prepared times 5 
+	virtual void prepareForFlight(ostream& out) ;
+	virtual void annualRefresh(ostream& out) ;
+	virtual void takeoff(ostream& out)const ;
+	virtual void landing(ostream& out)const ;
 
 
 private:

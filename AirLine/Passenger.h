@@ -48,4 +48,3 @@ public:
 };
 
 
-int Passenger::passportGen = 1111;

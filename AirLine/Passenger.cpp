@@ -3,6 +3,7 @@
 #include "Passenger.h"
 #include <fstream>
 
+int Passenger::passportGen = 1111;
 
 
 Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, const char* code)
