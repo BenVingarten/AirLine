@@ -1,9 +1,8 @@
 #pragma once
 #include <iostream>
 using namespace std;
-#include "Worker.h"
 #include "Passenger.h"
-
+#include "Worker.h"
 #define MAX_LANGUAGES  10	//define because its limiter for array
 
 class FlightAttendet: public Worker
@@ -33,7 +32,8 @@ public:
 	virtual void setRaise() override;	//+100 NIS per language she speaks
 	virtual void prepareForFlight(ostream& out) override ;
 	virtual void annualRefresh(ostream& out) override;
-	virtual void takeoff(ostream& out)override;
+	virtual void takeoff(ostream& out)const override;
+	virtual void landing(ostream& out)const override;
 	
 };
 

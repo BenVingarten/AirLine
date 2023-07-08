@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "AirLine.h"
 #include <fstream>
 
@@ -10,49 +11,10 @@
 
 //Privates
 
-void AirLine::boarding(Flight& f, ostream& out)
-{
-	out << "All Passengers of Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << endl;
-	out << "are requested to reach gate: " << f.getTicketArray()[0]->getGateNumber() << " for boarding" << endl;
-
-	Passenger* p = nullptr;
-	for (int i = 0; i < f.getNumOfcurrentPurchasedTickets(); i++)
-	{
-		p = f.getTicketArray()[i]->getPassenger();
-		p->board();
-	}
-		
-	
-	for (int i = 0; i < f.getNumOfcurrentPurchasedTickets(); i++)
-	{
-		Passenger* p = f.getTicketArray()[i]->getPassenger();
-		out << "I'm " << p->getName() << " passenger " << p->getPassportNum() << " for flight " << f.getFlightNumber() << " seating in seat " << (i+1) << ", ready to fly!" << endl;
-	}
-
-
-}
-
-void AirLine::takeoff(Flight& f, ostream& out)
-{
-	int limit = 0;
-	for (int i = 0; i < f.getCurrentNumOfCrewMembers() && limit < 2; i++)
-	{
-		if (typeid(f.getCrew()[i]).name() == typeid(FlightAttendet).name())
-			f.getCrew()[i].takeOff(out);
-
-	    else if(typeid(f.getCrew()[i]).name() == typeid(Pilot).name())
-
-	}
-		
-}
-
-void AirLine::landing(Flight& f, ostream& out)
-{
-}
 
 bool AirLine::checkReady(Flight& f, ostream& out)
 {
-	if (f.checkIfFlightReady())
+	if (f.checkIfFlightReady(out))
 	{
 		out << "The plane is available and fuled!" << endl;
 		out << "Enough tickets have been purchased" << endl;
@@ -563,9 +525,6 @@ int AirLine::isPassengerExist(const Passenger& p) const
 
 void AirLine::executeFlight(Flight& f, ostream& out)
 {
-	out << "Executing Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << endl;
-	CrewPreparations(f, out); 
-
 	out << "Checking last  requirments..." << endl;
 	if (checkReady(f, out))
 		out << "Flight Is Ready!" << endl;
@@ -574,31 +533,47 @@ void AirLine::executeFlight(Flight& f, ostream& out)
 		out << "flight is not ready.... " << endl;
 		return;
 	}
-	boarding(f,out);
+
+	out << "Executing Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << endl;
+	f.crewPreparations(out);
+	f.resetPrints(); 
+
+	f.boarding(out);
 	out << "ready for takeoff" << endl;
-	takeoff(f,out); //TODO
-	landing(f, out); //TODO
 
-	refreshFlight(); //TODO
+	f.takeoff(out);
+	f.resetPrints();
 
+	out << " we have reached max speed of " << f.getPlane()->getMaxSpeed() << endl;
+	out << " we have decreasing to  minimum speed of " << f.getPlane()->getMinSpeed() << endl;
 
-	
+	f.landing(out); 
+	f.resetPrints();
 
-	
-	
-
-	boarding(f, out);
-	takeoff(f, out);
-	landing(f, out);
+	delete &f;
 }
 
-bool AirLine::buyTicket()
+bool AirLine::buyTicket(Passenger& p, Flight& f, ostream& out)
 {
-	return false;
+	Ticket* t = f.setTicketToPassenger(p, out);
+	if (t == nullptr)
+		return false;
+
+	income += t->getPrice();
+	return true;
 }
 
-void AirLine::yearPassed()
+void AirLine::yearPassed(ostream& out)
 {
+	for (int i = 0; i < currentNumOfPassengers; i++)
+		allPassengers[i]++;
+
+	for (int i = 0; i < currentNumOfWorkers; i++)
+	{
+		allWorkers[i]++;
+		allWorkers[i]->setRaise();
+		allWorkers[i]->annualRefresh(out);
+	}
 }
 
 
@@ -620,11 +595,12 @@ void AirLine::readPassengersFromFile(ifstream& in)
 	{
 		int passengerType;
 		in >> passengerType;
+		
 
 		// Check the type of the worker and create a corresponding object
 		Passenger* p = nullptr;
 		if (passengerType == WORKER_PASSENGER)
-			p = new WorkerPassenger(in);
+			 p = new WorkerPassenger(in);
 			
 		
 		else if (passengerType == PASSENGER)
@@ -811,53 +787,6 @@ void AirLine::savePlanesFromFile(ofstream& out)
 		allPlanes[i]->saveToFile(out);
 	}
 }
-
-bool AirLine::isPassengerInFlight(const Passenger& p, const Flight& f) const
-{
-	for (int i = 0; i < f.getNumOfcurrentPurchasedTickets(); i++)
-		if (p == *(f.getTicketArray()[i]->getPassenger()))
-			return true;
-
-	return false;
-}
-
-void AirLine::CrewPreparations(Flight& f, ostream& out) const
-{
-	out << "Prepare flight:" << endl;
-	for (int i = 0; i < f.getCurrentNumOfCrewMembers(); i++)
-	{
-		if (typeid(f.getCrew()[i]).name() == typeid(Pilot).name())
-			if (f.getMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane() != 0)
-			{
-				f.getCrew()[i]->prepareForFlight(out);
-				f.setMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane(-1);
-			}
-
-
-			else if (typeid(f.getCrew()[i]).name() == typeid(Technician).name())
-				if (f.getMaxTechnicianPreparingPlane() != 0)
-				{
-					f.getCrew()[i]->prepareForFlight(out);
-					f.setMaxTechnicianPreparingPlane(-1);
-				}
-				else
-					if (f.getMaxFlightAttendetsPreparingPlane() != 0)
-					{
-						f.getCrew()[i]->prepareForFlight(out);
-						f.setMaxFlightAttendetsPreparingPlane(-1);
-					}
-	}
-
-	//reset
-	f.setMaxPilotPrintsInTakeoffAndLandingOrPreparingPlane(1);
-	f.setMaxFlightAttendetsPreparingPlane(2);
-	f.setMaxTechnicianPreparingPlane(2);
-}
-	
-
-
-
-
 
 ostream& operator<<(ostream& out, const AirLine& al)
 {

@@ -1,9 +1,10 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#include "Travel.h"
 #include "Date.h"
 #include "Time.h"
-#include "Travel.h"
+
 
 class TripInfo: public Travel
 {

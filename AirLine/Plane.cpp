@@ -1,14 +1,18 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Plane.h"
 #include <fstream>
 
 int Plane::planeNumberGen = 3333;
 
 
-Plane::Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed)
+Plane::Plane(int numOfSeats, int maxLuggageWeight, float speed)
     : numOfSeats(numOfSeats), maxLuggageWeight(maxLuggageWeight), 
-        maxSpeed(maxSpeed), currentWeight(0), isAvailable(true), 
+        maxSpeed(speed), currentWeight(0), isAvailable(true), 
         flightsCounter(0), needToRefuel(false)
 {
+    if (speed > MAX_SPEED_PLANE)
+        maxSpeed = MAX_SPEED_PLANE;
+
     planeNumber = planeNumberGen++;
 }
 
@@ -42,6 +46,11 @@ int Plane::getMaxWeight() const {
 
 float Plane::getMaxSpeed() const {
     return maxSpeed;
+}
+
+int Plane::getMinSpeed() const
+{
+    return MIN_SPEED_PLANE;
 }
 
 bool Plane::operator==(const Plane& p)const
@@ -88,36 +97,6 @@ ostream& operator<<(ostream& out, const Plane& p) {
     return out;
 }
 
-
-void Plane::readAndsetNumOfSeats(ostream& out, istream& in)
-{
-    do {
-        out << "Enter number of seats between " << MIN_SEATS << " and " << MAX_SEATS << ": ";
-        in >> numOfSeats;
-        in.ignore(); // Ignore the newline character
-    } while (!isNumOfSeatsValid(numOfSeats));
-}
-
-void Plane::readAndsetLuggageWeight(ostream& out, istream& in)
-{
-    do {
-        cout << "Enter maximum luggage weight between " << MIN_WEIGHT_PLANE << " and " << MAX_WEIGHT_PLANE << ": ";
-        in >> maxLuggageWeight;
-        in.ignore(); // Ignore the newline character
-
-    } while (!isMaxLuggageWeightValid(maxLuggageWeight));
-}
-
-void Plane::readAndsetMaxSpeed(ostream& out, istream& in)
-{
-    do {
-        cout << "Enter maximum speed between " << MIN_SPEED_PLANE << " and " << MAX_SPEED_PLANE << ": ";
-        in >> maxSpeed;
-        in.ignore(); // Ignore the newline character
-
-    } while (!isMaxSpeedValid(maxSpeed));
-}
-
 bool Plane::isNumOfSeatsValid(int numOfSeats)const
 {
     return(numOfSeats < MIN_SEATS || numOfSeats > MAX_SEATS);
@@ -125,7 +104,7 @@ bool Plane::isNumOfSeatsValid(int numOfSeats)const
 
 bool Plane::isMaxLuggageWeightValid(int weight)const
 {
-    return (weight < MIN_WEIGHT_PLANE || weight > MAX_WEIGHT_PLANE);
+    return  weight + currentWeight > MAX_WEIGHT_PLANE;
 }
 
 bool Plane::isMaxSpeedValid(float speed)const
@@ -154,6 +133,11 @@ bool Plane::isReadyToFly() const
 void Plane::setNeedToRefuelFalse()
 {
     needToRefuel = false;
+}
+
+void Plane::setAvailability()
+{
+    isAvailable = !isAvailable;
 }
 
 

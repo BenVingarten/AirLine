@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 using namespace std;
-#include "Worker.h"
 #include "Time.h"
+#include "Worker.h"
 #include "Flight.h"
 
 
@@ -32,9 +32,10 @@ public:
 	Pilot& operator +=(const Time& hours); //add to flight hours
 
 	virtual void setRaise()override; //70% of his flightHours from current year
-	virtual void prepareForFlight(ostream& out)override;
-	virtual void annualRefresh(ostream& out)override;
-	virtual void takeoff(ostream& out)override;
+	virtual void prepareForFlight(ostream& out) override;
+	virtual void annualRefresh(ostream& out) override;
+	virtual void takeoff(ostream& out) const override;
+	virtual void landing(ostream& out) const override;
 
 };
 

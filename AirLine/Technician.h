@@ -1,10 +1,10 @@
 #pragma once
 #include <iostream>
 using namespace std;
-#include "Worker.h"
-#include "Plane.h"
 
 
+class Plane;
+class Worker;
 class Technician : public Worker
 {
 
@@ -32,9 +32,10 @@ public:
 
 	
 	virtual void setRaise() override; //the number of planes prepared times 5 
-	virtual void prepareForFlight(ostream& out)override;
-	virtual void annualRefresh(ostream& out)override;
-	virtual void takeoff(ostream& out)override;
+	virtual void prepareForFlight(ostream& out) override;
+	virtual void annualRefresh(ostream& out) override;
+	virtual void takeoff(ostream& out)const override;
+	virtual void landing(ostream& out)const override;
 
 
 private:
@@ -43,9 +44,9 @@ private:
 	eTechnicianType type;
 	int planesPreparedThisYear; 
 
-	void testSystems(ostream& out);
+	void testSystems(ostream& out)const;
 	void fillFuel(Plane* plane, ostream& out);
-	void fixProblem(ostream& out);
+	void fixProblem(ostream& out)const;
 	void print(ostream& out)const;
 
 };

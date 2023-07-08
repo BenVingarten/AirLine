@@ -99,12 +99,18 @@ void Technician::annualRefresh(ostream& out) {
     planesPreparedThisYear = 0;
 }
 
-void Technician::takeoff(ostream& out)
+void Technician::takeoff(ostream& out)const
 {
     out << "this is " << name << " technician " << getWorkerId() << "keeping alert for any unwanted malfunction system during takeoff" << endl;
 }
 
-void Technician::testSystems(ostream& out) {
+void Technician::landing(ostream& out) const
+{
+    out << "this is " << name << " technician " << getWorkerId() << "making sure there all communication systesm with tower are woring" << endl;
+}
+
+
+void Technician::testSystems(ostream& out)const {
     // Implementation for testing plane systems
 
     srand(time(nullptr)); // use current time as seed for random generator
@@ -140,7 +146,7 @@ void Technician::fillFuel(Plane* plane, ostream& out) {
 
 }
 
-void Technician::fixProblem(ostream& out)
+void Technician::fixProblem(ostream& out)const
 {
     switch (type) {
     case eTechnicianType::STRUCTURE:

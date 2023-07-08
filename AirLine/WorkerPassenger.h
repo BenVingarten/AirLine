@@ -24,8 +24,10 @@ public:
     void saveToFile(ofstream& out) const override;
 
     virtual void setRaise() override;
-    virtual void prepareForFlight(std::ostream& out) override;
-    virtual void annualRefresh(std::ostream& out) override;
+    virtual void prepareForFlight(ostream& out) override;
+    virtual void annualRefresh(ostream& out) override;
+    virtual void takeoff(ostream& out)const override;
+    virtual void landing(ostream& out)const override;
 };
 
 

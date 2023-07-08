@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "WorkerPassenger.h"
 #include <fstream>
 
@@ -67,9 +68,21 @@ void WorkerPassenger::prepareForFlight(ostream& out)
     
 }
 
-void WorkerPassenger::annualRefresh(std::ostream& out)
+void WorkerPassenger::annualRefresh(ostream& out)
 {
     
     out << "I will complete the course when I get back from vacation..." << std::endl;
     
+}
+
+void WorkerPassenger::takeoff(ostream& out) const
+{
+    out << "this is " << name << " WorkerPassenger " << getWorkerId() <<
+        " with passPortNum " << passport << "hope the crew is doing well, while i'm gone" << endl;
+}
+void WorkerPassenger::landing(ostream& out) const
+{
+    out << "this is " << name << " WorkerPassenger " << getWorkerId() <<
+        " with passPortNum " << passport << "Yes! lets start this vacation" << endl;
+
 }

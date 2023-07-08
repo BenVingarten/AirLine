@@ -30,10 +30,11 @@ public:
 			Flight& myFlight);
 	Ticket(const Ticket& other);
 	Ticket(Ticket&& ticket) noexcept;
-	virtual ~Ticket() {};
+	virtual ~Ticket();
 
 	virtual Ticket* clone()const;
 	void setSeat(int s);
+	void setPassenger(Passenger& p);
 
 	const Ticket& operator =(Ticket&& t) noexcept;
 

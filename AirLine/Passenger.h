@@ -10,6 +10,10 @@ class Passenger : virtual public Person
 {
 protected:
 	static int passportGen; // initiallize to 1111 outside the class (only once)
+	
+	static const int MAX_WEIGHT = 24;
+	static const int MIN_WEIGHT = 5;
+
 
 	Ticket* ticket;
 	int passport;
@@ -35,8 +39,9 @@ public:
 
 	void setLuggageWeight(int weight);
 	bool setTicket(Ticket* ticket);
+	void removeTicket();
 	void setAirPortCode(const char* newCode);
-	void board();
+	
 
 	bool operator ==(const Passenger& p)const;
 

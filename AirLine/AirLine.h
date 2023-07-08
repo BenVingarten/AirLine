@@ -1,10 +1,11 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#include "Worker.h"
 #include "Passenger.h"
 #include "Plane.h"
 #include "Flight.h"
-#include "Worker.h"
+
 
 
 class AirLine
@@ -40,10 +41,6 @@ private:
 
     float income;
 
-
-    void boarding(Flight& f, ostream& out); // Boarding function (for internal use)
-    void takeoff(Flight& f, ostream& out); // Takeoff function (for internal use)
-    void landing(Flight& f, ostream& out); // Landing function (for internal use)
     bool checkReady(Flight& f, ostream& out); // Check flight readiness (for internal use)
 
     AirLine(const char* pName, const char* pCountry); // Constructor in private because Singleton 
@@ -85,8 +82,8 @@ public:
     int isPassengerExist(const Passenger& p)const;
     
     void executeFlight(Flight& f, ostream& out); // Execute flight
-    bool buyTicket(); // Buy ticket
-    void yearPassed(); // Add a year
+    bool buyTicket(Passenger& p, Flight& f, ostream& out); // Buy ticket
+    void yearPassed(ostream& out); // Add a year
  
     //read and save to file
     void readPassengersFromFile(ifstream& in);
@@ -98,8 +95,6 @@ public:
     void saveWorkersFromFile(ofstream& out);
     void saveFlightsFromFile(ofstream& out);
     void savePlanesFromFile(ofstream& out);
-    bool isPassengerInFlight(const Passenger& p, const Flight& f) const;
-    void CrewPreparations(Flight& f,ostream& out)const;
     
 };
 

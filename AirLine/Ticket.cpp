@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Ticket.h"
 #include "TripInfo.h"
 #include "Passenger.h"
@@ -22,6 +23,12 @@ Ticket::Ticket(Ticket&& ticket) noexcept
 	ticket.pPassenger = nullptr;
 }
 
+Ticket::~Ticket()
+{
+	if (pPassenger != nullptr)
+		pPassenger->removeTicket();
+}
+
 
 Ticket* Ticket::clone() const
 {
@@ -31,6 +38,11 @@ Ticket* Ticket::clone() const
 void Ticket::setSeat(int s)
 {
 	seat = s;
+}
+
+void Ticket::setPassenger(Passenger& p)
+{
+	pPassenger = &p;
 }
 
 const Ticket& Ticket::operator=(Ticket&& t) noexcept

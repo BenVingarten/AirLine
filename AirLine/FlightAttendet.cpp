@@ -90,6 +90,14 @@ void FlightAttendet::setRaise()
     salary += 100 * currentNumOfLanguages;
 }
 
+void FlightAttendet::landing(ostream& out) const
+{
+    out << "this is " << name << " Flight attendet " << getWorkerId() <<
+        " asking for your attention\nwe are about to land, so please fasten your seat and remove headphones" << endl;
+    out << "dont forget any of your belongings in the plane" << endl;
+}
+
+
 void FlightAttendet::prepareForFlight(ostream& out)
 {
     srand(time(nullptr)); // use current time as seed for random generator
@@ -128,7 +136,8 @@ void FlightAttendet::annualRefresh(ostream& out)
     out << "I am " << name << " the flight attendent and I went to " << allLanguages[rnd] << " language refreshment" << endl;
 }
 
-void FlightAttendet::takeoff(ostream& out)
+void FlightAttendet::takeoff(ostream& out)const
 {
-    out << "this is " << name << " Flight attendet " << getWorkerId() << " asking for your attention\nwe are about to takeoff, so please fasten your seat belt and stay seated" << endl;
+    out << "this is " << name << " Flight attendet " << getWorkerId() <<
+        " asking for your attention\nwe are about to takeoff, so please fasten your seat belt and stay seated" << endl;
 }

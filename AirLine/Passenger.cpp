@@ -6,8 +6,10 @@
 
 
 Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, const char* code)
-    : Person(n, age, gender), luggageWeight(luggageWeight), ticket(nullptr)
+    : Person(n, age, gender), ticket(nullptr)
 {
+    setLuggageWeight(luggageWeight);
+
     passport = passportGen++;
     if (Travel::airportCodeValid(code))
         strcpy(airportCode, code);
@@ -75,7 +77,15 @@ Ticket* Passenger::getTicket() const
 }
 
 void Passenger::setLuggageWeight(int weight) {
-    luggageWeight = weight;
+
+    if (weight < MIN_WEIGHT)
+        luggageWeight = MIN_WEIGHT;
+
+    else if (weight > MAX_WEIGHT)
+        luggageWeight = MAX_WEIGHT;
+    else
+        luggageWeight = weight;
+
 }
 
 bool Passenger::setTicket(Ticket* otherTicket) {
@@ -86,19 +96,18 @@ bool Passenger::setTicket(Ticket* otherTicket) {
     return false;
 }
 
+void Passenger::removeTicket()
+{
+    ticket = nullptr;
+}
+
 void Passenger::setAirPortCode(const char* newCode)
 {
-   if(Travel::airportCodeValid(newCode))
+    if (strcmp(airportCode, newCode) == 0)
+        return;
+    if(Travel::airportCodeValid(newCode))
        strcpy(airportCode, newCode);
 }
-
-void Passenger::board()
-{
-    if (strcmp(ticket->getTicketInfo()->getSource(), airportCode) != 0)
-        setAirPortCode(ticket->getTicketInfo()->getSource());
-    
-}
-
 bool Passenger::operator==(const Passenger& p) const
 {
     return passport == p.passport;

@@ -47,6 +47,7 @@ public:
 	void readAndsetSalary(ostream& out, istream& in);
 	void readAndsetSeniority(ostream& out, istream& in);
 	bool setFlight(Flight* flight);
+	void removeFlight();
 	void changeAvailability();
 	Worker& operator ++(); // add 1 year seniority
 	bool operator ==(const Worker& worker)const;
@@ -54,7 +55,8 @@ public:
 	virtual void setRaise() = 0;
 	virtual void prepareForFlight(ostream& out) = 0;
 	virtual void annualRefresh(ostream& out) = 0;
-	virtual void takeoff(ostream& out) = 0;
+	virtual void takeoff(ostream& out)const = 0;
+	virtual void landing(ostream& out)const = 0;
 
 	
 	

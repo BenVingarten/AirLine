@@ -76,13 +76,20 @@ void Pilot::annualRefresh(ostream& out)
     out << endl;
 }
 
-void Pilot::takeoff(ostream& out)
+void Pilot::takeoff(ostream& out)const
 {
     out << "this is your pilot " << name << " for flight " << currentFlight->getFlightNumber() << " from " << currentFlight->getInfo().getSource() <<
         " to " << currentFlight->getInfo().getDestenation() << endl;
     out << "the duration of the flight is " << currentFlight->getInfo().getFlightDuration().getHours() << " hours and " <<
         currentFlight->getInfo().getFlightDuration().getMinutes() << " minutes" << endl;
     out << "get ready for takeoff, and have a wonderful flight" << endl;
+}
+
+void Pilot::landing(ostream& out)const
+{
+    out << "this is your pilot " << name << " for flight " << currentFlight->getFlightNumber() <<
+     "get ready for takeoff, we are about to land in " << currentFlight->getInfo().getDestenation() << endl;
+
 }
 
 void Pilot::print(ostream& out) const

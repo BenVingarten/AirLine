@@ -12,7 +12,6 @@ class Plane
 
 	static const int MIN_SEATS = 10;
 	static const int MAX_SEATS = 250;
-	static const int MIN_WEIGHT_PLANE = 3000;
 	static const int MAX_WEIGHT_PLANE = 9000;
 	static const int MIN_SPEED_PLANE = 800;
 	static const int MAX_SPEED_PLANE = 1000;
@@ -27,7 +26,7 @@ class Plane
 	bool	needToRefuel;
 
 public:
-	Plane(int numOfSeats, int maxLuggageWeight, float maxSpeed);
+	Plane(int numOfSeats, int maxLuggageWeight, float speed);
 	
 	//read and save to file
 	Plane(ifstream& in);
@@ -38,10 +37,9 @@ public:
 	int getCurrentWeight()const;
 	int getMaxWeight()const;
 	float getMaxSpeed()const;
+	int getMinSpeed()const;
 
-	void readAndsetNumOfSeats(ostream& out, istream& in);
-	void readAndsetLuggageWeight(ostream& out, istream& in);
-	void readAndsetMaxSpeed(ostream& out, istream& in);
+	
 
 	bool operator ==(const Plane& p)const;
 	bool operator += (int weight); //add weight
@@ -59,6 +57,7 @@ public:
 	bool isReadyToFly()const ;
 
 	void setNeedToRefuelFalse();
+	void setAvailability();
 	
 };
 

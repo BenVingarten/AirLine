@@ -108,6 +108,11 @@ bool Worker::setFlight(Flight* flight) {
     return false;
 }
 
+void Worker::removeFlight()
+{
+    currentFlight = nullptr;
+}
+
 void Worker::changeAvailability()
 {
     isWorkerAvailable = !isWorkerAvailable;
