@@ -37,7 +37,7 @@ protected:
 	void saveToFile(ofstream& out)const;
 
 public:
-	virtual ~Worker();
+	virtual ~Worker() {};
 
 	int getWorkerId()const;
 	float getSalary()const;

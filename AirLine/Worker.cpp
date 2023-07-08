@@ -87,10 +87,6 @@ void Worker::print(ostream& out) const {
     out << ", Seniority: " << seniority << " years" << endl;
 }
 
-Worker::~Worker()
-{
-    //Person::~Person();
-}
 
 int Worker::getWorkerId() const {
     return cardNumber;

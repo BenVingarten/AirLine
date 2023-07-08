@@ -68,14 +68,14 @@ AirLine::~AirLine()
 		delete allPlanes[i];
 	delete[] allPlanes;
 
-	for (int i = currentNumOfPassengers-1; i >= 0; --i)
-		removePassenger(*(allPassengers[i]));
-	delete[] allPassengers;
-
 	for (int i = 0; i < currentNumOfWorkers; ++i)
 		delete allWorkers[i];
 	delete[] allWorkers;
 	
+	for (int i = currentNumOfPassengers - 1; i >= 0; --i)
+		delete allPassengers[i];	//removePassenger(*(allPassengers[i]));
+	delete[] allPassengers;
+
 	delete[] name; 
 	delete[] country;
 
@@ -329,7 +329,7 @@ void AirLine::removeWorker(Worker& w)
 		allWorkers[index] = allWorkers[currentNumOfWorkers - 1];
 
 		// Delete the removed worker
-		delete allWorkers[currentNumOfWorkers - 1];
+		//delete allWorkers[currentNumOfWorkers - 1];
 		allWorkers[currentNumOfWorkers - 1] = nullptr;
 	}
 
@@ -352,7 +352,6 @@ void AirLine::removeFlight(Flight& f)
 		allFlights[index] = allFlights[currentNumOfFlights - 1];
 
 		// Remove the last flight from the array
-		delete allFlights[currentNumOfFlights - 1];
 		allFlights[currentNumOfFlights - 1] = nullptr;
 	}
 
@@ -399,7 +398,7 @@ void AirLine::removePassenger(Passenger& p)
 		allPassengers[index] = allPassengers[currentNumOfPassengers - 1];
 	
 		// Delete the removed passenger
-		delete allPassengers[currentNumOfPassengers - 1];
+		//delete allPassengers[currentNumOfPassengers - 1];
 		allPassengers[currentNumOfPassengers - 1] = nullptr;
 	}
 
