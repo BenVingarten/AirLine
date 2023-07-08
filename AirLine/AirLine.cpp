@@ -327,11 +327,11 @@ void AirLine::removeWorker(Worker& w)
 	if (index != currentNumOfWorkers - 1)
 	{
 		allWorkers[index] = allWorkers[currentNumOfWorkers - 1];
-	}
 
-	// Delete the removed worker
-	delete allWorkers[currentNumOfWorkers - 1];
-	allWorkers[currentNumOfWorkers - 1] = nullptr;
+		// Delete the removed worker
+		delete allWorkers[currentNumOfWorkers - 1];
+		allWorkers[currentNumOfWorkers - 1] = nullptr;
+	}
 
 	// Decrement the current number of workers
 	--currentNumOfWorkers;
@@ -350,10 +350,11 @@ void AirLine::removeFlight(Flight& f)
 	if (index != currentNumOfFlights - 1)
 	{
 		allFlights[index] = allFlights[currentNumOfFlights - 1];
-	}
 
-	// Remove the last flight from the array
-	allFlights[currentNumOfFlights - 1] = nullptr;
+		// Remove the last flight from the array
+		delete allFlights[currentNumOfFlights - 1];
+		allFlights[currentNumOfFlights - 1] = nullptr;
+	}
 
 	// Decrement the current number of flights
 	--currentNumOfFlights;
@@ -372,11 +373,12 @@ void AirLine::removePlane(Plane& p)
 	if (index != currentNumOfPlanes - 1)
 	{
 		allPlanes[index] = allPlanes[currentNumOfPlanes - 1];
+	
+		// Delete the removed plane
+		delete allPlanes[currentNumOfPlanes - 1];
+		allPlanes[currentNumOfPlanes - 1] = nullptr;
 	}
 
-	// Delete the removed plane
-	delete allPlanes[currentNumOfPlanes - 1];
-	allPlanes[currentNumOfPlanes - 1] = nullptr;
 
 	// Decrement the current number of planes
 	--currentNumOfPlanes;
