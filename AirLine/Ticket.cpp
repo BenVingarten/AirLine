@@ -1,7 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "Ticket.h"
-#include "TripInfo.h"
-#include "Passenger.h"
+
 
 const float Ticket::MAX_WEIGHT = 24.0;
 

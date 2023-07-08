@@ -2,8 +2,8 @@
 #include <typeinfo>
 #include <fstream>
 #include "Flight.h"
-#include "Ticket.h"
-#include "Passenger.h"
+//#include "Ticket.h"
+
 #include "FlightAttendet.h"
 #include "Pilot.h"
 
@@ -24,11 +24,11 @@ const float Flight::FIRST_CLASS_COST_PRECENT = 1.5f;
 const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
 
 
-Flight::Flight(AirLine& myAirLine, char* destination, char* source,
+Flight::Flight(char* destination, char* source,
 	int durHour, int durMinute, int borHour, int borMinute,
 	int day, int month, int year, Plane* plane,
 	int ticketCost, int gate, const char* meal)
-	: airLine(myAirLine), flightNumber(flightNumberGen++), 
+	: airLine(AirLine::getInstance()), flightNumber(flightNumberGen++),
 		info(destination, source, durHour, durMinute, day, month, year),
 		boardingTime(borHour, borMinute), currentPurchasedTickets(0), 
 		currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
@@ -47,10 +47,10 @@ Flight::Flight(AirLine& myAirLine, char* destination, char* source,
 
 
 
-Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
+Flight::Flight(const Travel& trav, const Date& d,
 	const Time& durTime, const Time& borTime, Plane* plane, int ticketCost,
 	int gate, const char* meal)
-	: airLine(myAirLine), flightNumber(flightNumberGen++), info(d, trav, durTime), boardingTime(borTime),
+	: airLine(AirLine::getInstance()), flightNumber(flightNumberGen++), info(d, trav, durTime), boardingTime(borTime),
 		currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), 
 		ticketArr(nullptr), numberOfDishesInMenu(0)
 {
@@ -65,8 +65,8 @@ Flight::Flight(AirLine& myAirLine, const Travel& trav, const Date& d,
 }
 
 
-Flight::Flight(AirLine& myAirLine, ifstream& in)
-	: airLine(myAirLine), info(in), boardingTime(in)
+Flight::Flight(ifstream& in)
+	: airLine(AirLine::getInstance()), info(in), boardingTime(in)
 {
 	currentNumOfCrewMembers = 0;
 	currentPurchasedTickets = 0;
@@ -192,13 +192,16 @@ Ticket** Flight::getTicketArray() const
 
 Worker** Flight::getCrew()const
 {
-	Worker* crew[MAX_CREW_MEMBERS]; // Array of Worker pointers
+	Worker** array = new Worker * [MAX_CREW_MEMBERS];
 
-	for (int i = 0; i < currentNumOfCrewMembers; ++i) {
-		crew[i] = crewMembers[i]; 
+	for (int i = 0; i < MAX_CREW_MEMBERS; i++) {
+		array[i] = crewMembers[i];  // copy the pointers
 	}
-	return crew;
+
+	return array;
+
 }
+
 
 void Flight::showMainMeal(ostream& out) const
 {
@@ -599,6 +602,8 @@ void Flight::createTickets(int ticketCost, int gate)
 	FirstClassTicket tmp = FirstClassTicket(ticketCost, gate, boardingTime, &info, 0, *this);
 
 	int numOfSeats = pPlane->getNumOfSeats();
+
+	ticketArr = new Ticket * [numOfSeats];
 
 	for (int i = 0; i < numOfSeats; i++)
 	{

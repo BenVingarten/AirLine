@@ -2,11 +2,12 @@
 #include <iostream>
 using namespace std;
 #include "Person.h"
-#include "Flight.h"
+//#include "Flight.h"
 
 
 
 class Flight;
+
 class Worker : virtual public Person
 {
 protected:
@@ -67,5 +68,4 @@ public:
 
 };
 
-int Worker::workerCardNumberGenerator = 2222;
 

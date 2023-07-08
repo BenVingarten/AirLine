@@ -6,10 +6,10 @@ using namespace std;
 #include "Travel.h"
 #include "TripInfo.h"
 #include "Worker.h"
-#include "Ticket.h"
 #include "FirstClassTicket.h"
 #include "Plane.h"
 #include "AirLine.h"
+#include "Passenger.h"
 
 
 
@@ -17,7 +17,9 @@ using namespace std;
 #define MAX_DISHES 10 //limit array of dishes
 
 
-
+class AirLine;
+class Ticket;
+class FirstClassTicket;
 
 class Flight
 {
@@ -68,19 +70,19 @@ private:
 
 public:
 
-	Flight(AirLine& myAirLine, char* destination, char* source, 
+	Flight(char* destination, char* source, 
 		int durHour, int durMinute, int borHour, int borMinute, 
 		int day, int month, int year, Plane* plane = nullptr,
 		int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
-	Flight(AirLine& myAirLine, const Travel & trav, const Date& d, 
+	Flight(const Travel & trav, const Date& d, 
 			const Time& durTime, const Time& borTime, Plane* plane = nullptr,
 			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
 	~Flight();
 
 	//read and save to file
-	Flight(AirLine& myAirLine, ifstream& in); 
+	Flight(ifstream& in); 
 	void saveToFile(ofstream& out)const;
 
 	int				getFlightNumber()const;

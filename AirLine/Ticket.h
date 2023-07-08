@@ -1,12 +1,13 @@
 #pragma once
 #include <iostream>
 using namespace std;
-#include "Time.h"
+
 #include "Flight.h"
 
 class TripInfo;
 class Passenger;
 class Flight;
+class Time;
 
 class Ticket
 {
@@ -45,4 +46,13 @@ public:
 	TripInfo* getTicketInfo()const;
 	const Time& getTime()const;
 };
+
+
+
+
+
+
+
+
+
 

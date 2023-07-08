@@ -1,12 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "AirLine.h"
-#include <fstream>
 
-#include "Pilot.h"
-#include "WorkerPassenger.h"
-#include "Technician.h"
-#include "FlightAttendet.h"
 
+
+const char* AirLine::DEFAULT_COUNTRY = "Israel";
+const char* AirLine::DEFAULT_NAME = "EL-AL";
 
 
 //Privates
@@ -664,7 +662,7 @@ void AirLine::readFlightsFromFile(ifstream& in)
 	// Read flight data and add them to the array
 	for (int i = 0; i < numFlights; ++i)
 	{
-		Flight* flight = new Flight(*this, in);
+		Flight* flight = new Flight(in);
 		addFlight(*flight);
 	}
 }

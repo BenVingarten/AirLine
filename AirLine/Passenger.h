@@ -6,6 +6,7 @@ using namespace std;
 #include "Ticket.h"
 
 class Ticket;
+
 class Passenger : virtual public Person
 {
 protected:

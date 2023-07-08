@@ -2,6 +2,7 @@
 #include "Worker.h"
 #include "Passenger.h"
 
+
 class WorkerPassenger : public Worker, public Passenger
 {
 private:
@@ -21,13 +22,13 @@ public:
 
     // read and write from file
     WorkerPassenger(ifstream& in);
-    void saveToFile(ofstream& out) const override;
+    virtual void saveToFile(ofstream& out)const;
 
     virtual void setRaise() override;
-    virtual void prepareForFlight(ostream& out) override;
-    virtual void annualRefresh(ostream& out) override;
-    virtual void takeoff(ostream& out)const override;
-    virtual void landing(ostream& out)const override;
+    virtual void prepareForFlight(ostream& out) ;
+    virtual void annualRefresh(ostream& out) ;
+    virtual void takeoff(ostream& out)const ;
+    virtual void landing(ostream& out)const ;
 };
 
 

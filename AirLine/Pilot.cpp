@@ -2,7 +2,7 @@
 #include "Pilot.h"
 #include <fstream>
 
-const float Pilot::RAISE_PRECENTAGE = 0.7;
+const float Pilot::RAISE_PRECENTAGE = 0.7f;
 
 Pilot::Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours)
     : Person(n, age, gender), Worker(n, age, gender, salary, seniority), flightHours(flightHours)
@@ -51,7 +51,7 @@ void Pilot::prepareForFlight(ostream& out)
 void Pilot::annualRefresh(ostream& out)
 {
     srand(time(nullptr)); // use current time as seed for random generator
-    int rnd = rand() % 4;
+    unsigned int rnd = rand() % 4;
 
     out << "Pilot " << name;
     switch (rnd)

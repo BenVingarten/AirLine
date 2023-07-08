@@ -4,10 +4,12 @@ using namespace std;
 
 #include "Person.h"
 #include "Worker.h"
+#include "Flight.h"
 
-
+class Person;
 class Plane;
 class Worker;
+
 
 class Technician : public Worker
 {

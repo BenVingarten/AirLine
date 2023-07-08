@@ -2,6 +2,10 @@
 #include "Worker.h"
 #include <fstream>
 
+int Worker::workerCardNumberGenerator = 2222;
+
+
+
 Worker::Worker(const char* pName, int theAge, char gen, float salary, int seniority)
     : Person(pName, theAge, gen), salary(salary), seniority(seniority),
         isWorkerAvailable(true), currentFlight(nullptr)

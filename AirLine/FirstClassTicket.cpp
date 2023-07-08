@@ -1,12 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "FirstClassTicket.h"
-#include "Passenger.h"
+//#include "Passenger.h"
 
 const float FirstClassTicket::ADDITIONAL_PRICE = 1.5;
 
 FirstClassTicket::FirstClassTicket(int cost, int gate, const Time& boardingT, TripInfo* info, 
 	int seat, Flight& myFlight)
-	: Ticket((float)cost * ADDITIONAL_PRICE, gate, boardingT, info, seat, myFlight) {}
+	: Ticket((int)(cost * ADDITIONAL_PRICE), gate, boardingT, info, seat, myFlight) {}
 
 
 FirstClassTicket::FirstClassTicket(const FirstClassTicket& fct)

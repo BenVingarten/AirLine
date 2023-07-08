@@ -2,8 +2,10 @@
 #include <iostream>
 using namespace std;
 
-#include "Date.h"
+
 #include "Ticket.h"
+#include "TripInfo.h"
+#include "Passenger.h"
 
 
 class Passenger;

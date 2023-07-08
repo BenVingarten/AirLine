@@ -101,7 +101,7 @@ void FlightAttendet::landing(ostream& out) const
 void FlightAttendet::prepareForFlight(ostream& out)
 {
     srand(time(nullptr)); // use current time as seed for random generator
-    int rnd = (int)(rand() % 4);
+    unsigned int rnd = (unsigned int)(rand() % 4);
     
     out << "I'm " << name << " flight Attendet " << getWorkerId() << " preparing for flight" << endl;
     switch(rnd)
@@ -130,7 +130,7 @@ void FlightAttendet::prepareForFlight(ostream& out)
 void FlightAttendet::annualRefresh(ostream& out)
 {
     srand(time(nullptr)); // use current time as seed for random generator
-    int rnd = (int)(rand() % currentNumOfLanguages);
+    unsigned int  rnd = (unsigned int)(rand() % currentNumOfLanguages);
 
 
     out << "I am " << name << " the flight attendent and I went to " << allLanguages[rnd] << " language refreshment" << endl;

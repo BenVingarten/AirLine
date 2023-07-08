@@ -50,7 +50,7 @@ const char* Technician::getStringType()const
     case eTechnicianType::ENGINES:
         return "Engines";
 
-    case eTechnicianType::GENERAL:
+    default:
         return "General";
  
     }
@@ -115,7 +115,7 @@ void Technician::testSystems(ostream& out)const {
 
     srand(time(nullptr)); // use current time as seed for random generator
 
-    int rnd = rand() % 8;
+    unsigned int  rnd = rand() % 8;
     if (rnd == 7)
         fixProblem(out);
 

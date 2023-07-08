@@ -1,19 +1,35 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#include <fstream>
+
 #include "Worker.h"
 #include "Passenger.h"
 #include "Plane.h"
 #include "Flight.h"
 
 
+#include "Pilot.h"
+#include "WorkerPassenger.h"
+#include "Technician.h"
+#include "FlightAttendet.h"
+
+
+class Passenger;
 class Worker;
 class Plane;
+
+
+
+
 class AirLine
 {
-                                //TODO design PATTERN observer; 
 private:
-    static AirLine* theAirLine;
+    static const char* DEFAULT_COUNTRY;
+    static const char* DEFAULT_NAME; 
+
+
+    static AirLine* theAirLine; //Singleton
 
     static const int PILOT = 0;
     static const int FLIGHT_ATTENDENT = 1;
@@ -49,7 +65,7 @@ private:
     void operator = (const AirLine& a) = delete;
 
 public:
-    static AirLine& getInstance(const char* name, const char* countryCode); // we initiallize airLine 
+    static AirLine& getInstance(const char* name = DEFAULT_NAME, const char* countryCode = DEFAULT_COUNTRY); // we initiallize airLine 
     static void releaseInstance();
     
     ~AirLine(); // Destructor
