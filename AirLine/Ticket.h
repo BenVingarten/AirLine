@@ -2,12 +2,13 @@
 #include <iostream>
 using namespace std;
 
+#include "Time.h"
 #include "Flight.h"
 
 class TripInfo;
 class Passenger;
-class Flight;
-class Time;
+//class Flight;
+//class Time;
 
 class Ticket
 {

@@ -2,7 +2,8 @@
 #include <typeinfo>
 #include <fstream>
 #include "Flight.h"
-//#include "Ticket.h"
+#include "Ticket.h"
+#include "FirstClassTicket.h"
 
 #include "FlightAttendet.h"
 #include "Pilot.h"
@@ -353,17 +354,17 @@ bool Flight::isMealInMenu(const char* pMeal) const
 	return false;
 }
 
-Ticket* Flight::setTicketToPassenger(Passenger& p, ostream& out)
+Ticket* Flight::setTicketToPassenger(Passenger* p, ostream& out)
 {
-	if (p.getTicket() != nullptr)
+	if (p->getTicket() != nullptr)
 	{
-		out << "Passenger " << p.getPassportNum() << " has a ticket already" << endl;
+		out << "Passenger " << p->getPassportNum() << " has a ticket already" << endl;
 		return nullptr;
 
 	}
-	if(pPlane->isMaxLuggageWeightValid(p.getLuggageWeight()))
+	if(pPlane->isMaxLuggageWeightValid(p->getLuggageWeight()))
 	{
-		out << "Passenger " << p.getPassportNum() << " luggage weight is too heavy" << endl;
+		out << "Passenger " << p->getPassportNum() << " luggage weight is too heavy" << endl;
 		return nullptr;
 	}
 
@@ -373,9 +374,9 @@ Ticket* Flight::setTicketToPassenger(Passenger& p, ostream& out)
 		return nullptr;
 	}
 
-	ticketArr[currentPurchasedTickets]->setPassenger(p);
-	p.setTicket(ticketArr[currentPurchasedTickets]);
-	out << "Passenger " << p.getPassportNum() << " purchased ticket: " << endl;
+	ticketArr[currentPurchasedTickets]->setPassenger(*p);
+	p->setTicket(ticketArr[currentPurchasedTickets]);
+	out << "Passenger " << p->getPassportNum() << " purchased ticket: " << endl;
 	out << ticketArr[currentPurchasedTickets];
 	currentPurchasedTickets++;
 	return ticketArr[currentPurchasedTickets - 1];
@@ -542,10 +543,10 @@ void Flight::resetPrints()
 	maxFlightAttendetPrintsInTakeOffOrLanding = 1;
 }
 
-bool Flight::isPassengerInFlight(const Passenger& p) const
+bool Flight::isPassengerInFlight(const Passenger* p) const
 {
 	for (int i = 0; i < currentPurchasedTickets; i++)
-		if (p == *(ticketArr[i]->getPassenger()) )
+		if (*p == *(ticketArr[i]->getPassenger()) )
 			return true;
 
 	return false;
@@ -613,6 +614,8 @@ void Flight::createTickets(int ticketCost, int gate)
 			ticketArr[i] = new Ticket(tmp);
 
 		ticketArr[i]->setSeat(i + 1);
+
+		
 
 	}
 }

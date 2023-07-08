@@ -3,7 +3,7 @@
 using namespace std;
 #include "Person.h"
 #include "Travel.h"
-#include "Ticket.h"
+//#include "Ticket.h"
 
 class Ticket;
 

@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "AirLine.h"
+#include "Ticket.h"
 
 
 
@@ -43,7 +44,9 @@ AirLine& AirLine::getInstance(const char* name, const char* country)
 {
 	if (theAirLine == nullptr)
 		theAirLine = new AirLine(name, country);
-
+	
+	return *theAirLine;
+	
 }
 
 void AirLine::releaseInstance()
@@ -553,7 +556,7 @@ void AirLine::executeFlight(Flight& f, ostream& out)
 
 bool AirLine::buyTicket(Passenger& p, Flight& f, ostream& out)
 {
-	Ticket* t = f.setTicketToPassenger(p, out);
+	Ticket* t = f.setTicketToPassenger(&p, out);
 	if (t == nullptr)
 		return false;
 
@@ -795,4 +798,6 @@ ostream& operator<<(ostream& out, const AirLine& al)
 	out << "Number of Planes: " << al.currentNumOfPlanes << endl;
 	out << "Number of Passengers: " << al.currentNumOfPassengers << endl;
 	out << "Income: " << al.income << endl;
+
+	return out;
 }

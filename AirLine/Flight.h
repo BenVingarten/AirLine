@@ -1,15 +1,15 @@
 #pragma once
 #include <iostream>
 using namespace std;
-#include "Time.h"
 #include "Date.h"
 #include "Travel.h"
-#include "TripInfo.h"
-#include "Worker.h"
-#include "FirstClassTicket.h"
-#include "Plane.h"
-#include "AirLine.h"
+//#include "Worker.h"
+//#include "FirstClassTicket.h"
+//#include "Plane.h"
 #include "Passenger.h"
+#include "Time.h"
+#include "TripInfo.h"
+#include "AirLine.h"
 
 
 
@@ -17,9 +17,10 @@ using namespace std;
 #define MAX_DISHES 10 //limit array of dishes
 
 
-class AirLine;
+class Plane;
 class Ticket;
-class FirstClassTicket;
+class Worker;
+class AirLine;
 
 class Flight
 {
@@ -104,7 +105,7 @@ public:
 	
 	bool setPlane(Plane* pl);
 	bool setDuration(const Time& t);
-	Ticket* setTicketToPassenger(Passenger& p, ostream& out);
+	Ticket* setTicketToPassenger(Passenger* p, ostream& out);
 	bool setMeal(const char* pMeal);
 	void assignCrew(Worker** workers, int workersSize);
 	bool checkIfFlightReady(ostream& out) const;
@@ -115,7 +116,7 @@ public:
 	int numOfavaiableTickets()const;
 	bool checkCrewTypes()const;
 	bool checkAddCrewMember(Worker* w);
-	bool isPassengerInFlight(const Passenger& p) const;
+	bool isPassengerInFlight(const Passenger* p) const;
 
 	void crewPreparations(ostream& out);
 	void boarding(ostream& out);
