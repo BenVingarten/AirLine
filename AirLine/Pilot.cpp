@@ -82,13 +82,13 @@ void Pilot::takeoff(ostream& out)const
         " to " << currentFlight->getInfo().getDestenation() << endl;
     out << "the duration of the flight is " << currentFlight->getInfo().getFlightDuration().getHours() << " hours and " <<
         currentFlight->getInfo().getFlightDuration().getMinutes() << " minutes" << endl;
-    out << "get ready for takeoff, and have a wonderful flight" << endl;
+    out << "Get ready for takeoff, and have a wonderful flight" << endl;
 }
 
 void Pilot::landing(ostream& out)const
 {
     out << "this is your pilot " << name << " for flight " << currentFlight->getFlightNumber() <<
-     "get ready for takeoff, we are about to land in " << currentFlight->getInfo().getDestenation() << endl;
+     " get ready for takeoff, we are about to land in " << currentFlight->getInfo().getDestenation() << endl;
 
 }
 

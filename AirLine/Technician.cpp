@@ -67,7 +67,7 @@ void Technician::setRaise() {
 
 void Technician::prepareForFlight(ostream& out)
 {
-    out << "I'm " << name << " technician " << getWorkerId() << "in field: " << getStringType() << "preparing for flight" << endl;
+    out << "I'm " << name << " technician " << getWorkerId() << " in field: " << getStringType() << " preparing for flight" << endl;
     testSystems(out);
     if (!currentFlight->getPlane()->isPlaneFuled())
         fillFuel(currentFlight->getPlane(), out);
@@ -101,12 +101,12 @@ void Technician::annualRefresh(ostream& out) {
 
 void Technician::takeoff(ostream& out)const
 {
-    out << "this is " << name << " technician " << getWorkerId() << "keeping alert for any unwanted malfunction system during takeoff" << endl;
+    out << "This is " << name << " technician " << getWorkerId() << " keeping alert for any unwanted malfunction system during takeoff" << endl;
 }
 
 void Technician::landing(ostream& out) const
 {
-    out << "this is " << name << " technician " << getWorkerId() << "making sure there all communication systesm with tower are woring" << endl;
+    out << "this is " << name << " technician " << getWorkerId() << " making sure there all communication systesm with tower are woring" << endl;
 }
 
 

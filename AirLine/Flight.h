@@ -71,10 +71,10 @@ private:
 
 public:
 
-	Flight(char* destination, char* source, 
+	/*Flight(char* destination, char* source, 
 		int durHour, int durMinute, int borHour, int borMinute, 
 		int day, int month, int year, Plane* plane = nullptr,
-		int ticketCost = 20, int gate = 1, const char* meal = nullptr);
+		int ticketCost = 20, int gate = 1, const char* meal = nullptr);*/
 
 	Flight(const Travel & trav, const Date& d, 
 			const Time& durTime, const Time& borTime, Plane* plane = nullptr,

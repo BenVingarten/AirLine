@@ -20,6 +20,9 @@ Person::Person(const Person& other)
 
 Person::Person(Person&& other)noexcept
 {
+	if (name != nullptr)
+		delete[] name;
+
 	name = other.name;
 	other.name = nullptr;
 
@@ -53,6 +56,7 @@ Person& Person::operator=(const Person& p)
 {
 	if (this != &p)
 	{
+		delete[] name; // Delete the existing name pointer first
 		setName(p.name);
 		age = p.age;
 		gender = p.gender;
@@ -64,6 +68,8 @@ const Person& Person::operator=(Person&& p)noexcept
 {
 	if (this != &p)
 	{
+		delete[] name; // Delete the existing name pointer first
+
 		name = p.name;
 		p.name = nullptr;
 

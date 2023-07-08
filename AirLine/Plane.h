@@ -43,7 +43,7 @@ public:
 
 	bool operator ==(const Plane& p)const;
 	bool operator += (int weight); //add weight
-	void operator ++ (); //add flight 
+	void operator ++ (); //add flight			(Prefix !!!)
 	friend ostream& operator << (ostream& out, const Plane& p);
 
 

@@ -64,18 +64,18 @@ AirLine::~AirLine()
 		delete allFlights[i];
 	delete[] allFlights;
 
-	for (int i = 0; i < currentNumOfWorkers; ++i)
-		delete allWorkers[i];
-	delete[] allWorkers;
-	
-	for (int i = 0; i < currentNumOfPassengers; ++i)
-		delete allPassengers[i];
-	delete[] allPassengers;
-
 	for (int i = 0; i < currentNumOfPlanes; ++i)
 		delete allPlanes[i];
 	delete[] allPlanes;
 
+	for (int i = currentNumOfPassengers-1; i >= 0; --i)
+		removePassenger(*(allPassengers[i]));
+	delete[] allPassengers;
+
+	for (int i = 0; i < currentNumOfWorkers; ++i)
+		delete allWorkers[i];
+	delete[] allWorkers;
+	
 	delete[] name; 
 	delete[] country;
 
@@ -172,6 +172,7 @@ bool AirLine::addFlight(Flight& f)
 	// Delete the old flights array and update the pointer to the new array
 	delete[] allFlights;
 	allFlights = newFlights;
+	
 	
 	return true;
 }
@@ -351,8 +352,7 @@ void AirLine::removeFlight(Flight& f)
 		allFlights[index] = allFlights[currentNumOfFlights - 1];
 	}
 
-	// Delete the removed flight
-	delete allFlights[currentNumOfFlights - 1];
+	// Remove the last flight from the array
 	allFlights[currentNumOfFlights - 1] = nullptr;
 
 	// Decrement the current number of flights
@@ -395,11 +395,12 @@ void AirLine::removePassenger(Passenger& p)
 	if (index != currentNumOfPassengers - 1)
 	{
 		allPassengers[index] = allPassengers[currentNumOfPassengers - 1];
+	
+		// Delete the removed passenger
+		delete allPassengers[currentNumOfPassengers - 1];
+		allPassengers[currentNumOfPassengers - 1] = nullptr;
 	}
 
-	// Delete the removed passenger
-	delete allPassengers[currentNumOfPassengers - 1];
-	allPassengers[currentNumOfPassengers - 1] = nullptr;
 
 	// Decrement the current number of passengers
 	--currentNumOfPassengers;
@@ -547,8 +548,8 @@ int AirLine::isPassengerExist(const Passenger& p) const
 
 void AirLine::executeFlight(Flight& f, ostream& out)
 {
-	out << "Checking last  requirments..." << endl;
-	if (checkReady(f, out))
+	out << "Checking last  requirments...\n" << endl;
+	if (checkReady(f, out) && isFlightExist(f) > -1)
 		out << "Flight Is Ready!" << endl;
 	else
 	{
@@ -556,23 +557,26 @@ void AirLine::executeFlight(Flight& f, ostream& out)
 		return;
 	}
 
-	out << "Executing Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << endl;
+	out << "Executing Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << "\n\n" << endl;
 	f.crewPreparations(out);
 	f.resetPrints(); 
 
+	out << "Boarding \n " << endl;
 	f.boarding(out);
 	out << "ready for takeoff" << endl;
 
+	out << "Take Off \n " << endl;
 	f.takeoff(out);
 	f.resetPrints();
 
-	out << " we have reached max speed of " << f.getPlane()->getMaxSpeed() << endl;
+	out << " we have reached max speed of " << (int)f.getPlane()->getMaxSpeed() << endl;
 	out << " we have decreasing to  minimum speed of " << f.getPlane()->getMinSpeed() << endl;
 
+	out << "Landing \n " << endl;
 	f.landing(out); 
 	f.resetPrints();
 
-	delete &f;
+	removeFlight(f);
 }
 
 bool AirLine::buyTicket(Passenger& p, Flight& f, ostream& out)

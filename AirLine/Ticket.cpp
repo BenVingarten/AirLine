@@ -73,10 +73,9 @@ void Ticket::print(ostream& out) const
 	out << ", Price: " << price;
 	out << ", Gate: " << gate;
 	out << ", Boarding Time: " << boarding;
-	out << ", Seat: " << seat << endl;
-	out << "Trip Information: ";
+	out << "Seat: " << seat << endl;
 	out << *pInfo << endl;
-	out << "Passenger Information: " << endl;
+	
 	
 }
 

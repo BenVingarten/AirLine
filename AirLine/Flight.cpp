@@ -25,26 +25,26 @@ const float Flight::FIRST_CLASS_COST_PRECENT = 1.5f;
 const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
 
 
-Flight::Flight(char* destination, char* source,
-	int durHour, int durMinute, int borHour, int borMinute,
-	int day, int month, int year, Plane* plane,
-	int ticketCost, int gate, const char* meal)
-	: airLine(AirLine::getInstance()), flightNumber(flightNumberGen++),
-		info(destination, source, durHour, durMinute, day, month, year),
-		boardingTime(borHour, borMinute), currentPurchasedTickets(0), 
-		currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
-		numberOfDishesInMenu(0)
-{
-	if (plane != nullptr)
-		createTickets(ticketCost, gate);
-
-	
-	if (meal != nullptr)
-		setMainMealToFlight(meal);
-	else
-		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
-
-}
+//Flight::Flight(char* destination, char* source,
+//	int durHour, int durMinute, int borHour, int borMinute,
+//	int day, int month, int year, Plane* plane,
+//	int ticketCost, int gate, const char* meal)
+//	: airLine(AirLine::getInstance()), flightNumber(flightNumberGen++),
+//		info(destination, source, durHour, durMinute, day, month, year),
+//		boardingTime(borHour, borMinute), currentPurchasedTickets(0), 
+//		currentNumOfCrewMembers(0), pPlane(plane), ticketArr(nullptr),
+//		numberOfDishesInMenu(0)
+//{
+//	if (plane != nullptr)
+//		createTickets(ticketCost, gate);
+//
+//	
+//	if (meal != nullptr)
+//		setMainMealToFlight(meal);
+//	else
+//		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
+//
+//}
 
 
 
@@ -60,9 +60,9 @@ Flight::Flight(const Travel& trav, const Date& d,
 
 
 	if (meal != nullptr)
-		setMainMealToFlight(meal);
+		setMeal(meal);
 	else
-		setMainMealToFlight(DEFAULT_FLIGHT_MEAL);
+		setMeal(DEFAULT_FLIGHT_MEAL);
 }
 
 
@@ -222,7 +222,7 @@ void Flight::showFirstClassMenu(ostream& out) const
 
 bool Flight::operator==(const Flight& f)const
 {
-	return flightNumber == f.flightNumberGen;
+	return flightNumber == f.flightNumber;
 }
 
 bool Flight::operator=(const Flight& f) 
@@ -377,7 +377,7 @@ Ticket* Flight::setTicketToPassenger(Passenger* p, ostream& out)
 	ticketArr[currentPurchasedTickets]->setPassenger(*p);
 	p->setTicket(ticketArr[currentPurchasedTickets]);
 	out << "Passenger " << p->getPassportNum() << " purchased ticket: " << endl;
-	out << ticketArr[currentPurchasedTickets];
+	out << *(ticketArr[currentPurchasedTickets]);
 	currentPurchasedTickets++;
 	return ticketArr[currentPurchasedTickets - 1];
 	
@@ -481,7 +481,7 @@ void Flight::boarding(ostream& out)
 
 void Flight::takeoff(ostream& out)
 {
-	pPlane++;
+	++(*pPlane);
 	for (int i = 0; i < currentNumOfCrewMembers; i++)
 	{
 		if (typeid(crewMembers[i]) == typeid(Pilot))
@@ -579,11 +579,14 @@ void Flight::crewPreparations(ostream& out)
 
 bool Flight::setMainMealToFlight(const char* pMeal)
 {
+	if (pMeal == nullptr)
+	{
+		setMeal(DEFAULT_FLIGHT_MEAL);
+		return true;
+	}
+
 	if (strcmp(pMeal,meal) == 0 )
 		return false;
-
-	if (pMeal == nullptr)
-		setMeal(DEFAULT_FLIGHT_MEAL);
 
 	else
 		setMeal(pMeal);
