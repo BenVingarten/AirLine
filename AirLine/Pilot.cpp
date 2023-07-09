@@ -77,7 +77,7 @@ void Pilot::annualRefresh(ostream& out)
         break;
 
     }
-    out << endl;
+    
 }
 
 void Pilot::takeoff(ostream& out)const

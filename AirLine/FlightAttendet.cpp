@@ -3,6 +3,8 @@
 #include "FlightAttendet.h"
 #include <fstream>
 
+const char* FlightAttendet::DEF_LANG = "Hebrew";
+
 FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang)
     : Person(n, age, gender), Worker(n, age, gender, salary, seniority), currentNumOfLanguages(0)
 {
@@ -11,10 +13,12 @@ FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary
 
     if (baseLang != nullptr)
         addLanugage(baseLang);
+    else
+        addLanugage(DEF_LANG);
 }
 
 FlightAttendet::FlightAttendet(const FlightAttendet& other) :
-    Person(other), Worker(other), currentNumOfLanguages(other.currentNumOfLanguages)
+    Person(other), Worker(other), currentNumOfLanguages(0)
 {
     for (int i = 0; i < MAX_LANGUAGES; ++i)
         allLanguages[i] = nullptr;
@@ -58,6 +62,10 @@ FlightAttendet::FlightAttendet(ifstream& in): Person(in), Worker(in)
         allLanguages[i] = new char[strlen(tmpLang) + 1];
         strcpy(allLanguages[i], tmpLang);
     }
+
+    if (currentNumOfLanguages == 0)
+        addLanugage(DEF_LANG);
+
 }
 
 void FlightAttendet::saveToFile(ofstream& out) const
@@ -145,6 +153,7 @@ void FlightAttendet::prepareForFlight(ostream& out)
 void FlightAttendet::annualRefresh(ostream& out)
 {
     srand((unsigned int)time(NULL)); // use current time as seed for random generator
+    
     unsigned int  rnd = (unsigned int)(rand() % currentNumOfLanguages);
 
 

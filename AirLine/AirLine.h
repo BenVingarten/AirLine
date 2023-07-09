@@ -34,8 +34,8 @@ private:
     static const int PILOT = 0;
     static const int FLIGHT_ATTENDENT = 1;
     static const int TECHNICHIAN = 2;
-    static const int PASSENGER = 2;
-    static const int WORKER_PASSENGER = 2;
+    static const int PASSENGER = 3;
+    static const int WORKER_PASSENGER = 4;
 
 
     char* name;
@@ -80,7 +80,7 @@ public:
     bool addWorker(Worker& w); // Add worker
     bool addFlight(Flight& f); // Add flight
     bool addPlane(Plane& p); // Add plane
-    bool addPassenger(Passenger* p); // Add passenger
+    bool addPassenger(Passenger& p); // Add passenger
     
 
     void printFlights(ostream& out)const; // Print all flights
@@ -107,6 +107,23 @@ public:
     bool buyTicket(Passenger& p, Flight& f, ostream& out); // Buy ticket
     void yearPassed(ostream& out); // Add a year
  
+    int getNumOfWorkers() const;
+    int getNumOfFlights() const;
+    int getNumOfPassengers() const;
+    int getNumOfPlanes() const;
+    
+    // Function to get a object pointer from the array based on the index
+    Worker* getWorkerAtIndex(int index) const;
+    Flight* getFlightAtIndex(int index) const;
+    Passenger* getPassengerAtIndex(int index) const;
+    Plane* getPlaneAtIndex(int index) const;
+
+    // Function to return the array of Objects
+    Worker** getAllWorkers() const;
+    Flight** getAllFlights() const;
+    Passenger** getAllPassengers() const;
+    Plane** getAllPlanes() const;
+
     //read and save to file
     void readPassengersFromFile(ifstream& in);
     void readWorkersFromFile(ifstream& in);
@@ -117,6 +134,7 @@ public:
     void saveWorkersFromFile(ofstream& out);
     void saveFlightsFromFile(ofstream& out);
     void savePlanesFromFile(ofstream& out);
+
     
 };
 

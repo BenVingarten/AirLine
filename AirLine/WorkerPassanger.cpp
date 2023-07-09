@@ -15,7 +15,7 @@ void WorkerPassenger::print(ostream& out) const
     out << ", Worker Discount: " << discount << endl;
 
     if (ticket)
-        out << ticket << endl;
+        out << "Have a ticket for a flight " << endl;
 
 }
 
@@ -53,7 +53,7 @@ void WorkerPassenger::saveToFile(std::ofstream& out) const
     Passenger::saveToFile(out);
     
     out << cardNumber << endl << salary << endl << seniority << endl 
-                    << isWorkerAvailable << endl << discount << endl;
+                    << discount << endl;
 
 }
 

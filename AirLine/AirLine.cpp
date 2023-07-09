@@ -151,6 +151,7 @@ bool AirLine::addWorker(Worker& w)
 
 	// Add the new worker to the extended array
 	newWorkers[currentNumOfWorkers++] = &w;
+	
 
 	// Delete the old workers array and update the pointer to the new array
 	delete[] allWorkers;
@@ -254,10 +255,10 @@ bool AirLine::addPlane(Plane& p)
 	return true;
 }
 
-bool AirLine::addPassenger(Passenger* p)
+bool AirLine::addPassenger(Passenger& p)
 {
 	// Check if the passenger already exists in the passengers array
-	if (isPassengerExist(*p) != -1)
+	if (isPassengerExist(p) != -1)
 		return false;
 
 	// Check if there is space at the end of the array
@@ -266,13 +267,13 @@ bool AirLine::addPassenger(Passenger* p)
 		/*allPassengers[currentNumOfPassengers++] = p;
 		return true;*/
 
-		if (typeid(*p) == typeid(WorkerPassenger))
+		if (typeid(p) == typeid(WorkerPassenger))
 		{
-			allPassengers[currentNumOfPassengers++] = new WorkerPassenger(*(WorkerPassenger*)(p));
+			allPassengers[currentNumOfPassengers++] = new WorkerPassenger(*(WorkerPassenger*)(&p));
 		}
-		else if (typeid(*p) == typeid(Passenger))
+		else if (typeid(p) == typeid(Passenger))
 		{
-			allPassengers[currentNumOfPassengers++] = new Passenger(*((Passenger*)(p)));
+			allPassengers[currentNumOfPassengers++] = new Passenger(*((Passenger*)(&p)));
 		}
 		
 		return true;
@@ -313,7 +314,7 @@ bool AirLine::addPassenger(Passenger* p)
 	}
 
 	// Add the new passenger to the extended array
-	newPassengers[currentNumOfPassengers++] = p;
+	newPassengers[currentNumOfPassengers++] = &p;
 
 	// Delete the old passengers array and update the pointer to the new array
 	delete[] allPassengers;
@@ -601,6 +602,10 @@ int AirLine::isPassengerExist(const Passenger& p) const
 
 void AirLine::executeFlight(Flight& f, ostream& out)
 {
+	out << "Prepare the flight...\n" << endl;
+	f.crewPreparations(out);
+	f.resetPrints(); 
+
 	out << "Checking last  requirments...\n" << endl;
 	if (checkReady(f, out) && isFlightExist(f) > -1)
 		out << "Flight Is Ready!" << endl;
@@ -611,8 +616,6 @@ void AirLine::executeFlight(Flight& f, ostream& out)
 	}
 
 	out << "Executing Flight: " << f.getFlightNumber() << " from " << f.getInfo().getSource() << " to " << f.getInfo().getDestenation() << "\n\n" << endl;
-	f.crewPreparations(out);
-	f.resetPrints(); 
 
 	out << "Boarding \n " << endl;
 	f.boarding(out);
@@ -645,16 +648,77 @@ bool AirLine::buyTicket(Passenger& p, Flight& f, ostream& out)
 void AirLine::yearPassed(ostream& out)
 {
 	for (int i = 0; i < currentNumOfPassengers; i++)
-		allPassengers[i]++;
+		++(*allPassengers[i]);
 
 	for (int i = 0; i < currentNumOfWorkers; i++)
 	{
-		allWorkers[i]++;
-		allWorkers[i]->setRaise();
+		++(*allWorkers[i]); //seniority + set raise
 		allWorkers[i]->annualRefresh(out);
 	}
 }
 
+
+int AirLine::getNumOfWorkers() const {
+	return currentNumOfWorkers;
+}
+
+int AirLine::getNumOfFlights() const {
+	return currentNumOfFlights;
+}
+
+int AirLine::getNumOfPassengers() const {
+	return currentNumOfPassengers;
+}
+
+int AirLine::getNumOfPlanes() const {
+	return currentNumOfPlanes;
+}
+
+
+Worker* AirLine::getWorkerAtIndex(int index) const {
+	if (index >= 0 && index < currentNumOfWorkers) {
+		return allWorkers[index];
+	}
+	return nullptr; // Index out of bounds or empty array
+}
+
+Flight* AirLine::getFlightAtIndex(int index) const {
+	if (index >= 0 && index < currentNumOfFlights) {
+		return allFlights[index];
+	}
+	return nullptr; // Index out of bounds or empty array
+}
+
+Passenger* AirLine::getPassengerAtIndex(int index) const {
+	if (index >= 0 && index < currentNumOfPassengers) {
+		return allPassengers[index];
+	}
+	return nullptr; // Index out of bounds or empty array
+}
+
+Plane* AirLine::getPlaneAtIndex(int index) const {
+	if (index >= 0 && index < currentNumOfPlanes) {
+		return allPlanes[index];
+	}
+	return nullptr; // Index out of bounds or empty array
+}
+
+
+Worker** AirLine::getAllWorkers() const {
+	return allWorkers;
+}
+
+Flight** AirLine::getAllFlights() const {
+	return allFlights;
+}
+
+Passenger** AirLine::getAllPassengers() const {
+	return allPassengers;
+}
+
+Plane** AirLine::getAllPlanes() const {
+	return allPlanes;
+}
 
 
 void AirLine::readPassengersFromFile(ifstream& in)
@@ -677,15 +741,13 @@ void AirLine::readPassengersFromFile(ifstream& in)
 		in.ignore();
 
 		// Check the type of the worker and create a corresponding object
-		Passenger* p = nullptr;
 		if (passengerType == WORKER_PASSENGER)
-			 p = new WorkerPassenger(in);
-			
+			addPassenger(*(new WorkerPassenger(in)) );
 		
 		else if (passengerType == PASSENGER)
-			 p = new Passenger(in);
+			addPassenger( *(new Passenger(in)) );
 			
-		addPassenger(p);
+		
 
 	}
 }
@@ -768,7 +830,6 @@ void AirLine::readPlanesFromFile(ifstream& in)
 		addPlane(*plane);
 	}
 }
-
 
 
 void AirLine::savePassengersFromFile(ofstream& out)

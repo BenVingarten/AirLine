@@ -24,9 +24,9 @@ protected:
 	Passenger* pPassenger;
 	Flight& flight;	
 	
-	virtual void print(ostream& out)const;
 
 public:
+	virtual void print(ostream& out)const;
 
 	Ticket(int cost, int gate, const Time& board, TripInfo* info, int seat, Flight& myFlight);
 	Ticket(const Ticket& other);

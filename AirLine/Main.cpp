@@ -6,7 +6,7 @@
 #include "Technician.h"
 #include "WorkerPassenger.h"
 
-#define READ_FROM_FILE
+//#define READ_FROM_FILE
 
 
 int main() {
@@ -14,7 +14,7 @@ int main() {
 
 #ifdef READ_FROM_FILE
 
-
+    
     // Check if there are files to read from
     ifstream workersFileRead("workers.txt");
     ifstream flightsFileRead("flights.txt");
@@ -45,7 +45,8 @@ int main() {
         planesFileRead.close();
     }
 
-    //airline.
+
+    
 
 
 #else
@@ -57,37 +58,44 @@ int main() {
 
     // Create workers
     Pilot pilot("Mike", 35, 'M', 5000, 5, Time(100, 0));
-    FlightAttendet flightAttendant("Emily", 28, 'F', 3000, 3);
+    FlightAttendet flightAttendant("Emily", 28, 'F', 3000, 3, "Hebrew");
     Technician technician("David", 40, 'M', 4000, 8);
     WorkerPassenger workerPassenger("Amy", 33, 'F', 3500, 6, 10, "TLV", 0.2);
 
+    flightAttendant.addLanugage("English");
+
     // Add passengers and workers to the airline
-    airline.addPassenger(&passenger1);
-    airline.addPassenger(&passenger2);
-    airline.addPassenger(&workerPassenger); // Treat worker passenger as a passenger
-    airline.addWorker(pilot);
+    airline.addPassenger(passenger1);
+    airline.addPassenger(passenger2);
+    airline.addPassenger(workerPassenger); // Treat worker passenger as a passenger
     airline.addWorker(flightAttendant);
+    airline.addWorker(pilot);
     airline.addWorker(technician);
 
     // Create flights and planes...
     Plane* plane1 = new Plane(150, 8000, 900);
     Plane* plane2 = new Plane(200, 10000, 950);
+    Plane* plane3 = new Plane(250, 9000, 980);
 
     airline.addPlane(*plane1);
     airline.addPlane(*plane2);
+    airline.addPlane(*plane3);
 
     // Add flights to the airline...
-    Flight* flight1 = new Flight(Travel("New York", "London"), Date(1, 1, 24), Time(7, 15), Time(7, 30), plane1, 30, 2, "Steak");
-    Flight* flight2 = new Flight(Travel("Paris", "Tokyo"), Date(14, 3, 23), Time(20, 30), Time(6, 20), plane2, 100, 3, "Sushi");
+    Flight* flight1 = new Flight(Travel("NYC", "LND"), Date(1, 1, 24), Time(7, 15), Time(7, 30), plane1, 30, 2, "Steak");
+    Flight* flight2 = new Flight(Travel("FRN", "JPN"), Date(14, 3, 23), Time(20, 30), Time(6, 20), plane2, 100, 3, "Sushi");
+    Flight* flight3 = new Flight(Travel("TLV", "LAX"), Date(14, 8, 23), Time(15, 45), Time(6, 20), plane3, 80, 4, "Falafel");
+
 
     airline.addFlight(*flight1);
     airline.addFlight(*flight2);
+    airline.addFlight(*flight3);
 
     // Assign workers to the flight...
     Worker* pilot1 = new Pilot("John", 40, 'M', 10000, 5, Time(300, 0));
     Worker* pilot2 = new Pilot("Alice", 35, 'F', 9500, 3, Time(200, 0));
-    Worker* flightAttendant1 = new FlightAttendet("Emily", 28, 'F', 5000, 2);
-    Worker* flightAttendant2 = new FlightAttendet("Michael", 30, 'M', 5500, 4);
+    Worker* flightAttendant1 = new FlightAttendet("Emily", 28, 'F', 5000, 2, "English");
+    Worker* flightAttendant2 = new FlightAttendet("Michael", 30, 'M', 5500, 4, "Hebrew");
     Worker* technician1 = new Technician("David", 45, 'M', 6000, 6, Technician::eTechnicianType::STRUCTURE);
     Worker* technician2 = new Technician("Sophia", 32, 'F', 5500, 3, Technician::eTechnicianType::NAVIGATIONS);
     Worker* technician3 = new Technician("William", 50, 'M', 6500, 8, Technician::eTechnicianType::ENGINES);
@@ -110,57 +118,122 @@ int main() {
     airline.addWorker(*technician7);
     airline.addWorker(*technician8);
 
-    flight1->assignCrew(new Worker * [5] { pilot1, flightAttendant1, flightAttendant2, technician1, technician2 }, 5);
-    flight2->assignCrew(new Worker * [3] { pilot2, flightAttendant1, technician5 }, 3);
-
-
     // Create passengers and buy tickets for flight1
     Passenger* passenger3 = new Passenger("Emma", 25, 'F', 20, Travel::DEFAULT_SOURCE_CODE);
     Passenger* passenger4 = new Passenger("David", 35, 'M', 15, Travel::DEFAULT_SOURCE_CODE);
 
-    airline.addPassenger(passenger3);
-    airline.addPassenger(passenger4);
+    airline.addPassenger(*passenger3);
+    airline.addPassenger(*passenger4);
 
-    airline.buyTicket(*passenger3, *flight1, cout);
-    airline.buyTicket(*passenger4, *flight1, cout);
 
 #endif // READ_FROM_FILE
 
 
     //---------------------------------------------------------------------------------
-    // Print all Passenger 
-    cout << "Passengers in the airline:" << endl;
+    // Print all Passenger, flights, workers and planese before any flight 
+    cout << "Print all Passenger, Flights, Workers and Planese BEFORE any flight ------------------------\n\n" << endl;
     airline.printPassengers(cout);
     cout << endl;
 
     // Print all flights and workers in the airline
-    cout << "Flights in the airline:" << endl;
+    cout << "\n**************************" << endl;
     airline.printFlights(cout);
     cout << endl;
 
-    cout << "Workers in the airline:" << endl;
+    cout << "\n**************************" << endl;
     airline.printWorkers(cout);
     cout << endl;
 
-    // Execute a flight1
-    cout << "Executing flight 1..." << endl;
-    airline.executeFlight(*flight1, cout);
+    cout << "\n**************************" << endl;
+    airline.printPlanes(cout);
     cout << endl;
 
-    // Execute a flight2        -- suppose to FAIL
-    cout << "Executing flight 2..." << endl;
-    airline.executeFlight(*flight1, cout);
-    cout << endl;
+
+    cout << "Try to execute 2 flight, for the first one add what needed ------------------------\n\n" << endl;
+
+
+    /* 
+    *                   Execute a flight1 or the first flight available
+    * if we have one flight, we will fill it with the crew members.
+    *     • inside of assignCrew we check for how many worker of each type
+    *       we have and add them as needed. so we will add the first workers
+    *       available and won't add only pilots/only Technichian/...
+    *
+    *     • we add the first plane if there is one and it is available (only if  we don't have one on flight alraedy)
+    *
+    *     • we make at most 3 passangers (or as many as there are id less than 3)
+    *       buying tickets to the flight ,if they are able to (checked in function).
+    *
+    *       at the end we Exectute the flight
+    */
+    cout << "\nEXECUTE FLIGHT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << endl;
+    if (airline.getNumOfFlights() > 0) //there is at least one flight
+    {
+        Flight* f = airline.getFlightAtIndex(0);
+
+        //assign crew members
+        f->assignCrew(airline.getAllWorkers(), airline.getNumOfWorkers());
+
+        //set plane
+        if (airline.getNumOfPlanes() > 0 && f->getPlane() == nullptr)
+            f->setPlane(airline.getPlaneAtIndex(0));
+
+        //buy tickets 
+        for (int i = 0; i < airline.getNumOfPassengers() && i < 3; ++i)
+        {
+            airline.buyTicket(*airline.getPassengerAtIndex(i), *f, cout);
+        }
+
+        //execute
+        airline.executeFlight(*f, cout);
+
+    }
+
+    //Try to Execute the second flight 
+    cout << "\nEXECUTE FLIGHT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << endl;
+    if (airline.getNumOfFlights() > 0) //there is at least one flight
+    {
+        airline.executeFlight(*airline.getFlightAtIndex(0), cout);
+    }
     
 
-    // Print all flights and workers after executing the flight
-    cout << "Flights in the airline:" << endl;
-    airline.printFlights(cout);                     //why fail +++++++++++++++++++++++
+    // Print all Passenger, flights, workers and planese before any flight 
+    cout << "Print all Passenger, flights, workers and planese AFTER any flight ------------------------\n\n" << endl;
+    airline.printPassengers(cout);
     cout << endl;
 
-    cout << "Workers in the airline:" << endl;
+    cout << "\n**************************" << endl;
+    airline.printFlights(cout);
+    cout << endl;
+
+    cout << "\n**************************" << endl;
     airline.printWorkers(cout);
     cout << endl;
+
+    cout << "\n**************************" << endl;
+    airline.printPlanes(cout);
+    cout << endl;
+
+
+    cout << "Make Year Passed------------------------\n\n" << endl;
+    airline.yearPassed(cout);
+
+
+    // Print all Passenger, workers and planese before any flight 
+    cout << "Print all Passenger, flights, workers and planese AFTER any flight ------------------------\n\n" << endl;
+    airline.printPassengers(cout);
+    cout << endl;
+
+    cout << "\n**************************" << endl;
+    airline.printWorkers(cout);
+    cout << endl;
+
+    cout << "\n**************************" << endl;
+    airline.printPlanes(cout);
+    cout << endl;
+
+
+
 
     // Create and open files for saving airline objects
     ofstream workersFileWrite("workers.txt");

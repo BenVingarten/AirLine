@@ -11,7 +11,8 @@ using namespace std;
 class FlightAttendet: public Worker
 {
 private:
-	
+	static const char* DEF_LANG;
+
 	char* allLanguages[MAX_LANGUAGES]; //char ** all_languages 
 	int currentNumOfLanguages;
 
@@ -19,7 +20,7 @@ private:
 
 public:
 
-	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang = nullptr);
+	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang);
 	FlightAttendet(const FlightAttendet& other);
 	FlightAttendet(FlightAttendet&& w) noexcept;
 	~FlightAttendet();

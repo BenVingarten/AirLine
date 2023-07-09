@@ -3,7 +3,7 @@
 #include "Passenger.h"
 
 
-class WorkerPassenger : public Worker, public Passenger
+class WorkerPassenger : public Passenger, public Worker
 {
 private:
 

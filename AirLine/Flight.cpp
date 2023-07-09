@@ -78,6 +78,7 @@ Flight::Flight(ifstream& in)
 		crewMembers[i] = nullptr;
 
 	in >> flightNumber;
+	in.ignore();
 	
 	char tmp[MAX_NAME_LEN];
 	
@@ -86,11 +87,13 @@ Flight::Flight(ifstream& in)
 	strcpy(meal, tmp);
 
 	in >> numberOfDishesInMenu;
+	in.ignore();
 	for (int i = 0; i < numberOfDishesInMenu; ++i)
 	{
 		in.getline(tmp, MAX_NAME_LEN);
 		firstClassMenu[i] = new char[strlen(tmp) + 1];
 		strcpy(firstClassMenu[i], tmp);
+		in.ignore();
 		
 	}
 	
@@ -123,7 +126,8 @@ Flight::~Flight()
 		delete[] ticketArr;
 	}
 	//plane
-	pPlane->setAvailability();
+	if(pPlane != nullptr)
+		pPlane->setAvailability();
 
 	//workers
 	for (int i = 0; i < currentNumOfCrewMembers; i++)
@@ -277,10 +281,10 @@ bool Flight::setPlane(Plane* pl)
 	if (pl == nullptr)
 		return false;
 
-	if (pPlane != nullptr)
-		delete pPlane;
-
 	pPlane = pl;
+
+	if (pPlane != nullptr)
+		createTickets();
 
 	return true;
 }

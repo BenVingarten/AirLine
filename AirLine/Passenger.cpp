@@ -61,8 +61,12 @@ void Passenger::print(ostream& out) const {
     out << ", Luggage Weight: " << luggageWeight << " kg";
     out << ", Airport Code: " << airportCode << endl;
 
+    
     if (ticket)
-        out << ticket << endl;
+    {
+        out << "Have a ticket for a flight " << endl;
+
+    }
 }
 
 

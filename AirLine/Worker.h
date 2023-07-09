@@ -50,7 +50,7 @@ public:
 	bool setFlight(Flight* flight);
 	void removeFlight();
 	void changeAvailability();
-	Worker& operator ++(); // add 1 year seniority
+	Worker& operator ++(); // add 1 year seniority -- PREFIX!
 	bool operator ==(const Worker& worker)const;
 
 	virtual void setRaise() = 0;

@@ -12,6 +12,8 @@ Plane::Plane(int numOfSeats, int maxLuggageWeight, float speed)
 {
     if (speed > MAX_SPEED_PLANE)
         maxSpeed = MAX_SPEED_PLANE;
+    if (speed < MIN_SPEED_PLANE)
+        maxSpeed = MIN_SPEED_PLANE;
 
     planeNumber = planeNumberGen++;
 }

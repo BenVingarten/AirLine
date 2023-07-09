@@ -25,6 +25,10 @@ class AirLine;
 class Flight
 {
 private:
+	static const int DEFAULT_COST = 60;
+	static const int DEFAULT_GATE = 1;
+
+
 	static int workersOfType[3]; //workers of type [pilot], [flightAttendent], [Technichian]
 	static int flightNumberGen; //initialized outside of the class to 4444
 
@@ -67,7 +71,7 @@ private:
 	
 
 	bool addCrewMember(Worker* w);
-	void createTickets(int ticketCost, int gate);
+	void createTickets(int ticketCost = DEFAULT_COST, int gate = DEFAULT_GATE);
 
 public:
 
