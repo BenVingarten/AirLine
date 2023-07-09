@@ -6,10 +6,50 @@
 #include "Technician.h"
 #include "WorkerPassenger.h"
 
+#define READ_FROM_FILE
 
 
 int main() {
     AirLine& airline = AirLine::getInstance(); // Get the instance of the AirLine
+
+#ifdef READ_FROM_FILE
+
+
+    // Check if there are files to read from
+    ifstream workersFileRead("workers.txt");
+    ifstream flightsFileRead("flights.txt");
+    ifstream passengersFileRead("passengers.txt");
+    ifstream planesFileRead("planes.txt");
+
+    // Read workers from file if it exists
+    if (workersFileRead) {
+        airline.readWorkersFromFile(workersFileRead);
+        workersFileRead.close();
+    }
+
+    // Read flights from file if it exists
+    if (flightsFileRead) {
+        airline.readFlightsFromFile(flightsFileRead);
+        flightsFileRead.close();
+    }
+
+    // Read passengers from file if it exists
+    if (passengersFileRead) {
+        airline.readPassengersFromFile(passengersFileRead);
+        passengersFileRead.close();
+    }
+
+    // Read planes from file if it exists
+    if (planesFileRead) {
+        airline.readPlanesFromFile(planesFileRead);
+        planesFileRead.close();
+    }
+
+    //airline.
+
+
+#else
+
 
     // Create passengers
     Passenger passenger1("John", 25, 'M', 20, Travel::DEFAULT_SOURCE_CODE);
@@ -84,6 +124,9 @@ int main() {
     airline.buyTicket(*passenger3, *flight1, cout);
     airline.buyTicket(*passenger4, *flight1, cout);
 
+#endif // READ_FROM_FILE
+
+
     //---------------------------------------------------------------------------------
     // Print all Passenger 
     cout << "Passengers in the airline:" << endl;
@@ -120,22 +163,22 @@ int main() {
     cout << endl;
 
     // Create and open files for saving airline objects
-    ofstream workersFile("workers.txt");
-    ofstream flightsFile("flights.txt");
-    ofstream passengersFile("passengers.txt");
-    ofstream planesFile("planes.txt");
+    ofstream workersFileWrite("workers.txt");
+    ofstream flightsFileWrite("flights.txt");
+    ofstream passengersFileWrite("passengers.txt");
+    ofstream planesFileWrite("planes.txt");
 
     // Save the airline objects to file
-    airline.saveWorkersFromFile(workersFile);
-    airline.saveFlightsFromFile(flightsFile);
-    airline.savePassengersFromFile(passengersFile);
-    airline.savePlanesFromFile(planesFile);
+    airline.saveWorkersFromFile(workersFileWrite);
+    airline.saveFlightsFromFile(flightsFileWrite);
+    airline.savePassengersFromFile(passengersFileWrite);
+    airline.savePlanesFromFile(planesFileWrite);
 
     // Close the files
-    workersFile.close();
-    flightsFile.close();
-    passengersFile.close();
-    planesFile.close();
+    workersFileWrite.close();
+    flightsFileWrite.close();
+    passengersFileWrite.close();
+    planesFileWrite.close();
 
     // Release the instance of the AirLine
     AirLine::releaseInstance();

@@ -19,7 +19,7 @@ private:
 public:
 
 	Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours);
-	Pilot(const Pilot& p) = delete;
+	Pilot(const Pilot& p);
 	Pilot(Pilot&& p) noexcept;
 	~Pilot() {};
 

@@ -24,7 +24,7 @@ public:
 								};
 
 	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type = eTechnicianType::GENERAL);
-	Technician(const Technician& other) = delete;
+	Technician(const Technician& other);
 	Technician(Technician&& t) noexcept;
 	~Technician() {};
 

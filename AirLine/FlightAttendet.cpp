@@ -13,6 +13,18 @@ FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary
         addLanugage(baseLang);
 }
 
+FlightAttendet::FlightAttendet(const FlightAttendet& other) :
+    Person(other), Worker(other), currentNumOfLanguages(other.currentNumOfLanguages)
+{
+    for (int i = 0; i < MAX_LANGUAGES; ++i)
+        allLanguages[i] = nullptr;
+    
+    int i = 0;
+    while (other.allLanguages[i] != nullptr)
+        addLanugage(other.allLanguages[i++]);
+
+}
+
 FlightAttendet::FlightAttendet(FlightAttendet&& w) noexcept
     : Person(std::move(w)), Worker(std::move(w)), currentNumOfLanguages(w.currentNumOfLanguages)
 {

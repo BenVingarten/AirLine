@@ -9,6 +9,10 @@ Pilot::Pilot(const char* n, int age, char gender, float salary, int seniority, T
 {
 }
 
+Pilot::Pilot(const Pilot& p) :
+    Person::Person(p), Worker(p), flightHours(p.flightHours)
+{}
+
 Pilot::Pilot(Pilot&& p) noexcept
     : Person(std::move(p)), Worker(std::move(p)), flightHours(std::move(p.flightHours))
 {

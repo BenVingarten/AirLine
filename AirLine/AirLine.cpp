@@ -73,7 +73,7 @@ AirLine::~AirLine()
 	delete[] allWorkers;
 	
 	for (int i = currentNumOfPassengers - 1; i >= 0; --i)
-		delete allPassengers[i];	//removePassenger(*(allPassengers[i]));
+		delete allPassengers[i];
 	delete[] allPassengers;
 
 	delete[] name; 
@@ -96,8 +96,25 @@ bool AirLine::addWorker(Worker& w)
 
 	if (currentNumOfWorkers < sizeOfWorkers)
 	{
-		allWorkers[currentNumOfWorkers++] = &w;
+		/*allWorkers[currentNumOfWorkers++] = &w;
+		return true;*/
+
+		if (typeid(w) == typeid(FlightAttendet))
+		{
+			allWorkers[currentNumOfWorkers++] = new FlightAttendet(*(FlightAttendet*)(&w));
+		}
+		else if (typeid(w) == typeid(Pilot))
+		{
+			allWorkers[currentNumOfWorkers++] = new Pilot(*((Pilot*)(&w)));
+		}
+		else if (typeid(w) == typeid(Technician))
+		{
+			allWorkers[currentNumOfWorkers++] = new Technician(*(Technician*)(&w));
+		}
+
 		return true;
+
+		
 	}
 
 	// Extend the array by creating a new array with double the capacity
@@ -116,7 +133,20 @@ bool AirLine::addWorker(Worker& w)
 	// Copy the existing workers into the new array
 	for (int i = 0; i < currentNumOfWorkers; ++i)
 	{
-		newWorkers[i] = allWorkers[i];
+		if (typeid(*allWorkers[i]) == typeid(FlightAttendet))
+		{
+			newWorkers[i] = new FlightAttendet(*((FlightAttendet*)(allWorkers[i])));
+		}
+		else if (typeid(*allWorkers[i]) == typeid(Pilot))
+		{
+			newWorkers[i] = new Pilot(*((Pilot*)(allWorkers[i])));
+		}
+		else if (typeid(*allWorkers[i]) == typeid(Technician))
+		{
+			newWorkers[i] = new Technician(*(Technician*)(allWorkers[i]));
+		}
+
+		//newWorkers[i] = allWorkers[i];
 	}
 
 	// Add the new worker to the extended array
@@ -233,8 +263,20 @@ bool AirLine::addPassenger(Passenger* p)
 	// Check if there is space at the end of the array
 	if (currentNumOfPassengers < sizeOfPassengers)
 	{
-		allPassengers[currentNumOfPassengers++] = p;
+		/*allPassengers[currentNumOfPassengers++] = p;
+		return true;*/
+
+		if (typeid(*p) == typeid(WorkerPassenger))
+		{
+			allPassengers[currentNumOfPassengers++] = new WorkerPassenger(*(WorkerPassenger*)(p));
+		}
+		else if (typeid(*p) == typeid(Passenger))
+		{
+			allPassengers[currentNumOfPassengers++] = new Passenger(*((Passenger*)(p)));
+		}
+		
 		return true;
+
 	}
 
 	// If reached the maximum number of passengers
@@ -257,7 +299,17 @@ bool AirLine::addPassenger(Passenger* p)
 	// Copy the existing passengers into the new array
 	for (int i = 0; i < currentNumOfPassengers; ++i)
 	{
-		newPassengers[i] = allPassengers[i];
+		//newPassengers[i] = allPassengers[i];
+
+		if (typeid(*allPassengers[i]) == typeid(WorkerPassenger))
+		{
+			newPassengers[i] = new WorkerPassenger(*(WorkerPassenger*)(allPassengers[i]));
+		}
+		else if (typeid(*allPassengers[i]) == typeid(Passenger))
+		{
+			newPassengers[i] = new Passenger(*((Passenger*)(allPassengers[i])));
+		}
+
 	}
 
 	// Add the new passenger to the extended array
@@ -622,7 +674,7 @@ void AirLine::readPassengersFromFile(ifstream& in)
 	{
 		int passengerType;
 		in >> passengerType;
-		
+		in.ignore();
 
 		// Check the type of the worker and create a corresponding object
 		Passenger* p = nullptr;
@@ -657,6 +709,7 @@ void AirLine::readWorkersFromFile(ifstream& in)
 		int workerType;
 		in >> workerType;
 
+		in.ignore();
 		// Check the type of the worker and create a corresponding object
 		if (workerType == FLIGHT_ATTENDENT)
 		{

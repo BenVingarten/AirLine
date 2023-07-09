@@ -10,6 +10,11 @@ Technician::Technician(const char* n, int age, char gender, float salary, int se
 {
 }
 
+Technician::Technician(const Technician& other) :
+    Person(other), Worker(other), planesPreparedThisYear(other.planesPreparedThisYear), type(other.type)
+{
+}
+
 Technician::Technician(Technician&& t) noexcept
     : Person(std::move(t)), Worker(move(t)), type(t.type), planesPreparedThisYear(t.planesPreparedThisYear)
 {

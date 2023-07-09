@@ -20,7 +20,7 @@ private:
 public:
 
 	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang = nullptr);
-	FlightAttendet(const FlightAttendet& other) = delete;
+	FlightAttendet(const FlightAttendet& other);
 	FlightAttendet(FlightAttendet&& w) noexcept;
 	~FlightAttendet();
 	

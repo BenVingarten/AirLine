@@ -29,6 +29,11 @@ WorkerPassenger::WorkerPassenger(const char* pName, int theAge, char gen,
 
 }
 
+WorkerPassenger::WorkerPassenger(const WorkerPassenger& wp) :
+    Person(wp), Worker(wp), Passenger(wp), discount(wp.discount)
+{
+}
+
 
 WorkerPassenger::WorkerPassenger(WorkerPassenger&& wp) noexcept
     : Person(std::move(wp)), Worker(std::move(wp)), Passenger(std::move(wp)), discount(wp.discount)

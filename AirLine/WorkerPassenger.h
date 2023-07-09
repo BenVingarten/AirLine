@@ -16,7 +16,7 @@ private:
 public:
     WorkerPassenger(const char* pName, int theAge, char gen, float salary,
                         int seniority, int luggageWeight, const char* code, float disc);
-    WorkerPassenger(const WorkerPassenger& wp) = delete;
+    WorkerPassenger(const WorkerPassenger& wp);
     WorkerPassenger(WorkerPassenger&& wp) noexcept;
     virtual ~WorkerPassenger() {};
 

@@ -18,6 +18,12 @@ Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, con
         strcpy(airportCode, Travel::DEFAULT_SOURCE_CODE);
 }
 
+Passenger::Passenger(const Passenger& p) :
+    Person(p), passport(p.passport), luggageWeight(p.luggageWeight), ticket(p.ticket)
+{
+    strcpy(airportCode, p.airportCode);
+}
+
 Passenger::Passenger(Passenger&& p) noexcept
     : Person(std::move(p)), luggageWeight(p.luggageWeight), passport(p.passport)
 {
