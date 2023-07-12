@@ -84,6 +84,8 @@ public:
 			const Time& durTime, const Time& borTime, Plane* plane = nullptr,
 			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
 
+	Flight(const Flight& f);
+
 	~Flight();
 
 	//read and save to file

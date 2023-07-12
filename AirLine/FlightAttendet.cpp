@@ -24,7 +24,7 @@ FlightAttendet::FlightAttendet(const FlightAttendet& other) :
         allLanguages[i] = nullptr;
     
     int i = 0;
-    while (other.allLanguages[i] != nullptr)
+    while (i < other.currentNumOfLanguages)
         addLanugage(other.allLanguages[i++]);
 
 }
@@ -56,8 +56,6 @@ FlightAttendet::FlightAttendet(ifstream& in): Person(in), Worker(in)
     {
         in.getline(tmpLang, MAX_NAME_LEN);
 
-        if (allLanguages[i] != nullptr)
-            delete[] allLanguages[i];
 
         allLanguages[i] = new char[strlen(tmpLang) + 1];
         strcpy(allLanguages[i], tmpLang);

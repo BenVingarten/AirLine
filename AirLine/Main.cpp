@@ -6,7 +6,7 @@
 #include "Technician.h"
 #include "WorkerPassenger.h"
 
-//#define READ_FROM_FILE
+#define READ_FROM_FILE
 
 
 int main() {

@@ -73,7 +73,7 @@ public:
         int i = 0;
         while (current != nullptr)
         {
-            out << (i + 1) << ") " << current->value << endl;
+            out << (i + 1) << ") " << *(current->value) << endl;
             current = current->next;
             i++;
         }

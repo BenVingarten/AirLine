@@ -165,7 +165,7 @@ void AirLine::printPassengers(ostream& out) const
 bool AirLine::removeWorker(const Worker& w)
 {
 	// Check if the worker exists in the workers array
-	if (workerVec.empty() || isWorkerExist(w))
+	if (!isWorkerExist(w))
 		return false;
 
 
@@ -179,7 +179,7 @@ bool AirLine::removeWorker(const Worker& w)
 bool AirLine::removeFlight(const Flight& f)
 {
 	// Check if the flight exists in the flights array
-		if (flightVec.empty() || isFlightExist(f))
+		if (!isFlightExist(f))
 			return false;
 
 		auto it = std::find(flightVec.begin(), flightVec.end(), &f);
@@ -192,7 +192,7 @@ bool AirLine::removeFlight(const Flight& f)
 bool AirLine::removePlane(const Plane& p)
 {
 
-	if (planeList.getSize() == 0 || isPlaneExist(p))
+	if (!isPlaneExist(p))
 		return false;
 	
 	planeList.remove(const_cast<Plane*>(&p));
@@ -204,7 +204,7 @@ bool AirLine::removePlane(const Plane& p)
 bool AirLine::removePassenger(const Passenger& p)
 {
 	// Check if the passenger exists in the passengers array
-	if (passengerVec.empty() || isPassengerExist(p))
+	if (!isPassengerExist(p))
 		return false;
 
 	auto it = std::find(passengerVec.begin(), passengerVec.end(), &p);
@@ -524,18 +524,21 @@ void AirLine::readWorkersFromFile(ifstream& in)
 	in >> numWorkers;
 	in.ignore(); // Ignore the newline character
 
+
+
 	// Read worker data from the file
 	for (int i = 0; i < numWorkers; ++i)
 	{
 		int workerType;
 		in >> workerType;
-
 		in.ignore();
+		
 		// Check the type of the worker and create a corresponding object
 		if (workerType == FLIGHT_ATTENDENT) 
 			addWorker(FlightAttendet(in));
 		
 		else if (workerType == PILOT)
+		
 			addWorker(Pilot(in));
 		
 		else if (workerType == TECHNICHIAN)
@@ -619,6 +622,14 @@ void AirLine::saveWorkersFromFile(ofstream& out)
 	// Write worker data to the file
 	for (int i = 0; i < workerVec.size(); ++i)
 	{
+		if (typeid(*workerVec[i]) == typeid(Pilot))
+			out << PILOT << endl;
+		else if (typeid(*workerVec[i]) == typeid(FlightAttendet))
+			out << FLIGHT_ATTENDENT << endl;
+		else 
+			out << TECHNICHIAN << endl;
+
+
 		workerVec[i]->saveToFile(out);
 		// Check the type of the worker and call the corresponding saveToFile function
 		//if (typeid(*workerVec[i]) == typeid(FlightAttendet))
@@ -675,7 +686,10 @@ void AirLine::savePlanesFromFile(ofstream& out)
 	
 	LinkedList<Plane*>::Node* currentNode = planeList.getHead();
 	while (currentNode != nullptr)
+	{
 		currentNode->value->saveToFile(out);
+		currentNode = currentNode->next;
+	}
 	
 }
 

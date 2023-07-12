@@ -10,7 +10,7 @@ using namespace std;
 class Person: public Save
 {
 protected:
-	char* name;
+	string name;
 	int age;
 	char gender; //  F - female,  M - male
 	
@@ -20,9 +20,9 @@ protected:
 
 public:
 
-	Person(const char* pName, int theAge, char gen);	//c'tor
-	Person(const Person& other);	// copy c'tor
-	Person(Person&& other) noexcept;	//  move copy c'tor
+	Person(const string pName, int theAge, char gen);	//c'tor
+	Person(const Person& other) = default;	// copy c'tor
+	//Person(Person&& other) noexcept;	//  move copy c'tor
 	virtual ~Person();	// d'tor
 	
 	//read and write from file
@@ -30,16 +30,16 @@ public:
 	virtual void saveToFile(ofstream& out)const;
 	
 
-	Person& operator =(const Person& p);							// operator =
-	const Person& operator =(Person&& p) noexcept;					// operator move =
+	//Person& operator =(const Person& p);							// operator =
+	//const Person& operator =(Person&& p) noexcept;					// operator move =
 
     friend ostream& operator <<(ostream& out, const Person& p);		// operaor <<
 	Person& operator ++();											// operator ++ for age
 
-	const char* getName()const;
+	const string getName()const;
 	int getAge()const;
 	char getGender()const;
 
-	void setName(const char* name);
+	void setName(const string name);
 };
 

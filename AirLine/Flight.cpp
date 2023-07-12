@@ -66,6 +66,18 @@ Flight::Flight(const Travel& trav, const Date& d,
 }
 
 
+
+Flight::Flight(const Flight& f) : airLine(AirLine::getInstance()), flightNumber(f.flightNumber), info(f.info), boardingTime(f.boardingTime),
+currentPurchasedTickets(0),crewMembers(), currentNumOfCrewMembers(0), pPlane(nullptr),
+ticketArr(nullptr), numberOfDishesInMenu(f.numberOfDishesInMenu)
+{
+	setMeal(f.meal);
+
+	if (f.numberOfDishesInMenu > 0)
+		for (int i = 0; i < f.numberOfDishesInMenu; ++i)
+			addDishToMenu(f.firstClassMenu[i]);
+}
+
 Flight::Flight(ifstream& in)
 	: airLine(AirLine::getInstance()), info(in), boardingTime(in)
 {
@@ -533,7 +545,10 @@ void Flight::landing(ostream& out)
 		for (int i = 0; i < currentPurchasedTickets; i++)
 			ticketArr[i]->getPassenger()->setAirPortCode(ticketArr[i]->getTicketInfo()->getDestenation());
 				
-		
+		for (int i = 0; i < currentNumOfCrewMembers; ++i)
+			if (typeid(*crewMembers[i]) == typeid(Pilot))
+				*(Pilot*)(crewMembers[i]) += info.getFlightDuration();
+
 	}
 
 }
