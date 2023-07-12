@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "AirLine.h"
 #include "Ticket.h"
+#include <algorithm>
 
 
 AirLine* AirLine::theAirLine = nullptr;
@@ -27,9 +28,9 @@ bool AirLine::checkReady(Flight& f, ostream& out)
 }
 
 AirLine::AirLine(const char* pName, const char* pCountry) : 
-	currentNumOfFlights(0), currentNumOfPassengers(0), currentNumOfPlanes(0), currentNumOfWorkers(0),
-	allWorkers(nullptr), allFlights(nullptr), allPlanes(nullptr), allPassengers(nullptr), 
-	income(0), sizeOfWorkers(0), sizeOfFlights(0), sizeOfPlanes(0),sizeOfPassengers(0)
+	
+	 planeList(), income(0)
+	
 {
 	name = new char[strlen(pName) + 1];
 	strcpy(name, pName);
@@ -60,21 +61,16 @@ void AirLine::releaseInstance()
 
 AirLine::~AirLine()
 {
-	for (int i = 0; i < currentNumOfFlights; ++i)
-		delete allFlights[i];
-	delete[] allFlights;
-
-	for (int i = 0; i < currentNumOfPlanes; ++i)
-		delete allPlanes[i];
-	delete[] allPlanes;
-
-	for (int i = 0; i < currentNumOfWorkers; ++i)
-		delete allWorkers[i];
-	delete[] allWorkers;
+	for (int i = 0; i < flightVec.size(); i++)
+		delete flightVec[i];
 	
-	for (int i = currentNumOfPassengers - 1; i >= 0; --i)
-		delete allPassengers[i];
-	delete[] allPassengers;
+	planeList.clear();
+
+	for (int i = 0; i < workerVec.size(); i++)
+		delete workerVec[i];
+	
+	for (int i = 0; i < passengerVec.size(); i++)
+		delete passengerVec[i];
 
 	delete[] name; 
 	delete[] country;
@@ -84,242 +80,44 @@ AirLine::~AirLine()
 
 
 
-bool AirLine::addWorker(Worker& w)
+bool AirLine::addWorker(const Worker& w)
 {
-	// Check if the worker already exists in the workers array
-	if (isWorkerExist(w) != -1)
+	// Check if the worker already exists in the workers vector
+	if (isWorkerExist(w))
 		return false;
 
-	// If reached maximum Workers
-	if (currentNumOfWorkers == MAX_WORKERS)
-		return false;
-
-	if (currentNumOfWorkers < sizeOfWorkers)
-	{
-		/*allWorkers[currentNumOfWorkers++] = &w;
-		return true;*/
-
-		if (typeid(w) == typeid(FlightAttendet))
-		{
-			allWorkers[currentNumOfWorkers++] = new FlightAttendet(*(FlightAttendet*)(&w));
-		}
-		else if (typeid(w) == typeid(Pilot))
-		{
-			allWorkers[currentNumOfWorkers++] = new Pilot(*((Pilot*)(&w)));
-		}
-		else if (typeid(w) == typeid(Technician))
-		{
-			allWorkers[currentNumOfWorkers++] = new Technician(*(Technician*)(&w));
-		}
-
-		return true;
-
-		
-	}
-
-	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * sizeOfWorkers;
-	
-	if (newCapacity == 0)
-		newCapacity = 1;
-
-	if (newCapacity > MAX_WORKERS)
-		newCapacity = MAX_WORKERS;
-	
-	sizeOfWorkers = newCapacity;
-
-	Worker** newWorkers = new Worker* [newCapacity];
-
-	// Copy the existing workers into the new array
-	for (int i = 0; i < currentNumOfWorkers; ++i)
-	{
-		if (typeid(*allWorkers[i]) == typeid(FlightAttendet))
-		{
-			newWorkers[i] = new FlightAttendet(*((FlightAttendet*)(allWorkers[i])));
-		}
-		else if (typeid(*allWorkers[i]) == typeid(Pilot))
-		{
-			newWorkers[i] = new Pilot(*((Pilot*)(allWorkers[i])));
-		}
-		else if (typeid(*allWorkers[i]) == typeid(Technician))
-		{
-			newWorkers[i] = new Technician(*(Technician*)(allWorkers[i]));
-		}
-
-		//newWorkers[i] = allWorkers[i];
-	}
-
-	// Add the new worker to the extended array
-	newWorkers[currentNumOfWorkers++] = &w;
-	
-
-	// Delete the old workers array and update the pointer to the new array
-	delete[] allWorkers;
-	allWorkers = newWorkers;
-
-
+	workerVec.push_back(w.clone());
 	return true;
 }
 
-bool AirLine::addFlight(Flight& f)
+bool AirLine::addFlight(const Flight& f)
 {
 	// Check if the flight already exists in the flights array
-	if (isFlightExist(f) != -1)
+	if (isFlightExist(f))
 		return false;
 
-	// Check if there is space at the end of the array
-	if (currentNumOfFlights < sizeOfFlights)
-	{
-		allFlights[currentNumOfFlights++] = &f;
-		return true;
-	}
-
-	// If reached the maximum number of flights
-	if (currentNumOfFlights == MAX_FLIGHTS)
-		return false;
-
-	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * sizeOfFlights;
-	
-	if (newCapacity == 0)
-		newCapacity = 1;
-
-	if (newCapacity > MAX_FLIGHTS)
-		newCapacity = MAX_FLIGHTS;
-
-	sizeOfFlights = newCapacity;
-
-	Flight** newFlights = new Flight * [newCapacity];
-
-	// Copy the existing flights into the new array
-	for (int i = 0; i < currentNumOfFlights; ++i)
-	{
-		newFlights[i] = allFlights[i];
-	}
-
-	// Add the new flight to the extended array
-	newFlights[currentNumOfFlights++] = &f;
-
-	// Delete the old flights array and update the pointer to the new array
-	delete[] allFlights;
-	allFlights = newFlights;
-	
-	
+	flightVec.push_back(new Flight(f));
 	return true;
+	
 }
 
-bool AirLine::addPlane(Plane& p)
+bool AirLine::addPlane(const Plane& p)
 {
 	// Check if the plane already exists in the planes array
-	if (isPlaneExist(p) != -1)
+	if (isPlaneExist(p))
 		return false;
 
-	// Check if there is space at the end of the array
-	if (currentNumOfPlanes < sizeOfPlanes)
-	{
-		allPlanes[currentNumOfPlanes++] = &p;
-		return true;
-	}
-
-	// If reached the maximum number of planes
-	if (currentNumOfPlanes == MAX_PLANES)
-		return false;
-
-	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * sizeOfPlanes;
-
-	if (newCapacity == 0)
-		newCapacity = 1;
-
-	if (newCapacity > MAX_PLANES)
-		newCapacity = MAX_PLANES;
-
-	sizeOfPlanes = newCapacity;
-
-	Plane** newPlanes = new Plane * [newCapacity];
-
-	// Copy the existing planes into the new array
-	for (int i = 0; i < currentNumOfPlanes; ++i)
-	{
-		newPlanes[i] = allPlanes[i];
-	}
-
-	// Add the new plane to the extended array
-	newPlanes[currentNumOfPlanes++] = &p;
-
-	// Delete the old planes array and update the pointer to the new array
-	delete[] allPlanes;
-	allPlanes = newPlanes;
-	
-
+	planeList.add(new Plane(p));
 	return true;
 }
 
-bool AirLine::addPassenger(Passenger& p)
+bool AirLine::addPassenger(const Passenger& p)
 {
 	// Check if the passenger already exists in the passengers array
-	if (isPassengerExist(p) != -1)
+	if (isPassengerExist(p))
 		return false;
 
-	// Check if there is space at the end of the array
-	if (currentNumOfPassengers < sizeOfPassengers)
-	{
-		/*allPassengers[currentNumOfPassengers++] = p;
-		return true;*/
-
-		if (typeid(p) == typeid(WorkerPassenger))
-		{
-			allPassengers[currentNumOfPassengers++] = new WorkerPassenger(*(WorkerPassenger*)(&p));
-		}
-		else if (typeid(p) == typeid(Passenger))
-		{
-			allPassengers[currentNumOfPassengers++] = new Passenger(*((Passenger*)(&p)));
-		}
-		
-		return true;
-
-	}
-
-	// If reached the maximum number of passengers
-	if (currentNumOfPassengers == MAX_PASSENGERS)
-		return false;
-
-	// Extend the array by creating a new array with double the capacity
-	int newCapacity = 2 * sizeOfPassengers;
-
-	if (newCapacity == 0)
-		newCapacity = 1;
-
-	if (newCapacity > MAX_PASSENGERS)
-		newCapacity = MAX_PASSENGERS;
-
-	sizeOfPassengers = newCapacity;
-
-	Passenger** newPassengers = new Passenger* [newCapacity];
-
-	// Copy the existing passengers into the new array
-	for (int i = 0; i < currentNumOfPassengers; ++i)
-	{
-		//newPassengers[i] = allPassengers[i];
-
-		if (typeid(*allPassengers[i]) == typeid(WorkerPassenger))
-		{
-			newPassengers[i] = new WorkerPassenger(*(WorkerPassenger*)(allPassengers[i]));
-		}
-		else if (typeid(*allPassengers[i]) == typeid(Passenger))
-		{
-			newPassengers[i] = new Passenger(*((Passenger*)(allPassengers[i])));
-		}
-
-	}
-
-	// Add the new passenger to the extended array
-	newPassengers[currentNumOfPassengers++] = &p;
-
-	// Delete the old passengers array and update the pointer to the new array
-	delete[] allPassengers;
-	allPassengers = newPassengers;
-	
+	passengerVec.push_back(p.cloneP());
 	return true;
 }
 
@@ -329,9 +127,9 @@ void AirLine::printFlights(ostream& out) const
 {
 	out << "Flights:" << endl;
 
-	for (int i = 0; i < currentNumOfFlights; ++i)
+	for (int i = 0; i < flightVec.size(); ++i)
 	{
-		out << (i + 1) << ")" << *allFlights[i] << endl;
+		out << (i + 1) << ")" << *flightVec[i] << endl;
 	}
 }
 
@@ -339,125 +137,81 @@ void AirLine::printWorkers(ostream& out) const
 {
 	out << "Workers:" << endl;
 
-	for (int i = 0; i < currentNumOfWorkers; ++i)
+	for (int i = 0; i < workerVec.size(); ++i)
 	{
-		out << (i+1) << ")" << *allWorkers[i] << endl;
+		out << (i+1) << ")" << *workerVec[i] << endl;
 	}
 }
 
 void AirLine::printPlanes(ostream& out) const
 {
 	out << "Planes:" << endl;
+	planeList.print(out);
 
-	for (int i = 0; i < currentNumOfPlanes; ++i)
-	{
-		out << (i + 1) << ")" << *allPlanes[i] << endl;
-	}
 }
 
 void AirLine::printPassengers(ostream& out) const
 {
 	out << "Passengers:" << endl;
 
-	for (int i = 0; i < currentNumOfPassengers; ++i)
+	for (int i = 0; i < passengerVec.size(); ++i)
 	{
-		out << (i + 1) << ")" << *allPassengers[i] << endl;
+		out << (i + 1) << ")" << *passengerVec[i] << endl;
 	}
 }
 
 
 
-void AirLine::removeWorker(Worker& w)
+bool AirLine::removeWorker(const Worker& w)
 {
 	// Check if the worker exists in the workers array
-	int index = isWorkerExist(w);
-	if (index == -1)
-		return;
+	if (workerVec.empty() || isWorkerExist(w))
+		return false;
 
-	delete allWorkers[index];
 
-	// If the worker to be removed is not the last worker, replace it with the last worker
-	if (index != currentNumOfWorkers - 1)
-	{
-		allWorkers[index] = allWorkers[currentNumOfWorkers - 1];
-
-		// Delete the removed worker
-		//delete allWorkers[currentNumOfWorkers - 1];
-		allWorkers[currentNumOfWorkers - 1] = nullptr;
-	}
-
-	// Decrement the current number of workers
-	--currentNumOfWorkers;
+	auto it = std::find(workerVec.begin(), workerVec.end(), &w);
+	if (it != workerVec.end())
+		workerVec.erase(it);
+		
+	return true;
 }
 
-void AirLine::removeFlight(Flight& f)
+bool AirLine::removeFlight(const Flight& f)
 {
 	// Check if the flight exists in the flights array
-	int index = isFlightExist(f);
-	if (index == -1)
-		return;
+		if (flightVec.empty() || isFlightExist(f))
+			return false;
 
-	delete allFlights[index];
+		auto it = std::find(flightVec.begin(), flightVec.end(), &f);
+		if (it != flightVec.end())
+			flightVec.erase(it);
 
-	// If the flight to be removed is not the last flight, replace it with the last flight
-	if (index != currentNumOfFlights - 1)
-	{
-		allFlights[index] = allFlights[currentNumOfFlights - 1];
-
-		// Remove the last flight from the array
-		allFlights[currentNumOfFlights - 1] = nullptr;
-	}
-
-	// Decrement the current number of flights
-	--currentNumOfFlights;
+		return true;
 }
 
-void AirLine::removePlane(Plane& p)
+bool AirLine::removePlane(const Plane& p)
 {
-	// Check if the plane exists in the planes array
-	int index = isPlaneExist(p);
-	if (index == -1)
-		return;
 
-	delete allPlanes[index];
-
-	// If the plane to be removed is not the last plane, replace it with the last plane
-	if (index != currentNumOfPlanes - 1)
-	{
-		allPlanes[index] = allPlanes[currentNumOfPlanes - 1];
+	if (planeList.getSize() == 0 || isPlaneExist(p))
+		return false;
 	
-		// Delete the removed plane
-		delete allPlanes[currentNumOfPlanes - 1];
-		allPlanes[currentNumOfPlanes - 1] = nullptr;
-	}
+	planeList.remove(const_cast<Plane*>(&p));
+	return true;
 
 
-	// Decrement the current number of planes
-	--currentNumOfPlanes;
 }
 
-void AirLine::removePassenger(Passenger& p)
+bool AirLine::removePassenger(const Passenger& p)
 {
 	// Check if the passenger exists in the passengers array
-	int index = isPassengerExist(p);
-	if (index == -1)
-		return;
+	if (passengerVec.empty() || isPassengerExist(p))
+		return false;
 
-	delete allPassengers[index];
-
-	// If the passenger to be removed is not the last passenger, replace it with the last passenger
-	if (index != currentNumOfPassengers - 1)
-	{
-		allPassengers[index] = allPassengers[currentNumOfPassengers - 1];
+	auto it = std::find(passengerVec.begin(), passengerVec.end(), &p);
+	if (it != passengerVec.end())
+		passengerVec.erase(it);
 	
-		// Delete the removed passenger
-		//delete allPassengers[currentNumOfPassengers - 1];
-		allPassengers[currentNumOfPassengers - 1] = nullptr;
-	}
-
-
-	// Decrement the current number of passengers
-	--currentNumOfPassengers;
+	return true;
 }
 
 
@@ -472,14 +226,14 @@ Plane* AirLine::choosePlane(ostream& out, istream& in) const
 	in >> choice;
 
 	// Validate the input
-	if (choice < 1 || choice > currentNumOfPlanes)
+	if (choice < 1 || choice > planeList.getSize())
 	{
 		out << "Invalid choice. Please try again." << endl;
 		return nullptr;
 	}
 
 	// Return the selected plane
-	return allPlanes[choice - 1];
+	return getPlaneAtIndex(choice - 1);
 }
 
 Worker* AirLine::chooseWorker(ostream& out, istream& in) const
@@ -492,14 +246,14 @@ Worker* AirLine::chooseWorker(ostream& out, istream& in) const
 	in >> choice;
 
 	// Validate the input
-	if (choice < 1 || choice > currentNumOfWorkers)
+	if (choice < 1 || choice > workerVec.size())
 	{
 		out << "Invalid choice. Please try again." << endl;
 		return nullptr;
 	}
 
 	// Return the selected worker
-	return allWorkers[choice - 1];
+	return workerVec[choice - 1];
 }
 
 Flight* AirLine::chooseFlight(ostream& out, istream& in) const
@@ -513,14 +267,14 @@ Flight* AirLine::chooseFlight(ostream& out, istream& in) const
 	in >> choice;
 
 	// Validate the input
-	if (choice < 1 || choice > currentNumOfFlights)
+	if (choice < 1 || choice > flightVec.size())
 	{
 		out << "Invalid choice. Please try again." << endl;
 		return nullptr;
 	}
 
 	// Return the selected flight
-	return allFlights[choice - 1];
+	return flightVec[choice - 1];
 }
 
 Passenger* AirLine::choosePassenger(ostream& out, istream& in) const
@@ -534,68 +288,73 @@ Passenger* AirLine::choosePassenger(ostream& out, istream& in) const
 	in >> choice;
 
 	// Validate the input
-	if (choice < 1 || choice > currentNumOfPassengers)
+	if (choice < 1 || choice > passengerVec.size())
 	{
 		out << "Invalid choice. Please try again." << endl;
 		return nullptr;
 	}
 
 	// Return the selected passenger
-	return allPassengers[choice - 1];
+	return passengerVec[choice - 1];
 }
 
 
 
-int AirLine::isWorkerExist(const Worker& w) const
+bool AirLine::isWorkerExist(const Worker& w) const
 {
-	for (int i = 0; i < currentNumOfWorkers; ++i)
+	if (workerVec.empty())
+		return false;
+
+	for(int i = 0; i < workerVec.size(); i++)
 	{
-		if (*allWorkers[i] == w)
+		if (*workerVec[i] == w)
 		{
 			// Worker with the same ID already exists
-			return i;
+			return true;
 		}
 	}
-	return -1;
+	return false;
 }
 
-int AirLine::isFlightExist(const Flight& f) const
+bool AirLine::isFlightExist(const Flight& f) const
 {
-	for (int i = 0; i < currentNumOfFlights; ++i)
+
+
+	if (flightVec.empty())
+		return false;
+
+	for (int i = 0; i < flightVec.size(); i++)
 	{
-		if (*allFlights[i] == f)
+		if (*flightVec[i] == f)
 		{
 			// Flight with the same flight number already exists
-			return i;
+			return true;
 		}
 	}
-	return -1;
+	return false;
+	
 }
 
-int AirLine::isPlaneExist(const Plane& p) const
+bool AirLine::isPlaneExist(const Plane& p) const
 {
-	for (int i = 0; i < currentNumOfPlanes; ++i)
-	{
-		if (*allPlanes[i] == p)
-		{
-			// Plane with the same plane number already exists
-			return i;
-		}
-	}
-	return -1;
+	return planeList.isInList(const_cast<Plane*>(&p));
 }
 
-int AirLine::isPassengerExist(const Passenger& p) const
+bool AirLine::isPassengerExist(const Passenger& p) const
 {
-	for (int i = 0; i < currentNumOfPassengers; ++i)
+
+	if (passengerVec.empty())
+		return false;
+
+	for (int i = 0; i < passengerVec.size(); i++)
 	{
-		if (*allPassengers[i] == p)
+		if (*passengerVec[i] == p)
 		{
 			// Passenger with the same Passport already exists
-			return i;
+			return true;
 		}
 	}
-	return -1;
+	return false;
 }
 
 
@@ -647,77 +406,77 @@ bool AirLine::buyTicket(Passenger& p, Flight& f, ostream& out)
 
 void AirLine::yearPassed(ostream& out)
 {
-	for (int i = 0; i < currentNumOfPassengers; i++)
-		++(*allPassengers[i]);
+	for (int i = 0; i < passengerVec.size(); i++)
+		++(*passengerVec[i]);
 
-	for (int i = 0; i < currentNumOfWorkers; i++)
+	for (int i = 0; i < workerVec.size(); i++)
 	{
-		++(*allWorkers[i]); //seniority + set raise
-		allWorkers[i]->annualRefresh(out);
+		++(*workerVec[i]); //seniority + set raise
+		workerVec[i]->annualRefresh(out);
 	}
 }
 
 
 int AirLine::getNumOfWorkers() const {
-	return currentNumOfWorkers;
+	return workerVec.size();
 }
 
 int AirLine::getNumOfFlights() const {
-	return currentNumOfFlights;
+	return flightVec.size();
 }
 
 int AirLine::getNumOfPassengers() const {
-	return currentNumOfPassengers;
+	return passengerVec.size();
 }
 
 int AirLine::getNumOfPlanes() const {
-	return currentNumOfPlanes;
+	return planeList.getSize();
 }
 
 
 Worker* AirLine::getWorkerAtIndex(int index) const {
-	if (index >= 0 && index < currentNumOfWorkers) {
-		return allWorkers[index];
+	if (index >= 0 && index < workerVec.size()) {
+		return workerVec[index];
 	}
 	return nullptr; // Index out of bounds or empty array
 }
 
 Flight* AirLine::getFlightAtIndex(int index) const {
-	if (index >= 0 && index < currentNumOfFlights) {
-		return allFlights[index];
+	if (index >= 0 && index < flightVec.size()) {
+		return flightVec[index];
 	}
 	return nullptr; // Index out of bounds or empty array
 }
 
 Passenger* AirLine::getPassengerAtIndex(int index) const {
-	if (index >= 0 && index < currentNumOfPassengers) {
-		return allPassengers[index];
+	if (index >= 0 && index < passengerVec.size()) {
+		return passengerVec[index];
 	}
 	return nullptr; // Index out of bounds or empty array
 }
 
 Plane* AirLine::getPlaneAtIndex(int index) const {
-	if (index >= 0 && index < currentNumOfPlanes) {
-		return allPlanes[index];
+	if (index >= 0 && index < planeList.getSize()) {
+		return planeList.getData(index);
 	}
 	return nullptr; // Index out of bounds or empty array
 }
 
 
-Worker** AirLine::getAllWorkers() const {
-	return allWorkers;
+vector<Worker*> AirLine::getAllWorkers() const {
+	return workerVec;
 }
 
-Flight** AirLine::getAllFlights() const {
-	return allFlights;
+vector<Flight*> AirLine::getAllFlights() const {
+	return flightVec;
 }
 
-Passenger** AirLine::getAllPassengers() const {
-	return allPassengers;
+vector<Passenger*> AirLine::getAllPassengers() const {
+	return passengerVec;
 }
 
-Plane** AirLine::getAllPlanes() const {
-	return allPlanes;
+LinkedList<Plane*> AirLine::getAllPlanes() const {
+	return planeList;
 }
 
 
@@ -742,10 +501,10 @@ void AirLine::readPassengersFromFile(ifstream& in)
 
 		// Check the type of the worker and create a corresponding object
 		if (passengerType == WORKER_PASSENGER)
-			addPassenger(*(new WorkerPassenger(in)) );
+			addPassenger(WorkerPassenger(in));
 		
 		else if (passengerType == PASSENGER)
-			addPassenger( *(new Passenger(in)) );
+			addPassenger(Passenger(in));
 			
 		
 
@@ -773,21 +532,15 @@ void AirLine::readWorkersFromFile(ifstream& in)
 
 		in.ignore();
 		// Check the type of the worker and create a corresponding object
-		if (workerType == FLIGHT_ATTENDENT)
-		{
-			FlightAttendet* w = new FlightAttendet(in);
-			addWorker(*w);
-		}
+		if (workerType == FLIGHT_ATTENDENT) 
+			addWorker(FlightAttendet(in));
+		
 		else if (workerType == PILOT)
-		{
-			Pilot* w = new Pilot(in);
-			addWorker(*w);
-		}
+			addWorker(Pilot(in));
+		
 		else if (workerType == TECHNICHIAN)
-		{
-			Technician* w = new Technician(in);
-			addWorker(*w);
-		}
+			addWorker(Technician(in));
+		
 	}
 }
 
@@ -805,10 +558,8 @@ void AirLine::readFlightsFromFile(ifstream& in)
 
 	// Read flight data and add them to the array
 	for (int i = 0; i < numFlights; ++i)
-	{
-		Flight* flight = new Flight(in);
-		addFlight(*flight);
-	}
+		addFlight(Flight(in));
+	
 }
 
 void AirLine::readPlanesFromFile(ifstream& in)
@@ -825,10 +576,9 @@ void AirLine::readPlanesFromFile(ifstream& in)
 
 	// Read plane data and add them to the array
 	for (int i = 0; i < numPlanes; ++i)
-	{
-		Plane* plane = new Plane(in);
-		addPlane(*plane);
-	}
+		addPlane(Plane(in));
+		
+	
 }
 
 
@@ -841,17 +591,17 @@ void AirLine::savePassengersFromFile(ofstream& out)
 	}
 
 	// Write the number of passengers to the file
-	out << currentNumOfPassengers << endl;
+	out << passengerVec.size() << endl;
 
 	// Write passenger data to the file
-	for (int i = 0; i < currentNumOfPassengers; ++i)
+	for (int i = 0; i < passengerVec.size(); ++i)
 	{
-		if (typeid(*allPassengers[i]) == typeid(WorkerPassenger))
+		if (typeid(*passengerVec[i]) == typeid(WorkerPassenger))
 			out << WORKER_PASSENGER << endl;
 		else
 			out << PASSENGER << endl;
 		
-		allPassengers[i]->saveToFile(out);
+		passengerVec[i]->saveToFile(out);
 	}
 }
 
@@ -864,32 +614,31 @@ void AirLine::saveWorkersFromFile(ofstream& out)
 	}
 
 	// Write the number of workers to the file
-	out << currentNumOfWorkers << endl;
+	out << workerVec.size() << endl;
 
 	// Write worker data to the file
-	for (int i = 0; i < currentNumOfWorkers; ++i)
+	for (int i = 0; i < workerVec.size(); ++i)
 	{
-
+		workerVec[i]->saveToFile(out);
 		// Check the type of the worker and call the corresponding saveToFile function
-		if (typeid(*allWorkers[i]) == typeid(FlightAttendet))
-		{
-			out << FLIGHT_ATTENDENT << endl; // Write worker type
-			FlightAttendet* flightAttendant = (FlightAttendet*)(allWorkers[i]);
-			flightAttendant->saveToFile(out);
-		}
-		else if (typeid(*allWorkers[i]) == typeid(Pilot))
-		{
-			out << PILOT << endl; // Write worker type
-			Pilot* pilot = (Pilot*)(allWorkers[i]);
-			pilot->saveToFile(out);
-		}
-		else if (typeid(*allWorkers[i]) == typeid(Technician))
-		{
-			out << TECHNICHIAN << endl; // Write worker type
-			Technician* technician = (Technician*)(allWorkers[i]);
-			technician->saveToFile(out);
-		}
-		
+		//if (typeid(*workerVec[i]) == typeid(FlightAttendet))
+		//{
+		//	out << FLIGHT_ATTENDENT << endl; // Write worker type
+		//	FlightAttendet* flightAttendant = (FlightAttendet*)(allWorkers[i]);
+		//	flightAttendant->saveToFile(out);
+		//}
+		//else if (typeid(*allWorkers[i]) == typeid(Pilot))
+		//{
+		//	out << PILOT << endl; // Write worker type
+		//	Pilot* pilot = (Pilot*)(allWorkers[i]);
+		//	pilot->saveToFile(out);
+		//}
+		//else if (typeid(*allWorkers[i]) == typeid(Technician))
+		//{
+		//	out << TECHNICHIAN << endl; // Write worker type
+		//	Technician* technician = (Technician*)(allWorkers[i]);
+		//	technician->saveToFile(out);
+		//}
 	}
 }
 
@@ -902,12 +651,12 @@ void AirLine::saveFlightsFromFile(ofstream& out)
 	}
 
 	// Write the number of flights to the file
-	out << currentNumOfFlights << endl;
+	out << flightVec.size() << endl;
 
 	// Write flight data to the file
-	for (int i = 0; i < currentNumOfFlights; ++i)
+	for (int i = 0; i < flightVec.size(); ++i)
 	{
-		allFlights[i]->saveToFile(out);
+		flightVec[i]->saveToFile(out);
 	}
 }
 
@@ -920,23 +669,24 @@ void AirLine::savePlanesFromFile(ofstream& out)
 	}
 
 	// Write the number of planes to the file
-	out << currentNumOfPlanes << endl;
+	out << planeList.getSize() << endl;
 
 	// Write plane data to the file
-	for (int i = 0; i < currentNumOfPlanes; ++i)
-	{
-		allPlanes[i]->saveToFile(out);
-	}
+	
+	LinkedList<Plane*>::Node* currentNode = planeList.getHead();
+	while (currentNode != nullptr)
+		currentNode->value->saveToFile(out);
+	
 }
 
 ostream& operator<<(ostream& out, const AirLine& al)
 {
 	out << "Airline Name: " << al.name << endl;
 	out << "Country: " << al.country << endl;
-	out << "Number of Workers: " << al.currentNumOfWorkers << endl;
-	out << "Number of Flights: " << al.currentNumOfFlights << endl;
-	out << "Number of Planes: " << al.currentNumOfPlanes << endl;
-	out << "Number of Passengers: " << al.currentNumOfPassengers << endl;
+	out << "Number of Workers: " << al.workerVec.size() << endl;
+	out << "Number of Flights: " << al.flightVec.size() << endl;
+	out << "Number of Planes: " << al.planeList.getSize() << endl;
+	out << "Number of Passengers: " << al.passengerVec.size() << endl;
 	out << "Income: " << al.income << endl;
 
 	return out;

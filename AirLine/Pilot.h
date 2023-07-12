@@ -28,6 +28,7 @@ public:
 	void saveToFile(ofstream& out)const;
 	
 	
+	
 	Time getflightHours()const;
 	Pilot& operator +=(const Time& hours); //add to flight hours
 
@@ -36,6 +37,7 @@ public:
 	virtual void annualRefresh(ostream& out) override;
 	virtual void takeoff(ostream& out) const override;
 	virtual void landing(ostream& out) const override;
+	Worker* clone()const { return new Pilot(*this); }
 
 };
 

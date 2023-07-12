@@ -18,7 +18,7 @@ Pilot::Pilot(Pilot&& p) noexcept
 {
 }
 
-Pilot::Pilot(ifstream& in): Person(in), Worker(in), flightHours(in)
+Pilot::Pilot(ifstream& in) :Person(in), Worker(in), flightHours(in)
 {
 }
 
@@ -27,7 +27,6 @@ void Pilot::saveToFile(ofstream& out) const
     Worker::saveToFile(out);
     flightHours.saveToFile(out);
 }
-
 
 Time Pilot::getflightHours() const
 {

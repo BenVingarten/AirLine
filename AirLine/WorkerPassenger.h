@@ -29,6 +29,8 @@ public:
     void annualRefresh(ostream& out) ;
     void takeoff(ostream& out)const ;
     void landing(ostream& out)const ;
+    Worker* Worker::clone() const{ return new WorkerPassenger(*this); }
+    Passenger* cloneP() const{ return new WorkerPassenger(*this); }
 };
 
 

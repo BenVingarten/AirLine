@@ -76,6 +76,8 @@ void FlightAttendet::saveToFile(ofstream& out) const
         out << allLanguages[i] << endl;
 }
 
+
+
 const char** FlightAttendet::getLanguages() const
 {
     return const_cast<const char**>(allLanguages); 

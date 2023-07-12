@@ -598,9 +598,9 @@ bool Flight::setMainMealToFlight(const char* pMeal)
 	return true;
 }
 
-void Flight::assignCrew(Worker** workers, int workersSize)
+void Flight::assignCrew(vector<Worker*> workers)
 {
-	for (int i = 0; i < workersSize; ++i)
+	for (int i = 0; i < workers.size(); ++i)
 		addCrewMember(workers[i]);
 }
 

@@ -34,7 +34,7 @@ protected:
 
 	//read and write from file
 	Worker(ifstream& in);
-	void saveToFile(ofstream& out)const;
+	
 
 public:
 	virtual ~Worker() {};
@@ -58,7 +58,9 @@ public:
 	virtual void annualRefresh(ostream& out) = 0;
 	virtual void takeoff(ostream& out)const = 0;
 	virtual void landing(ostream& out)const = 0;
+	virtual Worker* clone()const = 0;
 
+	void saveToFile(ofstream& out)const;
 	
 	
 	/*	set Raise: We check if a particular worker deserves a raise, every 3 years a worker should get one.

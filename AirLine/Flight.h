@@ -111,7 +111,7 @@ public:
 	bool setDuration(const Time& t);
 	Ticket* setTicketToPassenger(Passenger* p, ostream& out);
 	bool setMeal(const char* pMeal);
-	void assignCrew(Worker** workers, int workersSize);
+	void assignCrew(vector<Worker*> workers);
 	bool checkIfFlightReady(ostream& out) const;
 	bool addDishToMenu(const char* dish);
 	bool isMealInMenu(const char* pMeal) const;

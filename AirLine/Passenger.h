@@ -42,6 +42,8 @@ public:
 	bool setTicket(Ticket* ticket);
 	void removeTicket();
 	void setAirPortCode(const char* newCode);
+
+	virtual Passenger* cloneP()const { return new Passenger(*this); }
 	
 
 	bool operator ==(const Passenger& p)const;

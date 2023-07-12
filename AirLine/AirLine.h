@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 #include <fstream>
+#include <vector>
 
 #include "Worker.h"
 #include "Passenger.h"
@@ -13,6 +14,7 @@ using namespace std;
 #include "WorkerPassenger.h"
 #include "Technician.h"
 #include "FlightAttendet.h"
+#include "LinkedList.h"
 
 
 class Passenger;
@@ -41,25 +43,12 @@ private:
     char* name;
     char* country;
     
-    int currentNumOfWorkers;
-    int currentNumOfFlights;
-    int currentNumOfPlanes;
-    int currentNumOfPassengers;
+ 
+    vector<Worker*> workerVec;
+    LinkedList<Plane*> planeList;
+    vector<Flight*> flightVec;
+    vector<Passenger*> passengerVec;
 
-    Worker** allWorkers;
-    Plane** allPlanes;
-    Flight** allFlights;
-    Passenger** allPassengers;
-
-    int sizeOfWorkers; //size of Workers array
-    int sizeOfFlights; //size of Flights array
-    int sizeOfPlanes; //size of Planes  array
-    int sizeOfPassengers; //size of Passengers array
-
-    const int MAX_WORKERS = 50;
-    const int MAX_PLANES = 10;
-    const int MAX_FLIGHTS = 15;
-    const int MAX_PASSENGERS = 50;
 
     float income;
 
@@ -77,10 +66,10 @@ public:
 
     friend ostream& operator<<(ostream& out, const AirLine& al); // Print operator
 
-    bool addWorker(Worker& w); // Add worker
-    bool addFlight(Flight& f); // Add flight
-    bool addPlane(Plane& p); // Add plane
-    bool addPassenger(Passenger& p); // Add passenger
+    bool addWorker(const Worker& w); // Add worker
+    bool addFlight(const Flight& f); // Add flight
+    bool addPlane(const Plane& p); // Add plane
+    bool addPassenger(const Passenger& p); // Add passenger
     
 
     void printFlights(ostream& out)const; // Print all flights
@@ -88,20 +77,20 @@ public:
     void printPlanes(ostream& out)const; // Print all planes
     void printPassengers(ostream& out)const; // Print all passengers
 
-    void removeWorker(Worker& w); // Remove worker
-    void removeFlight(Flight& f); // Remove flight
-    void removePlane(Plane& p); // Remove plane
-    void removePassenger(Passenger& p); // Remove passenger
+    bool removeWorker(const Worker& w); // Remove worker
+    bool removeFlight(const Flight& f); // Remove flight
+    bool removePlane(const Plane& p); // Remove plane
+    bool removePassenger(const Passenger& p); // Remove passenger
 
     Plane* choosePlane(ostream& out, istream& in)const;
     Worker* chooseWorker(ostream& out, istream& in)const;
     Flight* chooseFlight(ostream& out, istream& in)const;
     Passenger* choosePassenger(ostream& out, istream& in)const;
 
-    int isWorkerExist(const Worker& w)const;
-    int isFlightExist(const Flight& f)const;
-    int isPlaneExist(const Plane& p)const;
-    int isPassengerExist(const Passenger& p)const;
+    bool isWorkerExist(const Worker& w)const;
+    bool isFlightExist(const Flight& f)const;
+    bool isPlaneExist(const Plane& p)const;
+    bool isPassengerExist(const Passenger& p)const;
     
     void executeFlight(Flight& f, ostream& out); // Execute flight
     bool buyTicket(Passenger& p, Flight& f, ostream& out); // Buy ticket
@@ -119,10 +108,10 @@ public:
     Plane* getPlaneAtIndex(int index) const;
 
     // Function to return the array of Objects
-    Worker** getAllWorkers() const;
-    Flight** getAllFlights() const;
-    Passenger** getAllPassengers() const;
-    Plane** getAllPlanes() const;
+    vector<Worker*> getAllWorkers() const;
+    vector<Flight*> getAllFlights() const;
+    vector<Passenger*> getAllPassengers() const;
+    LinkedList<Plane*> getAllPlanes() const;
 
     //read and save to file
     void readPassengersFromFile(ifstream& in);

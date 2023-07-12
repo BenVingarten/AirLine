@@ -24,10 +24,12 @@
     <ClInclude Include="FirstClassTicket.h" />
     <ClInclude Include="Flight.h" />
     <ClInclude Include="FlightAttendet.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Passenger.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Pilot.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="Technician.h" />
     <ClInclude Include="Ticket.h" />
     <ClInclude Include="Time.h" />

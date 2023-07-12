@@ -1,10 +1,13 @@
 #pragma once
 #include <iostream>
+#include "Save.h"
+
 using namespace std;
 #define MAX_NAME_LEN 100
 
 
-class Person
+
+class Person: public Save
 {
 protected:
 	char* name;
@@ -24,7 +27,8 @@ public:
 	
 	//read and write from file
 	Person(ifstream& in); 
-	void saveToFile(ofstream& out)const;
+	virtual void saveToFile(ofstream& out)const;
+	
 
 	Person& operator =(const Person& p);							// operator =
 	const Person& operator =(Person&& p) noexcept;					// operator move =

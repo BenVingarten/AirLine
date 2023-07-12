@@ -31,6 +31,7 @@ public:
 	//read and write from file
 	Technician(ifstream& in);
 	void saveToFile(ofstream& out)const;
+	
 
 	eTechnicianType getType() const;
 	const char* getStringType()const;
@@ -42,6 +43,7 @@ public:
 	virtual void annualRefresh(ostream& out) ;
 	virtual void takeoff(ostream& out)const ;
 	virtual void landing(ostream& out)const ;
+	Worker* clone()const { return new Technician(*this); }
 
 
 private:

@@ -28,6 +28,7 @@ Technician::Technician(ifstream& in): Person(in), Worker(in)
     in >> typeVal;
     type = static_cast<eTechnicianType>(typeVal);
     in.ignore();
+   
 }
 
 void Technician::saveToFile(ofstream& out) const

@@ -28,6 +28,7 @@ public:
 	//read and write from file
 	FlightAttendet(ifstream& in);
 	void saveToFile(ofstream& out)const;
+	
 
 	const char** getLanguages()const;
 	int getCurrentNumOfLanguages()const;
@@ -38,6 +39,7 @@ public:
 	virtual void annualRefresh(ostream& out) override;
 	virtual void takeoff(ostream& out)const override;
 	virtual void landing(ostream& out)const override;
+	Worker* clone()const { return new FlightAttendet(*this); }
 	
 };
 
