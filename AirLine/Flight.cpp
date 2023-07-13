@@ -95,7 +95,9 @@ Flight::Flight(ifstream& in)
 	in.ignore();
 	for (int i = 0; i < numOfDishes; ++i)
 	{
-		std::getline(in, firstClassMenuVec[i]);
+		string s; 
+		std::getline(in, s);
+		firstClassMenuVec.push_back(s);
 		in.ignore();
 		
 	}

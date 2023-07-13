@@ -125,6 +125,8 @@ int main() {
     Flight flight2 = Flight(Travel("FRN", "JPN"), Date(14, 3, 23), Time(20, 30), Time(6, 20), &plane2, 100, 3, "Sushi");
     Flight flight3 = Flight(Travel("TLV", "LAX"), Date(14, 8, 23), Time(15, 45), Time(6, 20), &plane3, 80, 4, "Falafel");
 
+    flight2.addDishToMenu("Eggroll");
+
 
     airline.addFlight(flight1);
     airline.addFlight(flight2);

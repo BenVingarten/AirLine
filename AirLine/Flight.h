@@ -15,7 +15,7 @@ using namespace std;
 
 
 #define MAX_CREW_MEMBERS 10 //(limit array) 2 pilot 4 flightAttendets and 4 technicians
-#define MAX_DISHES 10 //limit array of dishes
+//#define MAX_DISHES 10 //limit array of dishes
 
 
 class Plane;

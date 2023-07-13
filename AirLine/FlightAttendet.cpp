@@ -35,7 +35,11 @@ FlightAttendet::FlightAttendet(ifstream& in) : Person(in), Worker(in)
     in.ignore();
 
     for (int i = 0; i < numOfLanugages; i++)
-        std::getline(in, languagesVec[i]);
+    {
+        string s;
+        std::getline(in, s);
+        languagesVec.push_back(s);
+    }
 }
 
 void FlightAttendet::saveToFile(ofstream& out) const
