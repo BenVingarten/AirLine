@@ -1,11 +1,12 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#include "Save.h"
 
 
 #include "Technician.h"
 
-class Plane
+class Plane : public Save
 {
 	const static int refuelAfter = 2; //every 2 flights
 	static int planeNumberGen; //initialized outside the class to 3333

@@ -3,7 +3,6 @@
 using namespace std;
 #include <fstream>
 #include <vector>
-
 #include "Worker.h"
 #include "Passenger.h"
 #include "Plane.h"
@@ -17,6 +16,7 @@ using namespace std;
 #include "LinkedList.h"
 
 
+
 class Passenger;
 class Worker;
 class Plane;
@@ -24,11 +24,12 @@ class Plane;
 
 
 
+
 class AirLine
 {
 private:
-    static const char* DEFAULT_COUNTRY;
-    static const char* DEFAULT_NAME; 
+    static const string DEFAULT_COUNTRY;
+    static const string DEFAULT_NAME;
 
 
     static AirLine* theAirLine; //Singleton
@@ -40,8 +41,8 @@ private:
     static const int WORKER_PASSENGER = 4;
 
 
-    char* name;
-    char* country;
+    string name;
+    string country;
     
  
     vector<Worker*> workerVec;
@@ -54,12 +55,12 @@ private:
 
     bool checkReady(Flight& f, ostream& out); // Check flight readiness (for internal use)
 
-    AirLine(const char* pName, const char* pCountry); // Constructor in private because Singleton 
+    AirLine(const string& pName, const string& pCountry); // Constructor in private because Singleton 
     AirLine(const AirLine* a) = delete;
     void operator = (const AirLine& a) = delete;
 
 public:
-    static AirLine& getInstance(const char* name = DEFAULT_NAME, const char* countryCode = DEFAULT_COUNTRY); // we initiallize airLine 
+    static AirLine& getInstance(const string& name = DEFAULT_NAME, const string& countryCode = DEFAULT_COUNTRY); // we initiallize airLine 
     static void releaseInstance();
     
     ~AirLine(); // Destructor

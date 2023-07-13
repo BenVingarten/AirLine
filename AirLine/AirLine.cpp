@@ -2,11 +2,12 @@
 #include "AirLine.h"
 #include "Ticket.h"
 #include <algorithm>
+#include <string>
 
 
 AirLine* AirLine::theAirLine = nullptr;
-const char* AirLine::DEFAULT_COUNTRY = "Israel";
-const char* AirLine::DEFAULT_NAME = "EL-AL";
+const string AirLine::DEFAULT_COUNTRY = "Israel";
+const string AirLine::DEFAULT_NAME = "EL-AL";
 
 
 //Privates
@@ -27,24 +28,17 @@ bool AirLine::checkReady(Flight& f, ostream& out)
 
 }
 
-AirLine::AirLine(const char* pName, const char* pCountry) : 
+AirLine::AirLine(const string& pName, const string& pCountry) :
 	
-	 planeList(), income(0)
-	
+	 planeList(), income(0), name(pName), country(pCountry)
 {
-	name = new char[strlen(pName) + 1];
-	strcpy(name, pName);
-
-	country = new char[strlen(pCountry) + 1];
-	strcpy(country, pCountry);
-
 }
 
 
 
 //Publics
 
-AirLine& AirLine::getInstance(const char* name, const char* country)
+AirLine& AirLine::getInstance(const string& name, const string& country)
 {
 	if (theAirLine == nullptr)
 		theAirLine = new AirLine(name, country);
@@ -71,11 +65,6 @@ AirLine::~AirLine()
 	
 	for (int i = 0; i < passengerVec.size(); i++)
 		delete passengerVec[i];
-
-	delete[] name; 
-	delete[] country;
-
-
 }
 
 
@@ -366,7 +355,7 @@ void AirLine::executeFlight(Flight& f, ostream& out)
 	f.resetPrints(); 
 
 	out << "Checking last  requirments...\n" << endl;
-	if (checkReady(f, out) && isFlightExist(f) > -1)
+	if (checkReady(f, out) && isFlightExist(f))
 		out << "Flight Is Ready!" << endl;
 	else
 	{

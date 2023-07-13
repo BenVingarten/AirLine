@@ -5,34 +5,32 @@ using namespace std;
 #include "Person.h"
 #include "Worker.h"
 #include "Passenger.h"
+#include <vector>
 
-#define MAX_LANGUAGES  10	//define because its limiter for array
 
 class FlightAttendet: public Worker
 {
 private:
-	static const char* DEF_LANG;
+	const static string DEF_LANG;
 
-	char* allLanguages[MAX_LANGUAGES]; //char ** all_languages 
-	int currentNumOfLanguages;
-
+	vector<string> languagesVec; 
 	void print(ostream& out)const;
 
 public:
 
-	FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang);
+	FlightAttendet(const string& n, int age, char gender, float salary, int seniority, const string& baseLang = "");
 	FlightAttendet(const FlightAttendet& other);
 	FlightAttendet(FlightAttendet&& w) noexcept;
-	~FlightAttendet();
+	~FlightAttendet() {};
 	
 	//read and write from file
 	FlightAttendet(ifstream& in);
 	void saveToFile(ofstream& out)const;
 	
 
-	const char** getLanguages()const;
+	const vector<string> getLanguages()const;
 	int getCurrentNumOfLanguages()const;
-	bool addLanugage(const char* language);
+	bool addLanugage(const string& language);
 
 	virtual void setRaise() override;	//+100 NIS per language she speaks
 	virtual void prepareForFlight(ostream& out) override ;

@@ -19,7 +19,7 @@ void WorkerPassenger::print(ostream& out) const
 
 }
 
-WorkerPassenger::WorkerPassenger(const char* pName, int theAge, char gen,
+WorkerPassenger::WorkerPassenger(const string& pName, int theAge, char gen,
                     float salary, int seniority, int luggageWeight, 
                     const char* code, float disc)
     : Person(pName, theAge, gen),

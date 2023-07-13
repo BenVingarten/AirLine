@@ -20,7 +20,7 @@ Date::Date(ifstream& in)
 	in >> day >> tmp >> month >> tmp >> year;
 }
 
-void Date::saveDate(ofstream& out) const
+void Date::saveToFile(ofstream& out) const
 {
 	out << day << DEL << month << DEL << year << endl;
 }

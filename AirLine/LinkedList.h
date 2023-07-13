@@ -95,6 +95,8 @@ public:
         {
             return current->value;
         }
+
+        return nullptr;
     }
 
     Node* getHead() const

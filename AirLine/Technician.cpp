@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-Technician::Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type)
+Technician::Technician(const string& n, int age, char gender, float salary, int seniority, eTechnicianType type)
     :Person(n, age, gender), Worker(n, age, gender, salary, seniority), type(type), planesPreparedThisYear(0)
 {
 }
@@ -41,7 +41,7 @@ Technician::eTechnicianType Technician::getType() const {
     return type;
 }
 
-const char* Technician::getStringType()const
+string Technician::getStringType()const
 {
     switch (type) {
     case eTechnicianType::STRUCTURE:

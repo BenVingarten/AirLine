@@ -6,29 +6,29 @@ int Worker::workerCardNumberGenerator = 2222;
 
 
 
-Worker::Worker(const char* pName, int theAge, char gen, float salary, int seniority)
+Worker::Worker(const string& pName, int theAge, char gen, float salary, int seniority)
     : Person(pName, theAge, gen), salary(salary), seniority(seniority),
         isWorkerAvailable(true), currentFlight(nullptr)
 {
     cardNumber = workerCardNumberGenerator++;
 }
 
-Worker::Worker(const Worker& w) : 
-    Person(w), seniority(w.seniority), salary(w.salary), 
-    cardNumber(w.cardNumber), currentFlight(w.currentFlight), isWorkerAvailable(w.isWorkerAvailable)
-{
-}
-
-Worker::Worker(Worker&& w) noexcept
-    : Person(std::move(w)), cardNumber(w.cardNumber), salary(w.salary), seniority(w.seniority),
-    currentFlight(w.currentFlight), isWorkerAvailable(w.isWorkerAvailable)
-{
-    w.cardNumber = 0;
-    w.salary = 0.0f;
-    w.seniority = 0;
-    w.currentFlight = nullptr;
-    w.isWorkerAvailable = false;
-}
+////Worker::Worker(const Worker& w) : 
+//    Person(w), seniority(w.seniority), salary(w.salary), 
+//    cardNumber(w.cardNumber), currentFlight(w.currentFlight), isWorkerAvailable(w.isWorkerAvailable)
+//{
+//}
+//
+////Worker::Worker(Worker&& w) noexcept
+//    : Person(std::move(w)), cardNumber(w.cardNumber), salary(w.salary), seniority(w.seniority),
+//    currentFlight(w.currentFlight), isWorkerAvailable(w.isWorkerAvailable)
+//{
+//    w.cardNumber = 0;
+//    w.salary = 0.0f;
+//    w.seniority = 0;
+//    w.currentFlight = nullptr;
+//    w.isWorkerAvailable = false;
+//}
 
 
 Worker::Worker(ifstream& in) : Person(in), currentFlight(nullptr), isWorkerAvailable(true)

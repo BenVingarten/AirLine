@@ -1,10 +1,11 @@
 #pragma once
 #include <iostream>
+#include "Save.h"
 
 using namespace std;
 
 
-class Time
+class Time: public Save
 {
 private:
     static const int DEF_H = 0;

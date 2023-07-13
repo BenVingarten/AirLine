@@ -22,7 +22,7 @@ TripInfo::TripInfo(ifstream& in) : Travel(in)
 void TripInfo::saveToFile(ofstream& out)const
 {
     Travel::saveToFile(out);
-    date.saveDate(out);
+    date.saveToFile(out);
     flightDuration.saveToFile(out);
 }
 

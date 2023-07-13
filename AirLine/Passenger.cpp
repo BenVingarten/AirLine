@@ -6,7 +6,7 @@
 int Passenger::passportGen = 1111;
 
 
-Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, const char* code)
+Passenger::Passenger(const string& n, int age, char gender, int luggageWeight, const char* code)
     : Person(n, age, gender), ticket(nullptr)
 {
     setLuggageWeight(luggageWeight);
@@ -18,24 +18,24 @@ Passenger::Passenger(const char* n, int age, char gender, int luggageWeight, con
         strcpy(airportCode, Travel::DEFAULT_SOURCE_CODE);
 }
 
-Passenger::Passenger(const Passenger& p) :
-    Person(p), passport(p.passport), luggageWeight(p.luggageWeight), ticket(p.ticket)
-{
-    strcpy(airportCode, p.airportCode);
-}
-
-Passenger::Passenger(Passenger&& p) noexcept
-    : Person(std::move(p)), luggageWeight(p.luggageWeight), passport(p.passport)
-{
-    strcpy(airportCode,p.airportCode);
-    ticket = p.ticket;
-
-    strcpy(p.airportCode, "");
-    p.luggageWeight = 0;
-    p.passport = 0;
-    p.ticket = nullptr;
-
-}
+//Passenger::Passenger(const Passenger& p) :
+//    Person(p), passport(p.passport), luggageWeight(p.luggageWeight), ticket(p.ticket)
+//{
+//    strcpy(airportCode, p.airportCode);
+//}
+//
+//Passenger::Passenger(Passenger&& p) noexcept
+//    : Person(std::move(p)), luggageWeight(p.luggageWeight), passport(p.passport)
+//{
+//    strcpy(airportCode,p.airportCode);
+//    ticket = p.ticket;
+//
+//    strcpy(p.airportCode, "");
+//    p.luggageWeight = 0;
+//    p.passport = 0;
+//    p.ticket = nullptr;
+//
+//}
 
 Passenger::Passenger(ifstream& in): Person(in), ticket(nullptr)
 {

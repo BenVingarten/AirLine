@@ -23,7 +23,7 @@ public:
 		                        GENERAL
 								};
 
-	Technician(const char* n, int age, char gender, float salary, int seniority, eTechnicianType type = eTechnicianType::GENERAL);
+	Technician(const string&, int age, char gender, float salary, int seniority, eTechnicianType type = eTechnicianType::GENERAL);
 	Technician(const Technician& other);
 	Technician(Technician&& t) noexcept;
 	~Technician() {};
@@ -34,7 +34,7 @@ public:
 	
 
 	eTechnicianType getType() const;
-	const char* getStringType()const;
+	string getStringType()const;
 	int getNumOfPlanesPrepared()const;
 
 	

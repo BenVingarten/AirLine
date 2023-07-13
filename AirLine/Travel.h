@@ -1,10 +1,11 @@
 #pragma once
 #include <iostream>
+#include "Save.h"
 using namespace std;
 
 #define MAX_CHAR_CODE 4
 
-class Travel
+class Travel: public Save
 {
 private:
 	char source[MAX_CHAR_CODE];

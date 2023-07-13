@@ -4,7 +4,7 @@
 
 const float Pilot::RAISE_PRECENTAGE = 0.7f;
 
-Pilot::Pilot(const char* n, int age, char gender, float salary, int seniority, Time flightHours)
+Pilot::Pilot(const string& n, int age, char gender, float salary, int seniority, Time flightHours)
     : Person(n, age, gender), Worker(n, age, gender, salary, seniority), flightHours(flightHours)
 {
 }

@@ -4,6 +4,7 @@
 #include "Flight.h"
 #include "Ticket.h"
 #include "FirstClassTicket.h"
+#include <string>
 
 #include "FlightAttendet.h"
 #include "Pilot.h"
@@ -22,7 +23,7 @@ int Flight::maxTechnicianPreparingPlane = 2;
 
 const float Flight::PRECENTAGE_OF_FIRST_CLASS_TICKETS = 0.3f;
 const float Flight::FIRST_CLASS_COST_PRECENT = 1.5f;
-const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
+const string Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
 
 
 //Flight::Flight(char* destination, char* source,
@@ -50,33 +51,28 @@ const char* Flight::DEFAULT_FLIGHT_MEAL = "Chicken";
 
 Flight::Flight(const Travel& trav, const Date& d,
 	const Time& durTime, const Time& borTime, Plane* plane, int ticketCost,
-	int gate, const char* meal)
+	int gate, const string& meal)
 	: airLine(AirLine::getInstance()), flightNumber(flightNumberGen++), info(d, trav, durTime), boardingTime(borTime),
 		currentPurchasedTickets(0), currentNumOfCrewMembers(0), pPlane(plane), 
-		ticketArr(nullptr), numberOfDishesInMenu(0)
+		ticketArr(nullptr)
 {
 	if (plane != nullptr)
 		createTickets(ticketCost, gate);
 
-
-	if (meal != nullptr)
-		setMeal(meal);
-	else
-		setMeal(DEFAULT_FLIGHT_MEAL);
+	setMeal(meal);
+	
+		
 }
 
 
 
 Flight::Flight(const Flight& f) : airLine(AirLine::getInstance()), flightNumber(f.flightNumber), info(f.info), boardingTime(f.boardingTime),
-currentPurchasedTickets(0),crewMembers(), currentNumOfCrewMembers(0), pPlane(nullptr),
-ticketArr(nullptr), numberOfDishesInMenu(f.numberOfDishesInMenu)
+currentPurchasedTickets(0), crewMembers(), currentNumOfCrewMembers(0), firstClassMenuVec(f.firstClassMenuVec),
+pPlane(nullptr), ticketArr(nullptr)
 {
 	setMeal(f.meal);
-
-	if (f.numberOfDishesInMenu > 0)
-		for (int i = 0; i < f.numberOfDishesInMenu; ++i)
-			addDishToMenu(f.firstClassMenu[i]);
 }
+	
 
 Flight::Flight(ifstream& in)
 	: airLine(AirLine::getInstance()), info(in), boardingTime(in)
@@ -92,19 +88,14 @@ Flight::Flight(ifstream& in)
 	in >> flightNumber;
 	in.ignore();
 	
-	char tmp[MAX_NAME_LEN];
-	
-	in.getline(tmp, MAX_NAME_LEN);
-	meal = new char[strlen(tmp) + 1];
-	strcpy(meal, tmp);
+	std::getline(in,meal);
 
-	in >> numberOfDishesInMenu;
+	int numOfDishes;
+	in >> numOfDishes;
 	in.ignore();
-	for (int i = 0; i < numberOfDishesInMenu; ++i)
+	for (int i = 0; i < numOfDishes; ++i)
 	{
-		in.getline(tmp, MAX_NAME_LEN);
-		firstClassMenu[i] = new char[strlen(tmp) + 1];
-		strcpy(firstClassMenu[i], tmp);
+		std::getline(in, firstClassMenuVec[i]);
 		in.ignore();
 		
 	}
@@ -118,10 +109,10 @@ void Flight::saveToFile(ofstream& out) const
 	out << flightNumber << endl;
 
 	out << meal << endl;
-	out << numberOfDishesInMenu << endl;
-	for (int i = 0; i < numberOfDishesInMenu; ++i)
+	out << firstClassMenuVec.size() << endl;
+	for (int i = 0; i < firstClassMenuVec.size(); ++i)
 	{
-		out << firstClassMenu[i] << endl;
+		out << firstClassMenuVec[i] << endl;
 	}
 
 }
@@ -147,16 +138,6 @@ Flight::~Flight()
 		crewMembers[i]->changeAvailability();
 		crewMembers[i]->removeFlight();
 	}
-
-	//menu
-	for (int i = 0; i < numberOfDishesInMenu; i++)
-	{
-		delete[] firstClassMenu[i];
-	}
-
-	//meal
-	delete[] meal;
-	
 
 	//we save the workers in the airline database so we don't delete them when flight is deleted
 	// also the array is allocated on the stack, so we dont need to delete it as well
@@ -228,10 +209,13 @@ void Flight::showMainMeal(ostream& out) const
 void Flight::showFirstClassMenu(ostream& out) const
 {
 	out << "First Class Menu: " << endl;
-	for (int i = 0; i < numberOfDishesInMenu; ++i)
-		out << (i + 1) << ") " << firstClassMenu[i] << endl;
-	if (numberOfDishesInMenu == 0)
+	int numOfDishes = firstClassMenuVec.size();
+	if (numOfDishes == 0)
 		out << "No extra dishes for first class on this flight." << endl;
+	
+	for (int i = 0; i < numOfDishes; ++i)
+		out << (i + 1) << ") " << firstClassMenuVec[i] << endl;
+	
 }
 
 //Operators, Set and Check
@@ -258,16 +242,16 @@ bool Flight::operator=(const Flight& f)
 	boardingTime = f.boardingTime;
 	
 	//Deep copy meal
-	setMeal(f.meal);
+	/*setMeal(f.meal);*/
 	
 
-	//Deep copy menu
-	numberOfDishesInMenu = f.numberOfDishesInMenu;
-	for (int i = 0; i < numberOfDishesInMenu; i++)
-	{
-		firstClassMenu[i] = new char[strlen(f.firstClassMenu[i]) + 1];
-		strcpy(firstClassMenu[i], f.firstClassMenu[i]);
-	}
+	////Deep copy menu
+	//numberOfDishesInMenu = f.numberOfDishesInMenu;
+	//for (int i = 0; i < numberOfDishesInMenu; i++)
+	//{
+	//	firstClassMenu[i] = new char[strlen(f.firstClassMenu[i]) + 1];
+	//	strcpy(firstClassMenu[i], f.firstClassMenu[i]);
+	//}
 
 	f.airLine.addFlight(*this); // cannot do myReference = other.Reference therefore we add the AirlineRef from Airline
 	//TODO: To check if working ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -281,8 +265,7 @@ ostream& operator<<(ostream& out, const Flight& f)
 	out << "Boarding Time: " << f.boardingTime << endl;
 	out << "Current Purchased Tickets: " << f.currentPurchasedTickets << endl;
 	out << "Current Number of Crew Members: " << f.currentNumOfCrewMembers << endl;
-	if(f.meal != nullptr)
-		out << "Standart meal: " << f.meal << endl;
+    out << "Standart meal: " << f.meal << endl;
 
 	f.showFirstClassMenu(out);
 	return out;
@@ -307,17 +290,12 @@ bool Flight::setDuration(const Time& t)
 	return true;
 }
 
-bool Flight::setMeal(const char* pMeal)
+void Flight::setMeal(const string& pMeal)
 {
-	if (pMeal == nullptr)
-		return false;
-
-	if (meal != nullptr)
-		delete meal;
-	
-	meal = new char[strlen(pMeal) + 1];
-	strcpy(meal, pMeal);
-	return true;
+	if (pMeal == "")
+		meal = DEFAULT_FLIGHT_MEAL;
+	else
+		meal = pMeal;
 }
 
 bool Flight::addCrewMember(Worker* w)
@@ -342,29 +320,26 @@ bool Flight::addCrewMember(Worker* w)
 	return false;
 }
 
-bool Flight::addDishToMenu(const char* dish)
+bool Flight::addDishToMenu(const string& dish)
 {
-	if(numberOfDishesInMenu >= MAX_DISHES)
-		return false;
+	
 
 	if (isMealInMenu(dish))
 		return false;
 
-	firstClassMenu[numberOfDishesInMenu] = new char[strlen(dish) + 1];
-	strcpy(firstClassMenu[numberOfDishesInMenu], dish);
-	numberOfDishesInMenu++;
+	firstClassMenuVec.push_back(dish);
 	return true;
 	
 	
 }
 
-bool Flight::isMealInMenu(const char* pMeal) const
+bool Flight::isMealInMenu(const string& pMeal) const
 {
-	if (firstClassMenu == nullptr)
+	if (firstClassMenuVec.empty())
 		return false;
 
-	for (int i = 0; i < numberOfDishesInMenu; i++)
-		if (strcmp(firstClassMenu[i], pMeal) == 0)
+	for (int i = 0; i < firstClassMenuVec.size(); i++)
+		if (firstClassMenuVec[i] == pMeal)
 			return true;
 
 	return false;
@@ -596,21 +571,15 @@ void Flight::crewPreparations(ostream& out)
 	}
 }
 
-bool Flight::setMainMealToFlight(const char* pMeal)
+bool Flight::setMainMealToFlight(const string& pMeal)
 {
-	if (pMeal == nullptr)
+	if (meal == pMeal)
+		return false;
+	else
 	{
-		setMeal(DEFAULT_FLIGHT_MEAL);
+		setMeal(pMeal);
 		return true;
 	}
-
-	if (strcmp(pMeal,meal) == 0 )
-		return false;
-
-	else
-		setMeal(pMeal);
-
-	return true;
 }
 
 void Flight::assignCrew(vector<Worker*> workers)

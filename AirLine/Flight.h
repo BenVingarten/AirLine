@@ -10,6 +10,7 @@ using namespace std;
 #include "Time.h"
 #include "TripInfo.h"
 #include "AirLine.h"
+#include "Save.h"
 
 
 
@@ -22,7 +23,8 @@ class Ticket;
 class Worker;
 class AirLine;
 
-class Flight
+
+class Flight: public Save
 {
 private:
 	static const int DEFAULT_COST = 60;
@@ -44,7 +46,7 @@ private:
 
 	static const float PRECENTAGE_OF_FIRST_CLASS_TICKETS;
 	static const float FIRST_CLASS_COST_PRECENT;
-	static const char* DEFAULT_FLIGHT_MEAL;
+	static const string DEFAULT_FLIGHT_MEAL;
 
 	static const int MIN_PILOTS = 1;
 	static const int MIN_TECHNICHIAN = 2;
@@ -65,11 +67,9 @@ private:
 	Worker* crewMembers[MAX_CREW_MEMBERS];
 	int currentNumOfCrewMembers;
 	
-	char* firstClassMenu[MAX_DISHES];
-	char* meal;
-	int numberOfDishesInMenu;
+	vector<string> firstClassMenuVec;
+	string meal;
 	
-
 	bool addCrewMember(Worker* w);
 	void createTickets(int ticketCost = DEFAULT_COST, int gate = DEFAULT_GATE);
 
@@ -82,7 +82,7 @@ public:
 
 	Flight(const Travel & trav, const Date& d, 
 			const Time& durTime, const Time& borTime, Plane* plane = nullptr,
-			int ticketCost = 20, int gate = 1, const char* meal = nullptr);
+		int ticketCost = 20, int gate = 1, const string& meal = "");
 
 	Flight(const Flight& f);
 
@@ -112,13 +112,13 @@ public:
 	bool setPlane(Plane* pl);
 	bool setDuration(const Time& t);
 	Ticket* setTicketToPassenger(Passenger* p, ostream& out);
-	bool setMeal(const char* pMeal);
+	void setMeal(const string& pMeal);
 	void assignCrew(vector<Worker*> workers);
 	bool checkIfFlightReady(ostream& out) const;
-	bool addDishToMenu(const char* dish);
-	bool isMealInMenu(const char* pMeal) const;
+	bool addDishToMenu(const string& dish);
+	bool isMealInMenu(const string& pMeal) const;
 	bool areThereEnoughPurchasedTickets()const;
-	bool setMainMealToFlight(const char* pMeal);
+	bool setMainMealToFlight(const string& pMeal);
 	int numOfavaiableTickets()const;
 	bool checkCrewTypes()const;
 	bool checkAddCrewMember(Worker* w);

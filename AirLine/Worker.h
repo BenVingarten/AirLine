@@ -28,9 +28,9 @@ protected:
 * we can't create worker in the main
 */
 
-	Worker(const char* pName, int theAge, char gen, float  salary, int seniority);
-	Worker(const Worker& w);
-	Worker(Worker&& w) noexcept;
+	Worker(const string& pName, int theAge, char gen, float  salary, int seniority);
+	//Worker(const Worker& w);
+	//Worker(Worker&& w) noexcept;
 
 	//read and write from file
 	Worker(ifstream& in);

@@ -20,7 +20,7 @@ protected:
 
 public:
 
-	Person(const string pName, int theAge, char gen);	//c'tor
+	Person(const string& pName, int theAge, char gen);	//c'tor
 	Person(const Person& other) = default;	// copy c'tor
 	//Person(Person&& other) noexcept;	//  move copy c'tor
 	virtual ~Person();	// d'tor
@@ -40,6 +40,6 @@ public:
 	int getAge()const;
 	char getGender()const;
 
-	void setName(const string name);
+	void setName(const string& name);
 };
 

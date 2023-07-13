@@ -6,7 +6,7 @@
 
 
 
-Person::Person(const string pName, int theAge, char gen)
+Person::Person(const string& pName, int theAge, char gen)
 {
 	//setName(pName);
 	name = pName;
@@ -111,7 +111,7 @@ char Person::getGender() const
 	return gender;
 }
 
-void Person::setName(const string pName)
+void Person::setName(const string& pName)
 {
 	/*if (name != nullptr)
 		delete[] name;

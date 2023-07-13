@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 using namespace std;
+#include "Save.h"
 
-class Date
+class Date: public Save
 {
 public:
 	static const int MIN_DAY = 1;
@@ -19,7 +20,7 @@ public:
 	
 	//read from file and save to fule
 	Date(ifstream& in);
-	void saveDate(ofstream& out) const;
+	void saveToFile(ofstream& out) const;
 	
 	friend ostream& operator << (ostream& out, const Date& date);
 

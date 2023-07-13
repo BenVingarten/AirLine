@@ -2,99 +2,67 @@
 
 #include "FlightAttendet.h"
 #include <fstream>
+#include <string>
 
-const char* FlightAttendet::DEF_LANG = "Hebrew";
+const string FlightAttendet::DEF_LANG = "Hebrew";
 
-FlightAttendet::FlightAttendet(const char* n, int age, char gender, float salary, int seniority, const char* baseLang)
-    : Person(n, age, gender), Worker(n, age, gender, salary, seniority), currentNumOfLanguages(0)
+FlightAttendet::FlightAttendet(const string& n, int age, char gender, float salary, int seniority, const string& baseLang)
+    : Person(n, age, gender), Worker(n, age, gender, salary, seniority)
 {
-    for (int i = 0; i < MAX_LANGUAGES; ++i)
-        allLanguages[i] = nullptr;
-
-    if (baseLang != nullptr)
-        addLanugage(baseLang);
-    else
+    if (baseLang == "")
         addLanugage(DEF_LANG);
+    else
+        addLanugage(baseLang);
 }
 
 FlightAttendet::FlightAttendet(const FlightAttendet& other) :
-    Person(other), Worker(other), currentNumOfLanguages(0)
+    Person(other), Worker(other), languagesVec(other.languagesVec)
 {
-    for (int i = 0; i < MAX_LANGUAGES; ++i)
-        allLanguages[i] = nullptr;
-    
-    int i = 0;
-    while (i < other.currentNumOfLanguages)
-        addLanugage(other.allLanguages[i++]);
-
 }
 
 FlightAttendet::FlightAttendet(FlightAttendet&& w) noexcept
-    : Person(std::move(w)), Worker(std::move(w)), currentNumOfLanguages(w.currentNumOfLanguages)
+    : Person(std::move(w)), Worker(std::move(w))
 {
-    for (int i = 0; i < currentNumOfLanguages; ++i)
-    {
-        allLanguages[i] = w.allLanguages[i];
-        w.allLanguages[i] = nullptr;
-    }
-
-    w.currentNumOfLanguages = 0;
+    languagesVec = std::move(w.languagesVec);
 }
 
-FlightAttendet::~FlightAttendet()
-{
-    for (int i = 0; i < currentNumOfLanguages; ++i)
-        delete[] allLanguages[i];
-}
 
-FlightAttendet::FlightAttendet(ifstream& in): Person(in), Worker(in)
+
+FlightAttendet::FlightAttendet(ifstream& in) : Person(in), Worker(in)
 {
-    in >> currentNumOfLanguages;
+    int numOfLanugages;
+    in >> numOfLanugages;
     in.ignore();
-    char tmpLang[MAX_NAME_LEN];
-    for (int i = 0; i < currentNumOfLanguages; i++)
-    {
-        in.getline(tmpLang, MAX_NAME_LEN);
 
-
-        allLanguages[i] = new char[strlen(tmpLang) + 1];
-        strcpy(allLanguages[i], tmpLang);
-    }
-
-    if (currentNumOfLanguages == 0)
-        addLanugage(DEF_LANG);
-
+    for (int i = 0; i < numOfLanugages; i++)
+        std::getline(in, languagesVec[i]);
 }
 
 void FlightAttendet::saveToFile(ofstream& out) const
 {
     Worker::saveToFile(out);
-    out << currentNumOfLanguages << endl;
-    for (int i = 0; i < currentNumOfLanguages; i++)
-        out << allLanguages[i] << endl;
+    out << languagesVec.size() << endl;
+    for (int i = 0; i < languagesVec.size(); i++)
+        out << languagesVec[i] << endl;
 }
 
 
 
-const char** FlightAttendet::getLanguages() const
+const vector<string> FlightAttendet::getLanguages() const
 {
-    return const_cast<const char**>(allLanguages); 
+    return languagesVec;
 }
 
 int FlightAttendet::getCurrentNumOfLanguages() const
 {
-    return currentNumOfLanguages;
+    return languagesVec.size();
 }
 
-bool FlightAttendet::addLanugage(const char* language)
+bool FlightAttendet::addLanugage(const string& language)
 {
-    if (currentNumOfLanguages >= MAX_LANGUAGES || language == nullptr)
+    if (language == "")
         return false;
-
-    
-    allLanguages[currentNumOfLanguages] = new char[strlen(language) + 1];
-    strcpy(allLanguages[currentNumOfLanguages], language);
-    currentNumOfLanguages++;
+    languagesVec.push_back(language);
     return true;
 }
 
@@ -103,14 +71,14 @@ void FlightAttendet::print(ostream& out) const
     out << "Flight attendet: ";
     Worker::print(out);
     out << "Languages: {";
-    for (int i = 0; i < currentNumOfLanguages; ++i)
-        out << allLanguages[i] << ((i == currentNumOfLanguages - 1)? "" : ", ");
+    for (int i = 0; i < languagesVec.size(); ++i)
+        out << languagesVec[i] << ((i == languagesVec.size() - 1)? "" : ", ");
     out << "}" << endl;
 }
 
 void FlightAttendet::setRaise()
 {
-    salary += 100 * currentNumOfLanguages;
+    salary += 100 * languagesVec.size();
 }
 
 void FlightAttendet::landing(ostream& out) const
@@ -154,10 +122,10 @@ void FlightAttendet::annualRefresh(ostream& out)
 {
     srand((unsigned int)time(NULL)); // use current time as seed for random generator
     
-    unsigned int  rnd = (unsigned int)(rand() % currentNumOfLanguages);
+    unsigned int  rnd = (unsigned int)(rand() % languagesVec.size());
 
 
-    out << "I am " << name << " the flight attendent and I went to " << allLanguages[rnd] << " language refreshment" << endl;
+    out << "I am " << name << " the flight attendent and I went to " << languagesVec[rnd] << " language refreshment" << endl;
 }
 
 void FlightAttendet::takeoff(ostream& out)const

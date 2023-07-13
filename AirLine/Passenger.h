@@ -25,9 +25,9 @@ protected:
 
 public:
 	//Passenger can't have Ticket as he initialized because he needs to buy a ticket
-	Passenger(const char* n, int age, char gender, int luggageWeight, const char* code);
-	Passenger(const Passenger& p);
-	Passenger(Passenger&& p) noexcept;
+	Passenger(const string& n, int age, char gender, int luggageWeight, const char* code);
+	//Passenger(const Passenger& p);
+	//Passenger(Passenger&& p) noexcept;
 	
 	//read and write from file
 	Passenger(ifstream& in);
